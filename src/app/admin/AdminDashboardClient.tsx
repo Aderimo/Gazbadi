@@ -12,10 +12,11 @@ import {
   getTrash, restoreItem, permanentDelete, emptyTrash,
   type TrashedItem,
 } from '@/lib/admin-store';
-import type { ContentItem, LocationContent } from '@/types';
+import type { ContentItem, LocationContent, Comment } from '@/types';
+import { getComments, updateCommentStatus, deleteComment as deleteCommentStore } from '@/lib/comments-store';
 
 interface Props { items: ContentItem[] }
-type Tab = 'content' | 'trash' | 'create' | 'edit';
+type Tab = 'content' | 'trash' | 'create' | 'edit' | 'comments';
 type ContentType = ContentItem['type'];
 type SortKey = 'date' | 'name' | 'type';
 
@@ -175,10 +176,10 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
 
           {/* Tabs */}
           <div className="mb-6 flex gap-1 rounded-xl border border-white/5 bg-dark-card/30 p-1">
-            {(['content', 'create', 'trash'] as Tab[]).map((tabItem) => (
+            {(['content', 'create', 'comments', 'trash'] as Tab[]).map((tabItem) => (
               <button key={tabItem} onClick={() => { setTab(tabItem); setEditingId(null); setBulkMode(false); setSelectedIds(new Set()); }}
                 className={`flex-1 rounded-lg px-3 py-2.5 text-xs font-medium transition-all ${tab === tabItem ? 'bg-accent-turquoise/15 text-accent-turquoise shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}>
-                {tabItem === 'content' ? (locale === 'tr' ? '📋 İçerikler' : '📋 Content') : tabItem === 'create' ? (locale === 'tr' ? '➕ Yeni Oluştur' : '➕ Create New') : `🗑️ ${locale === 'tr' ? 'Çöp' : 'Trash'} (${stats.trashCount})`}
+                {tabItem === 'content' ? (locale === 'tr' ? '📋 İçerikler' : '📋 Content') : tabItem === 'create' ? (locale === 'tr' ? '➕ Yeni Oluştur' : '➕ Create New') : tabItem === 'comments' ? (locale === 'tr' ? '💬 Yorumlar' : '💬 Comments') : `🗑️ ${locale === 'tr' ? 'Çöp' : 'Trash'} (${stats.trashCount})`}
               </button>
             ))}
           </div>
@@ -241,6 +242,7 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
           {tab === 'edit' && editingItem && <EditForm item={editingItem} locale={locale} onSave={(u) => handleSaveEdit(editingItem.id, u)} onCancel={() => { setEditingId(null); setTab('content'); }} />}
           {tab === 'create' && <CreateForm locale={locale} createType={createType} setCreateType={setCreateType} existingSlugs={allItems.map(i => i.slug)} onSave={handleSaveNew} onCancel={() => setTab('content')} />}
           {tab === 'trash' && <TrashList trash={trash} locale={locale} onRestore={handleRestore} onPermanentDelete={handlePermanentDelete} onEmptyTrash={handleEmptyTrash} />}
+          {tab === 'comments' && <CommentModeration locale={locale} onToast={showToast} />}
 
           {confirmDelete && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setConfirmDelete(null)}>
@@ -419,7 +421,7 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (TR)`} value={summaryTr} onChange={setSummaryTr} multiline />
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (EN)`} value={summaryEn} onChange={setSummaryEn} multiline />
         </div>
-        <Field label={locale === 'tr' ? 'Kapak Görseli URL' : 'Cover Image URL'} value={coverImage} onChange={setCoverImage} placeholder="https://images.unsplash.com/..." />
+        <CoverImageField value={coverImage} onChange={setCoverImage} locale={locale} />
       </div>
 
       {/* Location-specific fields */}
@@ -559,7 +561,7 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (TR)`} value={summaryTr} onChange={setSummaryTr} multiline />
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (EN)`} value={summaryEn} onChange={setSummaryEn} multiline />
         </div>
-        <Field label={locale === 'tr' ? 'Kapak Görseli URL' : 'Cover Image URL'} value={coverImage} onChange={setCoverImage} />
+        <CoverImageField value={coverImage} onChange={setCoverImage} locale={locale} />
       </div>
 
       {/* Location-specific edit fields */}
@@ -628,9 +630,113 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
 }
 
 /* --- Reusable Field --- */
+function CommentModeration({ locale, onToast }: { locale: 'tr' | 'en'; onToast: (msg: string) => void }) {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'flagged'>('all');
+
+  useEffect(() => { setComments(getComments()); }, []);
+
+  function handleApprove(id: string) {
+    const updated = updateCommentStatus(id, 'approved');
+    setComments(updated);
+    onToast(locale === 'tr' ? 'Yorum onaylandı' : 'Comment approved');
+  }
+  function handleFlag(id: string) {
+    const updated = updateCommentStatus(id, 'flagged');
+    setComments(updated);
+    onToast(locale === 'tr' ? 'Yorum sıkıntılı olarak işaretlendi' : 'Comment flagged');
+  }
+  function handleDelete(id: string) {
+    const updated = deleteCommentStore(id);
+    setComments(updated);
+    onToast(locale === 'tr' ? 'Yorum silindi' : 'Comment deleted');
+  }
+
+  const filtered = filter === 'all' ? comments : comments.filter(c => c.status === filter);
+  const counts = { all: comments.length, pending: comments.filter(c => c.status === 'pending').length, approved: comments.filter(c => c.status === 'approved').length, flagged: comments.filter(c => c.status === 'flagged').length };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        {(['all', 'pending', 'approved', 'flagged'] as const).map(f => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${filter === f ? 'bg-accent-turquoise/15 text-accent-turquoise' : 'text-gray-500 hover:text-gray-300'}`}>
+            {f === 'all' ? `📋 ${locale === 'tr' ? 'Tümü' : 'All'} (${counts.all})` :
+             f === 'pending' ? `⏳ ${locale === 'tr' ? 'Bekleyen' : 'Pending'} (${counts.pending})` :
+             f === 'approved' ? `✅ ${locale === 'tr' ? 'Onaylı' : 'Approved'} (${counts.approved})` :
+             `🚩 ${locale === 'tr' ? 'Sıkıntılı' : 'Flagged'} (${counts.flagged})`}
+          </button>
+        ))}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="rounded-xl border border-white/5 bg-dark-card/20 p-8 text-center text-sm text-gray-600">
+          {locale === 'tr' ? 'Yorum bulunamadı' : 'No comments found'}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filtered.map(c => (
+            <div key={c.id} className={`rounded-xl border p-4 ${c.status === 'flagged' ? 'border-rose-500/20 bg-rose-500/5' : c.status === 'pending' ? 'border-amber-500/20 bg-amber-500/5' : 'border-white/5 bg-dark-card/30'}`}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-sm font-medium text-gray-200">{c.author}</span>
+                    <span className="text-[10px] text-gray-600">→ {c.contentSlug}</span>
+                    {c.reports > 0 && <span className="rounded-full bg-rose-500/15 px-1.5 py-0.5 text-[9px] text-rose-400">⚑ {c.reports}</span>}
+                    <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-medium ${c.status === 'approved' ? 'bg-emerald-500/15 text-emerald-400' : c.status === 'pending' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400'}`}>
+                      {c.status === 'approved' ? (locale === 'tr' ? 'Onaylı' : 'Approved') : c.status === 'pending' ? (locale === 'tr' ? 'Bekliyor' : 'Pending') : (locale === 'tr' ? 'Sıkıntılı' : 'Flagged')}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-300">{c.text}</p>
+                  <span className="mt-1 block text-[10px] text-gray-600">{new Date(c.createdAt).toLocaleString(locale === 'tr' ? 'tr-TR' : 'en-US')}</span>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  {c.status !== 'approved' && (
+                    <button onClick={() => handleApprove(c.id)} className="rounded-lg border border-emerald-500/20 px-2 py-1 text-[10px] text-emerald-400 hover:bg-emerald-500/10 transition-colors">✓</button>
+                  )}
+                  {c.status !== 'flagged' && (
+                    <button onClick={() => handleFlag(c.id)} className="rounded-lg border border-amber-500/20 px-2 py-1 text-[10px] text-amber-400 hover:bg-amber-500/10 transition-colors">⚑</button>
+                  )}
+                  <button onClick={() => handleDelete(c.id)} className="rounded-lg border border-rose-500/20 px-2 py-1 text-[10px] text-rose-400 hover:bg-rose-500/10 transition-colors">✕</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CoverImageField({ value, onChange, locale }: { value: string; onChange: (v: string) => void; locale: 'tr' | 'en' }) {
+  const [imgError, setImgError] = useState(false);
+  useEffect(() => { setImgError(false); }, [value]);
+  return (
+    <div className="space-y-2">
+      <label className="mb-1.5 block text-[11px] font-medium text-gray-400">{locale === 'tr' ? 'Kapak Görseli URL' : 'Cover Image URL'}</label>
+      <input type="text" value={value} onChange={(e) => onChange(e.target.value)}
+        placeholder="https://images.unsplash.com/..."
+        className="w-full rounded-lg border border-white/10 bg-dark-card/60 px-3 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none focus:border-accent-turquoise/40 transition-colors" />
+      {value.trim() && (
+        <div className="relative h-32 w-full overflow-hidden rounded-lg border border-white/10 bg-dark-card/40">
+          {imgError ? (
+            <div className="flex h-full items-center justify-center gap-2 text-rose-400">
+              <span>🖼️</span><span className="text-xs">{locale === 'tr' ? 'Görsel yüklenemedi' : 'Image failed to load'}</span>
+            </div>
+          ) : (
+            <img src={value} alt="Cover preview" className="h-full w-full object-cover" onError={() => setImgError(true)} />
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GalleryEditor({ urls, onChange, locale }: { urls: string[]; onChange: (urls: string[]) => void; locale: 'tr' | 'en' }) {
   const [newUrl, setNewUrl] = useState('');
   const [errors, setErrors] = useState<Record<number, boolean>>({});
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
   function addUrl() {
     const trimmed = newUrl.trim();
@@ -649,62 +755,77 @@ function GalleryEditor({ urls, onChange, locale }: { urls: string[]; onChange: (
     if (e.key === 'Enter') { e.preventDefault(); addUrl(); }
   }
 
+  function handlePaste(e: React.ClipboardEvent) {
+    const pasted = e.clipboardData.getData('text').trim();
+    if (pasted && (pasted.startsWith('http://') || pasted.startsWith('https://'))) {
+      e.preventDefault();
+      const newUrls = pasted.split('\n').map(u => u.trim()).filter(u => u.startsWith('http'));
+      onChange([...urls, ...newUrls]);
+      setNewUrl('');
+    }
+  }
+
   function markError(idx: number) {
     setErrors(prev => ({ ...prev, [idx]: true }));
   }
 
+  function handleDragStart(idx: number) { setDragIdx(idx); }
+  function handleDragOver(e: React.DragEvent, idx: number) { e.preventDefault(); setDragOverIdx(idx); }
+  function handleDragEnd() {
+    if (dragIdx !== null && dragOverIdx !== null && dragIdx !== dragOverIdx) {
+      const updated = [...urls];
+      const [moved] = updated.splice(dragIdx, 1);
+      updated.splice(dragOverIdx, 0, moved);
+      onChange(updated);
+      setErrors({});
+    }
+    setDragIdx(null); setDragOverIdx(null);
+  }
+
   return (
     <div className="space-y-3">
-      {/* Existing gallery thumbnails */}
       {urls.length > 0 && (
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
           {urls.map((url, idx) => (
-            <div key={`${idx}-${url}`} className="group relative aspect-square overflow-hidden rounded-lg border border-white/10 bg-dark-card/60">
+            <div
+              key={`${idx}-${url}`}
+              draggable
+              onDragStart={() => handleDragStart(idx)}
+              onDragOver={(e) => handleDragOver(e, idx)}
+              onDragEnd={handleDragEnd}
+              className={`group relative aspect-square cursor-grab overflow-hidden rounded-lg border bg-dark-card/60 transition-all active:cursor-grabbing ${
+                dragOverIdx === idx ? 'border-accent-turquoise/50 scale-105' : dragIdx === idx ? 'opacity-40 border-white/5' : 'border-white/10'
+              }`}
+            >
               {errors[idx] ? (
                 <div className="flex h-full flex-col items-center justify-center gap-1 p-1">
                   <span className="text-lg">🖼️</span>
                   <span className="text-[9px] text-rose-400 text-center leading-tight">{locale === 'tr' ? 'Yüklenemedi' : 'Failed'}</span>
                 </div>
               ) : (
-                <img
-                  src={url}
-                  alt={`Gallery ${idx + 1}`}
-                  className="h-full w-full object-cover"
-                  onError={() => markError(idx)}
-                />
+                <img src={url} alt={`Gallery ${idx + 1}`} className="h-full w-full object-cover" onError={() => markError(idx)} />
               )}
-              <button
-                type="button"
-                onClick={() => removeUrl(idx)}
+              <span className="absolute left-1 top-1 rounded bg-black/60 px-1 py-0.5 text-[9px] text-gray-400">{idx + 1}</span>
+              <button type="button" onClick={() => removeUrl(idx)}
                 className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-[10px] text-rose-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-rose-500/30"
-                aria-label={locale === 'tr' ? 'Görseli kaldır' : 'Remove image'}
-              >
-                ✕
-              </button>
+                aria-label={locale === 'tr' ? 'Görseli kaldır' : 'Remove image'}>✕</button>
             </div>
           ))}
         </div>
       )}
-
-      {/* Add new URL input */}
       <div className="flex gap-2">
-        <input
-          type="text"
-          value={newUrl}
+        <input type="text" value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={locale === 'tr' ? 'Görsel URL yapıştır...' : 'Paste image URL...'}
-          className="flex-1 rounded-lg border border-white/10 bg-dark-card/40 px-3 py-2 text-xs text-gray-200 placeholder-gray-600 outline-none transition-colors focus:border-accent-turquoise/40"
-        />
-        <button
-          type="button"
-          onClick={addUrl}
-          disabled={!newUrl.trim()}
-          className="rounded-lg border border-accent-turquoise/30 bg-accent-turquoise/10 px-3 py-2 text-xs font-medium text-accent-turquoise transition-all hover:bg-accent-turquoise/20 disabled:opacity-30 disabled:cursor-not-allowed"
-        >
+          onPaste={handlePaste}
+          placeholder={locale === 'tr' ? 'Görsel URL yapıştır (otomatik eklenir)...' : 'Paste image URL (auto-adds)...'}
+          className="flex-1 rounded-lg border border-white/10 bg-dark-card/40 px-3 py-2 text-xs text-gray-200 placeholder-gray-600 outline-none transition-colors focus:border-accent-turquoise/40" />
+        <button type="button" onClick={addUrl} disabled={!newUrl.trim()}
+          className="rounded-lg border border-accent-turquoise/30 bg-accent-turquoise/10 px-3 py-2 text-xs font-medium text-accent-turquoise transition-all hover:bg-accent-turquoise/20 disabled:opacity-30 disabled:cursor-not-allowed">
           + {locale === 'tr' ? 'Ekle' : 'Add'}
         </button>
       </div>
+      {urls.length > 1 && <p className="text-[10px] text-gray-600">💡 {locale === 'tr' ? 'Sıralamak için görselleri sürükle-bırak' : 'Drag & drop to reorder'}</p>}
     </div>
   );
 }
