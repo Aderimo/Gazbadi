@@ -6,6 +6,7 @@ import { getLocalizedContent } from '@/lib/i18n-content';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import RouteMap from '@/components/map/RouteMap';
 import CommentSection from '@/components/ui/CommentSection';
+import { trackView } from '@/lib/user-profile';
 import type { ContentItem, LocationContent, RoutePlanDay, BudgetItem } from '@/types';
 
 interface LocationDetailClientProps {
@@ -20,6 +21,8 @@ export default function LocationDetailClient({ item }: LocationDetailClientProps
   );
 
   const allRoutePoints = content.dailyRoutePlan?.flatMap((day) => day.routePoints) ?? [];
+
+  useEffect(() => { trackView(item.slug); }, [item.slug]);
 
   return (
     <article className="min-h-screen bg-dark">
