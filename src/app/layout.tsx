@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     title: "Travel Atlas",
     description: "Dünyayı Keşfet, Anılarını Paylaş — Seyahat öneri platformu",
   },
+  authors: [{ name: 'Aderimo', url: 'https://github.com/Aderimo' }],
   robots: {
     index: true,
     follow: true,
@@ -41,6 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr" className={inter.variable}>
+      {/* ── Built with ♥ by Aderimo — github.com/Aderimo/Gazbadi ── */}
       <body className="min-h-screen bg-dark font-sans text-gray-100 antialiased">
         <LanguageProvider>
           <a
