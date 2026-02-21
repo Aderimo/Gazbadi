@@ -349,6 +349,11 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
   const [citizenship, setCitizenship] = useState('');
   const [galleryUrls, setGalleryUrls] = useState('');
   const [budgetItems, setBudgetItems] = useState([{ category: '', amount: '', currency: 'EUR', note: '' }]);
+  // Blog-specific
+  const [bodyTr, setBodyTr] = useState('');
+  const [bodyEn, setBodyEn] = useState('');
+  const [tagsTr, setTagsTr] = useState('');
+  const [tagsEn, setTagsEn] = useState('');
 
   function addBudgetRow() { setBudgetItems([...budgetItems, { category: '', amount: '', currency: 'EUR', note: '' }]); }
   function updateBudget(idx: number, field: string, val: string) {
@@ -375,11 +380,18 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
       dailyRoutePlan: [], coordinates: { lat: 0, lng: 0 },
     } : {};
 
+    const blogExtra = createType === 'blog' ? {
+      body: bodyTr, tags: tagsTr.split(',').map(t => t.trim()).filter(Boolean),
+    } : {};
+    const blogExtraEn = createType === 'blog' ? {
+      body: bodyEn || bodyTr, tags: (tagsEn || tagsTr).split(',').map(t => t.trim()).filter(Boolean),
+    } : {};
+
     const newItem: ContentItem = {
       id: `${createType.slice(0, 3)}-${Date.now()}`, slug, type: createType, status, createdAt: now, updatedAt: now,
       coverImage: coverImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80',
       seo: { tr: { title: titleTr, description: summaryTr }, en: { title: titleEn || titleTr, description: summaryEn || summaryTr } },
-      content: { tr: { ...baseContent, ...locationExtra }, en: { ...baseContentEn, ...locationExtra } },
+      content: { tr: { ...baseContent, ...locationExtra, ...blogExtra }, en: { ...baseContentEn, ...locationExtra, ...blogExtraEn } },
     };
     onSave(newItem);
   }
@@ -442,6 +454,20 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
         </>
       )}
 
+      {/* Blog-specific fields */}
+      {createType === 'blog' && (
+        <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-4">
+          <p className="text-xs font-medium text-gray-400">✍️ {locale === 'tr' ? 'Blog İçeriği (Markdown)' : 'Blog Content (Markdown)'}</p>
+          <p className="text-[10px] text-gray-600">{locale === 'tr' ? 'Markdown desteklenir: # başlık, **kalın**, *italik*, `kod`, > alıntı, - liste, [link](url), ```kod bloğu```' : 'Markdown supported: # heading, **bold**, *italic*, `code`, > quote, - list, [link](url), ```code block```'}</p>
+          <Field label={`${locale === 'tr' ? 'İçerik' : 'Body'} (TR)`} value={bodyTr} onChange={setBodyTr} multiline placeholder={locale === 'tr' ? '## Başlık\n\nBlog yazınızı buraya yazın...' : '## Heading\n\nWrite your blog post here...'} />
+          <Field label={`${locale === 'tr' ? 'İçerik' : 'Body'} (EN)`} value={bodyEn} onChange={setBodyEn} multiline placeholder="Optional — falls back to TR" />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label={`${locale === 'tr' ? 'Etiketler' : 'Tags'} (TR)`} value={tagsTr} onChange={setTagsTr} placeholder={locale === 'tr' ? 'seyahat, ipucu, rehber' : 'travel, tips, guide'} />
+            <Field label={`${locale === 'tr' ? 'Etiketler' : 'Tags'} (EN)`} value={tagsEn} onChange={setTagsEn} placeholder="travel, tips, guide" />
+          </div>
+        </div>
+      )}
+
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
         <label className="mb-2 block text-xs font-medium text-gray-400">{locale === 'tr' ? 'Durum' : 'Status'}</label>
         <div className="flex gap-2">
@@ -483,6 +509,13 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
       ? trLoc.estimatedBudget.map(b => ({ category: b.category, amount: String(b.amount), currency: b.currency, note: b.note }))
       : [{ category: '', amount: '', currency: 'EUR', note: '' }]
   );
+  // Blog fields
+  const trBlog = trContent as unknown as Record<string, unknown>;
+  const enBlog = enContent as unknown as Record<string, unknown>;
+  const [bodyTr, setBodyTr] = useState((trBlog.body as string) || '');
+  const [bodyEn, setBodyEn] = useState((enBlog.body as string) || '');
+  const [tagsTr, setTagsTr] = useState(((trBlog.tags as string[]) || []).join(', '));
+  const [tagsEn, setTagsEn] = useState(((enBlog.tags as string[]) || []).join(', '));
 
   function addBudgetRow() { setBudgetItems([...budgetItems, { category: '', amount: '', currency: 'EUR', note: '' }]); }
   function updateBudget(idx: number, field: string, val: string) {
@@ -496,13 +529,15 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
     const budget = budgetItems.filter(b => b.category && b.amount).map(b => ({ category: b.category, amount: Number(b.amount), currency: b.currency, note: b.note }));
 
     const locationUpdates = item.type === 'location' ? { city, country, citizenship, gallery, estimatedBudget: budget } : {};
+    const blogUpdates = item.type === 'blog' ? { body: bodyTr, tags: tagsTr.split(',').map(t => t.trim()).filter(Boolean) } : {};
+    const blogUpdatesEn = item.type === 'blog' ? { body: bodyEn || bodyTr, tags: (tagsEn || tagsTr).split(',').map(t => t.trim()).filter(Boolean) } : {};
 
     onSave({
       status, coverImage,
       seo: { tr: { title: titleTr, description: summaryTr }, en: { title: titleEn, description: summaryEn } },
       content: {
-        tr: { ...trContent, title: titleTr, summary: summaryTr, ...locationUpdates },
-        en: { ...enContent, title: titleEn, summary: summaryEn, ...locationUpdates },
+        tr: { ...trContent, title: titleTr, summary: summaryTr, ...locationUpdates, ...blogUpdates },
+        en: { ...enContent, title: titleEn, summary: summaryEn, ...locationUpdates, ...blogUpdatesEn },
       },
     });
   }
@@ -557,6 +592,20 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
             <Field label={locale === 'tr' ? 'Her satıra bir URL' : 'One URL per line'} value={galleryUrls} onChange={setGalleryUrls} multiline />
           </div>
         </>
+      )}
+
+      {/* Blog-specific edit fields */}
+      {item.type === 'blog' && (
+        <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-4">
+          <p className="text-xs font-medium text-gray-400">✍️ {locale === 'tr' ? 'Blog İçeriği (Markdown)' : 'Blog Content (Markdown)'}</p>
+          <p className="text-[10px] text-gray-600">{locale === 'tr' ? '# başlık, **kalın**, *italik*, `kod`, > alıntı, - liste, [link](url), ```kod bloğu```' : '# heading, **bold**, *italic*, `code`, > quote, - list, [link](url), ```code block```'}</p>
+          <Field label={`${locale === 'tr' ? 'İçerik' : 'Body'} (TR)`} value={bodyTr} onChange={setBodyTr} multiline />
+          <Field label={`${locale === 'tr' ? 'İçerik' : 'Body'} (EN)`} value={bodyEn} onChange={setBodyEn} multiline />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label={`${locale === 'tr' ? 'Etiketler' : 'Tags'} (TR)`} value={tagsTr} onChange={setTagsTr} placeholder="seyahat, ipucu, rehber" />
+            <Field label={`${locale === 'tr' ? 'Etiketler' : 'Tags'} (EN)`} value={tagsEn} onChange={setTagsEn} placeholder="travel, tips, guide" />
+          </div>
+        </div>
       )}
 
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
