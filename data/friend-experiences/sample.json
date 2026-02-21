@@ -1,0 +1,63 @@
+{
+  "id": "fexp-001",
+  "slug": "elif-istanbul-gezisi",
+  "type": "friend-experience",
+  "status": "published",
+  "createdAt": "2024-02-20T12:00:00Z",
+  "updatedAt": "2024-02-25T09:15:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1527838832700-5059252407fa?w=1200&q=80",
+  "seo": {
+    "tr": {
+      "title": "Elif'in İstanbul Macerası",
+      "description": "Elif'in 3 günlük İstanbul gezisi deneyimi, fotoğrafları ve kişisel yorumları"
+    },
+    "en": {
+      "title": "Elif's Istanbul Adventure",
+      "description": "Elif's 3-day Istanbul trip experience, photos, and personal comments"
+    }
+  },
+  "content": {
+    "tr": {
+      "title": "Elif'in İstanbul Macerası",
+      "summary": "3 günde İstanbul'un tadını çıkardım, işte deneyimlerim",
+      "friendName": "Elif Yılmaz",
+      "visitedLocations": [
+        { "name": "İstanbul", "slug": "istanbul" },
+        { "name": "Sultanahmet" },
+        { "name": "Karaköy" }
+      ],
+      "narrative": "## İstanbul'a İlk Adım\n\nİstanbul'a ilk kez gittim ve şehir beni tamamen büyüledi. Sabah erkenden Sultanahmet Meydanı'na gittim, Ayasofya'nın karşısında durduğumda tarih kitaplarından fırlamış gibi hissettim.\n\n## Karaköy Keşfi\n\nİkinci gün Karaköy'ü keşfettim. Dar sokaklardaki kahve dükkanları, sanat galerileri ve deniz manzarası muhteşemdi. Galata Köprüsü'nden balık tutanları izlerken bir çay içtim.\n\n## Boğaz Turu\n\nSon gün Boğaz turu yaptım. Vapurdan İstanbul'u seyretmek bambaşka bir deneyim. Kız Kulesi'ni yakından görmek çok etkileyiciydi.",
+      "locationComments": [
+        { "locationName": "Sultanahmet", "comment": "Tarihi doku inanılmaz, her köşede farklı bir hikaye var. Ayasofya mutlaka görülmeli." },
+        { "locationName": "Karaköy", "comment": "Modern ve tarihi dokunun mükemmel birleşimi. Kahve kültürü çok gelişmiş." },
+        { "locationName": "Boğaz", "comment": "Vapur turu kesinlikle yapılmalı, özellikle gün batımında muhteşem manzara." }
+      ],
+      "gallery": [
+        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&q=80",
+        "https://images.unsplash.com/photo-1549918864-48ac978761a4?w=800&q=80",
+        "https://images.unsplash.com/photo-1604941590361-0be0a2a3e304?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Elif's Istanbul Adventure",
+      "summary": "I enjoyed Istanbul in 3 days, here are my experiences",
+      "friendName": "Elif Yılmaz",
+      "visitedLocations": [
+        { "name": "Istanbul", "slug": "istanbul" },
+        { "name": "Sultanahmet" },
+        { "name": "Karaköy" }
+      ],
+      "narrative": "## First Steps in Istanbul\n\nIt was my first time visiting Istanbul and the city completely enchanted me. I went to Sultanahmet Square early in the morning, and standing in front of Hagia Sophia felt like stepping out of a history book.\n\n## Discovering Karaköy\n\nOn the second day, I explored Karaköy. The coffee shops in narrow streets, art galleries, and sea views were magnificent. I had tea while watching fishermen on Galata Bridge.\n\n## Bosphorus Cruise\n\nOn the last day, I took a Bosphorus cruise. Watching Istanbul from the ferry is a completely different experience. Seeing the Maiden's Tower up close was very impressive.",
+      "locationComments": [
+        { "locationName": "Sultanahmet", "comment": "The historic texture is incredible, every corner has a different story. Hagia Sophia is a must-see." },
+        { "locationName": "Karaköy", "comment": "A perfect blend of modern and historic touches. The coffee culture is very developed." },
+        { "locationName": "Bosphorus", "comment": "The ferry tour is a must-do, especially at sunset for the magnificent view." }
+      ],
+      "gallery": [
+        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&q=80",
+        "https://images.unsplash.com/photo-1549918864-48ac978761a4?w=800&q=80",
+        "https://images.unsplash.com/photo-1604941590361-0be0a2a3e304?w=800&q=80"
+      ]
+    }
+  }
+}

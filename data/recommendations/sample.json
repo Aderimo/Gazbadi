@@ -1,0 +1,29 @@
+{
+  "id": "rec-001",
+  "slug": "kapadokya-balon-deneyimi",
+  "type": "recommendation",
+  "status": "published",
+  "createdAt": "2024-03-01T08:00:00Z",
+  "updatedAt": "2024-03-05T11:20:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?w=1200&q=80",
+  "seo": {
+    "tr": {
+      "title": "Kapadokya Balon Deneyimi - Kişisel Öneri",
+      "description": "Kapadokya'da sıcak hava balonu deneyimim ve size önerilerim"
+    },
+    "en": {
+      "title": "Cappadocia Balloon Experience - Personal Recommendation",
+      "description": "My hot air balloon experience in Cappadocia and recommendations for you"
+    }
+  },
+  "content": {
+    "tr": {
+      "title": "Kapadokya Balon Deneyimi",
+      "summary": "Hayatımda yaşadığım en unutulmaz deneyimlerden biri olan Kapadokya balon turu hakkında kişisel önerilerim"
+    },
+    "en": {
+      "title": "Cappadocia Balloon Experience",
+      "summary": "My personal recommendations about the Cappadocia balloon tour, one of the most unforgettable experiences of my life"
+    }
+  }
+}
