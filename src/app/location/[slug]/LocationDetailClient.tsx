@@ -6,7 +6,7 @@ import { getLocalizedContent } from '@/lib/i18n-content';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import RouteMap from '@/components/map/RouteMap';
 import CommentSection from '@/components/ui/CommentSection';
-import { trackView } from '@/lib/user-profile';
+import { trackView, getProfile, toggleVisitedPlace, getUserRating, setRating, getSlugRating } from '@/lib/user-profile';
 import type { ContentItem, LocationContent, RoutePlanDay, BudgetItem } from '@/types';
 
 interface LocationDetailClientProps {
@@ -23,6 +23,30 @@ export default function LocationDetailClient({ item }: LocationDetailClientProps
   const allRoutePoints = content.dailyRoutePlan?.flatMap((day) => day.routePoints) ?? [];
 
   useEffect(() => { trackView(item.slug); }, [item.slug]);
+
+  // Rating & visited
+  const [myRating, setMyRating] = useState(0);
+  const [avgRating, setAvgRating] = useState({ avg: 0, count: 0 });
+  const [visited, setVisited] = useState(false);
+  const [hoverStar, setHoverStar] = useState(0);
+
+  useEffect(() => {
+    setMyRating(getUserRating(item.slug));
+    setAvgRating(getSlugRating(item.slug));
+    const p = getProfile();
+    if (p) setVisited(p.visitedPlaces.includes(item.slug));
+  }, [item.slug]);
+
+  function handleRate(star: number) {
+    const result = setRating(item.slug, star);
+    setMyRating(star);
+    setAvgRating(result);
+  }
+
+  function handleToggleVisited() {
+    const p = toggleVisitedPlace(item.slug);
+    if (p) setVisited(p.visitedPlaces.includes(item.slug));
+  }
 
   return (
     <article className="min-h-screen bg-dark">
@@ -44,6 +68,36 @@ export default function LocationDetailClient({ item }: LocationDetailClientProps
 
         {/* Info Sections */}
         <div className="space-y-6 pt-12">
+          {/* Rating & Visited */}
+          <div className="glass-card p-5 flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">{locale === 'tr' ? 'Puanla:' : 'Rate:'}</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <button key={star} type="button"
+                    onMouseEnter={() => setHoverStar(star)}
+                    onMouseLeave={() => setHoverStar(0)}
+                    onClick={() => handleRate(star)}
+                    className="text-xl transition-transform hover:scale-110"
+                    aria-label={`${star} star`}>
+                    {star <= (hoverStar || myRating) ? '⭐' : '☆'}
+                  </button>
+                ))}
+              </div>
+              {avgRating.count > 0 && (
+                <span className="text-xs text-gray-500">
+                  {avgRating.avg.toFixed(1)} ({avgRating.count})
+                </span>
+              )}
+            </div>
+            <div className="sm:ml-auto">
+              <button type="button" onClick={handleToggleVisited}
+                className={`rounded-lg border px-4 py-2 text-xs font-medium transition-all ${visited ? 'border-emerald-500/30 bg-emerald-500/15 text-emerald-400' : 'border-white/10 text-gray-500 hover:text-gray-300 hover:border-white/20'}`}>
+                {visited ? '✓ ' : '📌 '}{locale === 'tr' ? (visited ? 'Gittim' : 'Gittim olarak işaretle') : (visited ? 'Visited' : 'Mark as visited')}
+              </button>
+            </div>
+          </div>
+
           <InfoSection
             icon="✦"
             title={locale === 'tr' ? 'Giriş' : 'Introduction'}

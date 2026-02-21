@@ -1,9 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getLocalizedContent } from '@/lib/i18n-content';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import CommentSection from '@/components/ui/CommentSection';
+import { trackView } from '@/lib/user-profile';
 import type { ContentItem, BlogContent } from '@/types';
 
 interface BlogDetailClientProps {
@@ -12,6 +14,9 @@ interface BlogDetailClientProps {
 
 export default function BlogDetailClient({ item }: BlogDetailClientProps) {
   const { locale } = useLanguage();
+
+  useEffect(() => { trackView(item.slug); }, [item.slug]);
+
   const content = getLocalizedContent(
     item.content as { tr: BlogContent; en: BlogContent },
     locale

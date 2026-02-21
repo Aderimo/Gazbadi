@@ -175,8 +175,12 @@ export interface Comment {
   contentSlug: string;
   contentType: ContentItem['type'];
   author: string;
+  avatar?: string;
   text: string;
   status: CommentStatus;
   reports: number;
+  likes: number;
+  dislikes: number;
+  parentId?: string;
   createdAt: string;
 }
