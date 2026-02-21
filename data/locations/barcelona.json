@@ -1,0 +1,87 @@
+{
+  "id": "loc-005",
+  "slug": "barcelona",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-04-15T10:00:00Z",
+  "updatedAt": "2024-04-20T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Barcelona Seyahat Rehberi", "description": "Barcelona gezilecek yerler ve öneriler" },
+    "en": { "title": "Barcelona Travel Guide", "description": "Barcelona places to visit and tips" }
+  },
+  "content": {
+    "tr": {
+      "title": "Barcelona",
+      "summary": "Gaudí'nin şehri, Akdeniz'in incisi",
+      "city": "Barcelona",
+      "country": "İspanya",
+      "introduction": "Barcelona, Gaudí'nin mimari şaheserleri, canlı gece hayatı ve Akdeniz sahilleriyle büyüler. La Rambla'da yürüyüş, Gothic Quarter'da kaybolmak ve Barceloneta plajında güneşlenmek şehrin vazgeçilmezleridir.",
+      "transportation": "El Prat'tan Aerobus ile 35 dk Plaça Catalunya'ya (€7.75). Metro 12 hat, T-Casual kartı 10 yolculuk €11.35. Bisiklet paylaşım sistemi Bicing çok yaygın.",
+      "accommodation": "Gothic Quarter tarihi doku. Eixample Gaudí eserleri için merkezi. Barceloneta plaj hayatı. El Born trendy kafeler. Orta segment 90-160€/gece.",
+      "museums": "Picasso Müzesi, MACBA (Modern Sanat), Fundació Joan Miró, CosmoCaixa (Bilim), MNAC (Katalan Sanatı).",
+      "historicalPlaces": "Sagrada Família (bilet €26, aylar öncesinden alın), Park Güell (€10), Casa Batlló (€35), La Pedrera (€25), La Boqueria Pazarı, Gotik Mahalle.",
+      "restaurants": "La Boqueria'da taze deniz ürünleri. El Born'da tapas barları. Barceloneta'da paella. Patatas bravas, jamón ibérico, churros con chocolate, pa amb tomàquet denenmeli.",
+      "citizenship": "İspanya vatandaşlığı: 10 yıl yasal ikamet (Latin Amerika ülkeleri 2 yıl). DELE A2 İspanyolca sınavı + CCSE kültür sınavı gerekli. Schengen vizesi 90 gün. Golden Visa: €500,000 gayrimenkul yatırımı ile oturma izni.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Gaudí Rotası",
+          "activities": ["Sagrada Família", "Park Güell", "Casa Batlló"],
+          "routePoints": [
+            { "name": "Sagrada Família", "coordinates": { "lat": 41.4036, "lng": 2.1744 }, "description": "Gaudí'nin 1882'den beri devam eden başyapıtı", "tips": "Biletleri 2-3 ay öncesinden alın, kule turu ekstra €10", "order": 1 },
+            { "name": "Park Güell", "coordinates": { "lat": 41.4145, "lng": 2.1527 }, "description": "Renkli mozaiklerle süslü park", "tips": "Sabah 8'de gidin, kota var ve dolabiliyor", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 110, "currency": "EUR", "note": "Orta segment (gecelik)" },
+        { "category": "Yemek", "amount": 35, "currency": "EUR", "note": "Günlük" },
+        { "category": "Ulaşım", "amount": 11, "currency": "EUR", "note": "T-Casual 10 yolculuk" },
+        { "category": "Müze", "amount": 40, "currency": "EUR", "note": "Sagrada Família + Park Güell" }
+      ],
+      "coordinates": { "lat": 41.3874, "lng": 2.1686 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80",
+        "https://images.unsplash.com/photo-1562883676-8c7feb83f09b?w=800&q=80",
+        "https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Barcelona",
+      "summary": "Gaudí's city, the pearl of the Mediterranean",
+      "city": "Barcelona",
+      "country": "Spain",
+      "introduction": "Barcelona enchants with Gaudí's architectural masterpieces, vibrant nightlife, and Mediterranean beaches. Walking on La Rambla, getting lost in the Gothic Quarter, and sunbathing on Barceloneta beach are the city's essentials.",
+      "transportation": "From El Prat: Aerobus 35 min to Plaça Catalunya (€7.75). Metro has 12 lines, T-Casual card 10 trips €11.35. Bicing bike-sharing system is very common.",
+      "accommodation": "Gothic Quarter for historic texture. Eixample central for Gaudí works. Barceloneta for beach life. El Born for trendy cafés. Mid-range €90-160/night.",
+      "museums": "Picasso Museum, MACBA (Modern Art), Fundació Joan Miró, CosmoCaixa (Science), MNAC (Catalan Art).",
+      "historicalPlaces": "Sagrada Família (ticket €26, buy months ahead), Park Güell (€10), Casa Batlló (€35), La Pedrera (€25), La Boqueria Market, Gothic Quarter.",
+      "restaurants": "Fresh seafood at La Boqueria. Tapas bars in El Born. Paella in Barceloneta. Patatas bravas, jamón ibérico, churros con chocolate, pa amb tomàquet are must-try.",
+      "citizenship": "Spanish citizenship: 10 years legal residence (Latin American countries 2 years). DELE A2 Spanish exam + CCSE culture exam required. Schengen visa 90 days. Golden Visa: €500,000 real estate investment for residence permit.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Gaudí Route",
+          "activities": ["Sagrada Família", "Park Güell", "Casa Batlló"],
+          "routePoints": [
+            { "name": "Sagrada Família", "coordinates": { "lat": 41.4036, "lng": 2.1744 }, "description": "Gaudí's masterpiece ongoing since 1882", "tips": "Buy tickets 2-3 months ahead, tower tour extra €10", "order": 1 },
+            { "name": "Park Güell", "coordinates": { "lat": 41.4145, "lng": 2.1527 }, "description": "Park decorated with colorful mosaics", "tips": "Go at 8am, there's a quota and it fills up", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 110, "currency": "EUR", "note": "Mid-range (per night)" },
+        { "category": "Food", "amount": 35, "currency": "EUR", "note": "Daily" },
+        { "category": "Transportation", "amount": 11, "currency": "EUR", "note": "T-Casual 10 trips" },
+        { "category": "Museum", "amount": 40, "currency": "EUR", "note": "Sagrada Família + Park Güell" }
+      ],
+      "coordinates": { "lat": 41.3874, "lng": 2.1686 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80",
+        "https://images.unsplash.com/photo-1562883676-8c7feb83f09b?w=800&q=80",
+        "https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=800&q=80"
+      ]
+    }
+  }
+}

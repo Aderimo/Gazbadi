@@ -1,0 +1,87 @@
+{
+  "id": "loc-006",
+  "slug": "new-york",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-05-01T10:00:00Z",
+  "updatedAt": "2024-05-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "New York Seyahat Rehberi", "description": "New York gezilecek yerler ve vize bilgileri" },
+    "en": { "title": "New York Travel Guide", "description": "New York places to visit and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "New York",
+      "summary": "Dünyanın başkenti, asla uyumayan şehir",
+      "city": "New York",
+      "country": "ABD",
+      "introduction": "New York, 8.3 milyon nüfusuyla ABD'nin en büyük şehridir. Manhattan'ın gökdelenleri, Central Park'ın huzuru, Brooklyn'in sanat sahnesı ve Times Square'in enerjisi tek şehirde buluşur. Broadway müzikalleri, dünya mutfakları ve ikonik manzaralar sizi bekler.",
+      "transportation": "JFK'dan AirTrain + metro ile Manhattan'a ~75 dk ($10.75). MetroCard ile metro ve otobüs sınırsız — 7 gün $34. Uber/Lyft yaygın. Sarı taksi ikonik ama pahalı.",
+      "accommodation": "Midtown Manhattan merkezi ama pahalı ($200+). Brooklyn Williamsburg trendy ve daha uygun. Lower East Side genç ve enerjik. Hostel'ler $50-80/gece.",
+      "museums": "MoMA ($25), Met Museum (önerilen bağış $30), Guggenheim ($25), Whitney Museum, Doğa Tarihi Müzesi. CityPASS ile tasarruf edin.",
+      "historicalPlaces": "Özgürlük Heykeli + Ellis Island (feribot $24), Empire State Building ($44), Top of the Rock ($43), Brooklyn Köprüsü (ücretsiz yürüyüş), 9/11 Memorial (ücretsiz).",
+      "restaurants": "Joe's Pizza (klasik NY dilimi $3.50), Katz's Deli (pastrami efsane), Chelsea Market (food hall), Chinatown'da dim sum. Food truck kültürü çok güçlü.",
+      "citizenship": "ABD vatandaşlığı: Green Card ile 5 yıl ikamet (evlilik ile 3 yıl). İngilizce ve civics sınavı. Green Card lotaryası (DV Lottery) her yıl 55,000 kişiye. B1/B2 turist vizesi ile 6 ay kalış. H-1B çalışma vizesi sponsor gerektirir.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Manhattan Klasikleri",
+          "activities": ["Central Park", "Times Square", "Empire State"],
+          "routePoints": [
+            { "name": "Central Park", "coordinates": { "lat": 40.7829, "lng": -73.9654 }, "description": "843 dönümlük şehir parkı", "tips": "Bethesda Fountain ve Bow Bridge kaçırılmamalı", "order": 1 },
+            { "name": "Empire State Building", "coordinates": { "lat": 40.7484, "lng": -73.9857 }, "description": "102 katlı ikonik gökdelen", "tips": "Gece manzarası için gidin, gündüz kuyruk çok uzun", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 200, "currency": "USD", "note": "Orta segment (gecelik)" },
+        { "category": "Yemek", "amount": 60, "currency": "USD", "note": "Günlük" },
+        { "category": "Ulaşım", "amount": 5, "currency": "USD", "note": "Metro günlük" },
+        { "category": "Müze", "amount": 30, "currency": "USD", "note": "MoMA veya Met" }
+      ],
+      "coordinates": { "lat": 40.7128, "lng": -74.0060 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=80",
+        "https://images.unsplash.com/photo-1522083165195-3424ed129620?w=800&q=80",
+        "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "New York",
+      "summary": "Capital of the world, the city that never sleeps",
+      "city": "New York",
+      "country": "USA",
+      "introduction": "New York, with 8.3 million people, is the largest city in the USA. Manhattan's skyscrapers, Central Park's tranquility, Brooklyn's art scene, and Times Square's energy all come together. Broadway musicals, world cuisines, and iconic views await you.",
+      "transportation": "From JFK: AirTrain + subway to Manhattan ~75 min ($10.75). MetroCard for unlimited subway and bus — 7 days $34. Uber/Lyft common. Yellow cab iconic but expensive.",
+      "accommodation": "Midtown Manhattan central but expensive ($200+). Brooklyn Williamsburg trendy and more affordable. Lower East Side young and energetic. Hostels $50-80/night.",
+      "museums": "MoMA ($25), Met Museum (suggested donation $30), Guggenheim ($25), Whitney Museum, Natural History Museum. Save with CityPASS.",
+      "historicalPlaces": "Statue of Liberty + Ellis Island (ferry $24), Empire State Building ($44), Top of the Rock ($43), Brooklyn Bridge (free walk), 9/11 Memorial (free).",
+      "restaurants": "Joe's Pizza (classic NY slice $3.50), Katz's Deli (legendary pastrami), Chelsea Market (food hall), dim sum in Chinatown. Food truck culture is very strong.",
+      "citizenship": "US citizenship: 5 years residence with Green Card (3 years through marriage). English and civics exam. Green Card lottery (DV Lottery) 55,000 people annually. B1/B2 tourist visa for 6 months. H-1B work visa requires sponsor.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Manhattan Classics",
+          "activities": ["Central Park", "Times Square", "Empire State"],
+          "routePoints": [
+            { "name": "Central Park", "coordinates": { "lat": 40.7829, "lng": -73.9654 }, "description": "843-acre city park", "tips": "Don't miss Bethesda Fountain and Bow Bridge", "order": 1 },
+            { "name": "Empire State Building", "coordinates": { "lat": 40.7484, "lng": -73.9857 }, "description": "102-story iconic skyscraper", "tips": "Go for night view, daytime queue is very long", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 200, "currency": "USD", "note": "Mid-range (per night)" },
+        { "category": "Food", "amount": 60, "currency": "USD", "note": "Daily" },
+        { "category": "Transportation", "amount": 5, "currency": "USD", "note": "Subway daily" },
+        { "category": "Museum", "amount": 30, "currency": "USD", "note": "MoMA or Met" }
+      ],
+      "coordinates": { "lat": 40.7128, "lng": -74.0060 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=80",
+        "https://images.unsplash.com/photo-1522083165195-3424ed129620?w=800&q=80",
+        "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=800&q=80"
+      ]
+    }
+  }
+}

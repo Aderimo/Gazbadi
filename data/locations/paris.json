@@ -1,0 +1,87 @@
+{
+  "id": "loc-002",
+  "slug": "paris",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-02-01T10:00:00Z",
+  "updatedAt": "2024-02-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Paris Seyahat Rehberi", "description": "Paris gezilecek yerler, ulaşım, konaklama ve vize bilgileri" },
+    "en": { "title": "Paris Travel Guide", "description": "Paris places to visit, transportation, accommodation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Paris",
+      "summary": "Işıklar şehri, sanat ve romantizmin başkenti",
+      "city": "Paris",
+      "country": "Fransa",
+      "introduction": "Paris, Eyfel Kulesi, Louvre Müzesi ve Champs-Élysées bulvarı ile tanınan dünyanın en çok ziyaret edilen şehridir. Seine Nehri kıyısında yürüyüş, küçük kafelerde oturmak ve müzeleri keşfetmek Paris deneyiminin vazgeçilmezleridir.",
+      "transportation": "Charles de Gaulle havalimanından RER B treni ile 35 dakikada şehir merkezine ulaşılır. Metro 16 hat ile şehrin her yerine erişim sağlar. Navigo kartı haftalık sınırsız ulaşım sunar (30€ civarı).",
+      "accommodation": "Le Marais tarihi ve trendy bir bölgedir. Montmartre bütçe dostu seçenekler sunar. Latin Quarter öğrenci atmosferi ile canlıdır. Orta segment oteller gecelik 120-200€ arasındadır.",
+      "museums": "Louvre Müzesi (Mona Lisa), Musée d'Orsay (Empresyonistler), Centre Pompidou (Modern Sanat), Rodin Müzesi. Paris Museum Pass 2 gün 55€, birçok müzeye sırasız giriş sağlar.",
+      "historicalPlaces": "Eyfel Kulesi, Notre-Dame Katedrali, Arc de Triomphe, Sacré-Cœur Bazilikası, Versailles Sarayı (RER C ile 40 dk), Panthéon.",
+      "restaurants": "Le Bouillon Chartier uygun fiyatlı klasik Fransız mutfağı. Rue Cler sokağı yerel lezzetler için ideal. Crêpe, croissant, escargot, coq au vin ve fromage denenmeli.",
+      "citizenship": "Fransa vatandaşlığı için: 5 yıl yasal ikamet, B1 seviye Fransızca, entegrasyon sınavı. Öğrenci vizesi ile gelip çalışma vizesine geçiş mümkün. Schengen vizesi ile 90 gün turistik kalış hakkı. Yatırımcı vizesi için minimum 300.000€ yatırım gerekli.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Eyfel ve Seine",
+          "activities": ["Eyfel Kulesi", "Seine Nehri Turu", "Trocadéro"],
+          "routePoints": [
+            { "name": "Eyfel Kulesi", "coordinates": { "lat": 48.8584, "lng": 2.2945 }, "description": "Paris'in simgesi, 1889'da inşa edildi", "tips": "Online bilet alın, kuyruk 2+ saat olabilir. Tepeye çıkış 26€", "order": 1 },
+            { "name": "Trocadéro", "coordinates": { "lat": 48.8627, "lng": 2.2885 }, "description": "En iyi Eyfel manzarası buradan", "tips": "Gün batımında gidin, fotoğraf için mükemmel", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 150, "currency": "EUR", "note": "Orta segment otel (gecelik)" },
+        { "category": "Yemek", "amount": 50, "currency": "EUR", "note": "Günlük ortalama" },
+        { "category": "Ulaşım", "amount": 15, "currency": "EUR", "note": "Metro günlük" },
+        { "category": "Müze", "amount": 30, "currency": "EUR", "note": "Louvre + Orsay" }
+      ],
+      "coordinates": { "lat": 48.8566, "lng": 2.3522 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&q=80",
+        "https://images.unsplash.com/photo-1431274172761-fca41d930114?w=800&q=80",
+        "https://images.unsplash.com/photo-1550340499-a6c60fc8287c?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Paris",
+      "summary": "City of Lights, capital of art and romance",
+      "city": "Paris",
+      "country": "France",
+      "introduction": "Paris is the world's most visited city, known for the Eiffel Tower, Louvre Museum, and Champs-Élysées boulevard. Walking along the Seine River, sitting in small cafés, and exploring museums are essential Paris experiences.",
+      "transportation": "From Charles de Gaulle airport, the RER B train reaches the city center in 35 minutes. The metro has 16 lines covering the entire city. The Navigo card offers unlimited weekly travel (around €30).",
+      "accommodation": "Le Marais is a historic and trendy neighborhood. Montmartre offers budget-friendly options. The Latin Quarter is lively with a student atmosphere. Mid-range hotels cost €120-200 per night.",
+      "museums": "Louvre Museum (Mona Lisa), Musée d'Orsay (Impressionists), Centre Pompidou (Modern Art), Rodin Museum. Paris Museum Pass 2 days €55, skip-the-line entry to many museums.",
+      "historicalPlaces": "Eiffel Tower, Notre-Dame Cathedral, Arc de Triomphe, Sacré-Cœur Basilica, Palace of Versailles (40 min by RER C), Panthéon.",
+      "restaurants": "Le Bouillon Chartier offers affordable classic French cuisine. Rue Cler street is ideal for local flavors. Crêpes, croissants, escargot, coq au vin, and fromage are must-try.",
+      "citizenship": "French citizenship requires: 5 years legal residence, B1 French level, integration exam. Student visa to work visa transition possible. Schengen visa allows 90-day tourist stay. Investor visa requires minimum €300,000 investment.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Eiffel and Seine",
+          "activities": ["Eiffel Tower", "Seine River Cruise", "Trocadéro"],
+          "routePoints": [
+            { "name": "Eiffel Tower", "coordinates": { "lat": 48.8584, "lng": 2.2945 }, "description": "Symbol of Paris, built in 1889", "tips": "Buy tickets online, queue can be 2+ hours. Top access €26", "order": 1 },
+            { "name": "Trocadéro", "coordinates": { "lat": 48.8627, "lng": 2.2885 }, "description": "Best Eiffel Tower view from here", "tips": "Go at sunset, perfect for photos", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 150, "currency": "EUR", "note": "Mid-range hotel (per night)" },
+        { "category": "Food", "amount": 50, "currency": "EUR", "note": "Daily average" },
+        { "category": "Transportation", "amount": 15, "currency": "EUR", "note": "Metro daily" },
+        { "category": "Museum", "amount": 30, "currency": "EUR", "note": "Louvre + Orsay" }
+      ],
+      "coordinates": { "lat": 48.8566, "lng": 2.3522 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&q=80",
+        "https://images.unsplash.com/photo-1431274172761-fca41d930114?w=800&q=80",
+        "https://images.unsplash.com/photo-1550340499-a6c60fc8287c?w=800&q=80"
+      ]
+    }
+  }
+}

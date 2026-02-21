@@ -1,0 +1,87 @@
+{
+  "id": "loc-004",
+  "slug": "roma",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-04-01T10:00:00Z",
+  "updatedAt": "2024-04-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Roma Seyahat Rehberi", "description": "Roma gezilecek yerler, ulaşım ve vize bilgileri" },
+    "en": { "title": "Rome Travel Guide", "description": "Rome places to visit, transportation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Roma",
+      "summary": "Ebedi şehir, 2500 yıllık açık hava müzesi",
+      "city": "Roma",
+      "country": "İtalya",
+      "introduction": "Roma, Kolezyum, Vatikan ve Trevi Çeşmesi gibi ikonik yapılarıyla dünyanın en etkileyici şehirlerinden biridir. Her köşede tarih, her sokakta sanat vardır. İtalyan mutfağının en otantik halini burada yaşarsınız.",
+      "transportation": "Fiumicino'dan Leonardo Express ile 32 dk Termini'ye (€14). Metro 2 hat (A ve B). Roma Pass 48 saat €32 — 1 müze ücretsiz + ulaşım dahil. Tarihi merkez yürüyerek keşfedilir.",
+      "accommodation": "Trastevere otantik İtalyan mahallesi. Monti trendy ve merkezi. Termini çevresi ulaşım için pratik. Orta segment 100-180€/gece.",
+      "museums": "Vatikan Müzeleri + Sistine Şapeli (€17, online alın), Borghese Galerisi (rezervasyon şart), Capitoline Müzeleri, MAXXI.",
+      "historicalPlaces": "Kolezyum + Roma Forumu + Palatine Tepesi (kombine €16), Pantheon (ücretsiz), Trevi Çeşmesi, İspanyol Merdivenleri, Vatikan.",
+      "restaurants": "Trastevere'de Da Enzo (sıra beklenir ama değer), Testaccio'da Felice (cacio e pepe efsane). Carbonara, supplì, pizza al taglio ve gelato denenmeli.",
+      "citizenship": "İtalya vatandaşlığı: 10 yıl yasal ikamet (AB vatandaşları 4 yıl), İtalyanca bilgisi (B1), temiz sicil. İtalyan soyundan gelenler jure sanguinis ile başvurabilir. Schengen vizesi 90 gün. Öğrenci vizesi ile ikamet mümkün.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Antik Roma",
+          "activities": ["Kolezyum", "Roma Forumu", "Pantheon"],
+          "routePoints": [
+            { "name": "Kolezyum", "coordinates": { "lat": 41.8902, "lng": 12.4922 }, "description": "80.000 kişilik amfitiyatro, MS 80", "tips": "Online kombine bilet alın, Forum dahil €16", "order": 1 },
+            { "name": "Pantheon", "coordinates": { "lat": 41.8986, "lng": 12.4769 }, "description": "2000 yıllık mühendislik harikası, giriş ücretsiz", "tips": "Yağmurlu günde gidin, oculus'tan yağmur düşer", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 130, "currency": "EUR", "note": "Orta segment (gecelik)" },
+        { "category": "Yemek", "amount": 40, "currency": "EUR", "note": "Günlük" },
+        { "category": "Ulaşım", "amount": 7, "currency": "EUR", "note": "Metro günlük" },
+        { "category": "Müze", "amount": 35, "currency": "EUR", "note": "Kolezyum + Vatikan" }
+      ],
+      "coordinates": { "lat": 41.9028, "lng": 12.4964 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1529260830199-42c24126f198?w=800&q=80",
+        "https://images.unsplash.com/photo-1555992828-ca4dbe41d294?w=800&q=80",
+        "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Rome",
+      "summary": "The Eternal City, 2500-year open-air museum",
+      "city": "Rome",
+      "country": "Italy",
+      "introduction": "Rome is one of the world's most impressive cities with iconic structures like the Colosseum, Vatican, and Trevi Fountain. History at every corner, art in every street. You'll experience the most authentic Italian cuisine here.",
+      "transportation": "From Fiumicino: Leonardo Express 32 min to Termini (€14). Metro has 2 lines (A and B). Roma Pass 48h €32 — 1 free museum + transport included. Historic center is best explored on foot.",
+      "accommodation": "Trastevere for authentic Italian neighborhood. Monti is trendy and central. Around Termini for transport convenience. Mid-range €100-180/night.",
+      "museums": "Vatican Museums + Sistine Chapel (€17, buy online), Borghese Gallery (reservation required), Capitoline Museums, MAXXI.",
+      "historicalPlaces": "Colosseum + Roman Forum + Palatine Hill (combo €16), Pantheon (free), Trevi Fountain, Spanish Steps, Vatican.",
+      "restaurants": "Da Enzo in Trastevere (worth the wait), Felice in Testaccio (legendary cacio e pepe). Carbonara, supplì, pizza al taglio, and gelato are must-try.",
+      "citizenship": "Italian citizenship: 10 years legal residence (EU citizens 4 years), Italian knowledge (B1), clean record. Those of Italian descent can apply via jure sanguinis. Schengen visa 90 days. Student visa allows residence.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Ancient Rome",
+          "activities": ["Colosseum", "Roman Forum", "Pantheon"],
+          "routePoints": [
+            { "name": "Colosseum", "coordinates": { "lat": 41.8902, "lng": 12.4922 }, "description": "80,000-seat amphitheater, 80 AD", "tips": "Buy combo ticket online, includes Forum €16", "order": 1 },
+            { "name": "Pantheon", "coordinates": { "lat": 41.8986, "lng": 12.4769 }, "description": "2000-year engineering marvel, free entry", "tips": "Go on a rainy day, rain falls through the oculus", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 130, "currency": "EUR", "note": "Mid-range (per night)" },
+        { "category": "Food", "amount": 40, "currency": "EUR", "note": "Daily" },
+        { "category": "Transportation", "amount": 7, "currency": "EUR", "note": "Metro daily" },
+        { "category": "Museum", "amount": 35, "currency": "EUR", "note": "Colosseum + Vatican" }
+      ],
+      "coordinates": { "lat": 41.9028, "lng": 12.4964 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1529260830199-42c24126f198?w=800&q=80",
+        "https://images.unsplash.com/photo-1555992828-ca4dbe41d294?w=800&q=80",
+        "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=800&q=80"
+      ]
+    }
+  }
+}

@@ -63,6 +63,13 @@ export default function LocationDetailClient({ item }: LocationDetailClientProps
             title={locale === 'tr' ? 'Restoranlar' : 'Restaurants'}
             text={content.restaurants}
           />
+          {content.citizenship && (
+            <InfoSection
+              icon="🛂"
+              title={locale === 'tr' ? 'Vatandaşlık & Vize' : 'Citizenship & Visa'}
+              text={content.citizenship}
+            />
+          )}
         </div>
 
         {/* Daily Route Plan */}

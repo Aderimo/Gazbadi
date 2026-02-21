@@ -1,0 +1,87 @@
+{
+  "id": "loc-003",
+  "slug": "tokyo",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-03-10T10:00:00Z",
+  "updatedAt": "2024-03-15T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Tokyo Seyahat Rehberi", "description": "Tokyo gezilecek yerler, ulaşım, konaklama ve vize bilgileri" },
+    "en": { "title": "Tokyo Travel Guide", "description": "Tokyo places to visit, transportation, accommodation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Tokyo",
+      "summary": "Gelenek ve modernliğin mükemmel uyumu",
+      "city": "Tokyo",
+      "country": "Japonya",
+      "introduction": "Tokyo, 14 milyonu aşan nüfusuyla dünyanın en büyük metropolüdür. Antik tapınaklar ile neon ışıklı gökdelenler yan yana durur. Shibuya'nın kalabalığı, Asakusa'nın huzuru, Akihabara'nın teknoloji çılgınlığı tek şehirde buluşur.",
+      "transportation": "Narita'dan Narita Express ile 60 dk, Haneda'dan monorail ile 20 dk. JR Pass 7 gün ¥50,000 — tüm JR hatları sınırsız. Suica/Pasmo kartları metro, otobüs ve mağazalarda geçerli.",
+      "accommodation": "Shinjuku merkezi konum ve ulaşım kolaylığı. Asakusa geleneksel atmosfer. Shibuya genç ve enerjik. Kapsül oteller ¥3,000-5,000/gece benzersiz deneyim. Ryokan (geleneksel han) deneyimi mutlaka yapılmalı.",
+      "museums": "Tokyo Ulusal Müzesi, teamLab Borderless (dijital sanat), Ghibli Müzesi (önceden bilet şart), Mori Sanat Müzesi, Edo-Tokyo Müzesi.",
+      "historicalPlaces": "Senso-ji Tapınağı (645 yılından), Meiji Jingu, İmparatorluk Sarayı, Tokyo Skytree (634m), Tsukiji Dış Pazarı.",
+      "restaurants": "Tsukiji/Toyosu pazarı taze sushi. Ramen sokakları (Shinjuku, Ikebukuro). İzakaya kültürü. Conveyor belt sushi. Tokyo'da 200+ Michelin yıldızlı restoran var — dünyada en fazla.",
+      "citizenship": "Japonya vatandaşlığı için: 5 yıl kesintisiz ikamet, 20 yaş üstü, iyi ahlak belgesi, geçim kaynağı kanıtı. Çifte vatandaşlık kabul edilmez. Çalışma vizesi için iş teklifi gerekli. Öğrenci vizesi ile haftada 28 saat çalışma izni.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Geleneksel Tokyo",
+          "activities": ["Senso-ji", "Asakusa", "Tokyo Skytree"],
+          "routePoints": [
+            { "name": "Senso-ji", "coordinates": { "lat": 35.7148, "lng": 139.7967 }, "description": "Tokyo'nun en eski tapınağı, 645 yılında kuruldu", "tips": "Sabah 6'da gidin, kimse yok ve muhteşem", "order": 1 },
+            { "name": "Tokyo Skytree", "coordinates": { "lat": 35.7101, "lng": 139.8107 }, "description": "634m, dünyanın en yüksek kulesi", "tips": "Akşam manzarası için 350m platformu yeterli, ¥2,100", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 10000, "currency": "JPY", "note": "Orta segment otel (gecelik, ~65€)" },
+        { "category": "Yemek", "amount": 5000, "currency": "JPY", "note": "Günlük (~33€)" },
+        { "category": "Ulaşım", "amount": 1500, "currency": "JPY", "note": "Metro günlük (~10€)" },
+        { "category": "Müze", "amount": 3000, "currency": "JPY", "note": "teamLab + Ulusal Müze (~20€)" }
+      ],
+      "coordinates": { "lat": 35.6762, "lng": 139.6503 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&q=80",
+        "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80",
+        "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Tokyo",
+      "summary": "Perfect harmony of tradition and modernity",
+      "city": "Tokyo",
+      "country": "Japan",
+      "introduction": "Tokyo, with over 14 million people, is the world's largest metropolis. Ancient temples stand alongside neon-lit skyscrapers. The crowds of Shibuya, tranquility of Asakusa, and tech frenzy of Akihabara all come together in one city.",
+      "transportation": "From Narita: Narita Express 60 min, from Haneda: monorail 20 min. JR Pass 7 days ¥50,000 — unlimited JR lines. Suica/Pasmo cards work on metro, bus, and in stores.",
+      "accommodation": "Shinjuku for central location. Asakusa for traditional atmosphere. Shibuya for young energy. Capsule hotels ¥3,000-5,000/night unique experience. Ryokan (traditional inn) is a must-try.",
+      "museums": "Tokyo National Museum, teamLab Borderless (digital art), Ghibli Museum (advance tickets required), Mori Art Museum, Edo-Tokyo Museum.",
+      "historicalPlaces": "Senso-ji Temple (from 645 AD), Meiji Jingu, Imperial Palace, Tokyo Skytree (634m), Tsukiji Outer Market.",
+      "restaurants": "Tsukiji/Toyosu market for fresh sushi. Ramen streets (Shinjuku, Ikebukuro). Izakaya culture. Conveyor belt sushi. Tokyo has 200+ Michelin-starred restaurants — most in the world.",
+      "citizenship": "Japanese citizenship requires: 5 years continuous residence, over 20 years old, good conduct certificate, proof of livelihood. Dual citizenship not accepted. Work visa requires job offer. Student visa allows 28 hours/week work.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Traditional Tokyo",
+          "activities": ["Senso-ji", "Asakusa", "Tokyo Skytree"],
+          "routePoints": [
+            { "name": "Senso-ji", "coordinates": { "lat": 35.7148, "lng": 139.7967 }, "description": "Tokyo's oldest temple, founded in 645 AD", "tips": "Go at 6am, nobody there and magnificent", "order": 1 },
+            { "name": "Tokyo Skytree", "coordinates": { "lat": 35.7101, "lng": 139.8107 }, "description": "634m, world's tallest tower", "tips": "350m platform is enough for evening view, ¥2,100", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 10000, "currency": "JPY", "note": "Mid-range hotel (per night, ~€65)" },
+        { "category": "Food", "amount": 5000, "currency": "JPY", "note": "Daily (~€33)" },
+        { "category": "Transportation", "amount": 1500, "currency": "JPY", "note": "Metro daily (~€10)" },
+        { "category": "Museum", "amount": 3000, "currency": "JPY", "note": "teamLab + National Museum (~€20)" }
+      ],
+      "coordinates": { "lat": 35.6762, "lng": 139.6503 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&q=80",
+        "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80",
+        "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80"
+      ]
+    }
+  }
+}
