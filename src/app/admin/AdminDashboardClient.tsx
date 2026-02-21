@@ -347,7 +347,7 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [citizenship, setCitizenship] = useState('');
-  const [galleryUrls, setGalleryUrls] = useState('');
+  const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
   const [budgetItems, setBudgetItems] = useState([{ category: '', amount: '', currency: 'EUR', note: '' }]);
   // Blog-specific
   const [bodyTr, setBodyTr] = useState('');
@@ -367,7 +367,7 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
     let slug = generateSlug(titleTr);
     while (existingSlugs.includes(slug)) slug = `${slug}-${Date.now() % 1000}`;
     const now = new Date().toISOString();
-    const gallery = galleryUrls.split('\n').map(u => u.trim()).filter(Boolean);
+    const gallery = galleryUrls.filter(u => u.trim());
     const budget = budgetItems.filter(b => b.category && b.amount).map(b => ({ category: b.category, amount: Number(b.amount), currency: b.currency, note: b.note }));
 
     const baseContent = { title: titleTr, summary: summaryTr };
@@ -449,7 +449,7 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
 
           <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
             <p className="text-xs font-medium text-gray-400">🖼 {locale === 'tr' ? 'Galeri URL\'leri' : 'Gallery URLs'}</p>
-            <Field label={locale === 'tr' ? 'Her satıra bir URL' : 'One URL per line'} value={galleryUrls} onChange={setGalleryUrls} multiline placeholder="https://images.unsplash.com/..." />
+            <GalleryEditor urls={galleryUrls} onChange={setGalleryUrls} locale={locale} />
           </div>
         </>
       )}
@@ -503,7 +503,7 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
   const [city, setCity] = useState(trLoc.city || '');
   const [country, setCountry] = useState(trLoc.country || '');
   const [citizenship, setCitizenship] = useState(trLoc.citizenship || '');
-  const [galleryUrls, setGalleryUrls] = useState((trLoc.gallery || []).join('\n'));
+  const [galleryUrls, setGalleryUrls] = useState<string[]>(trLoc.gallery || []);
   const [budgetItems, setBudgetItems] = useState(
     (trLoc.estimatedBudget || []).length > 0
       ? trLoc.estimatedBudget.map(b => ({ category: b.category, amount: String(b.amount), currency: b.currency, note: b.note }))
@@ -525,7 +525,7 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const gallery = galleryUrls.split('\n').map(u => u.trim()).filter(Boolean);
+    const gallery = galleryUrls.filter(u => u.trim());
     const budget = budgetItems.filter(b => b.category && b.amount).map(b => ({ category: b.category, amount: Number(b.amount), currency: b.currency, note: b.note }));
 
     const locationUpdates = item.type === 'location' ? { city, country, citizenship, gallery, estimatedBudget: budget } : {};
@@ -589,7 +589,7 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
 
           <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
             <p className="text-xs font-medium text-gray-400">🖼 {locale === 'tr' ? 'Galeri URL\'leri' : 'Gallery URLs'}</p>
-            <Field label={locale === 'tr' ? 'Her satıra bir URL' : 'One URL per line'} value={galleryUrls} onChange={setGalleryUrls} multiline />
+            <GalleryEditor urls={galleryUrls} onChange={setGalleryUrls} locale={locale} />
           </div>
         </>
       )}
@@ -628,6 +628,87 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
 }
 
 /* --- Reusable Field --- */
+function GalleryEditor({ urls, onChange, locale }: { urls: string[]; onChange: (urls: string[]) => void; locale: 'tr' | 'en' }) {
+  const [newUrl, setNewUrl] = useState('');
+  const [errors, setErrors] = useState<Record<number, boolean>>({});
+
+  function addUrl() {
+    const trimmed = newUrl.trim();
+    if (!trimmed) return;
+    onChange([...urls, trimmed]);
+    setNewUrl('');
+  }
+
+  function removeUrl(idx: number) {
+    const updated = urls.filter((_, i) => i !== idx);
+    onChange(updated);
+    setErrors(prev => { const n = { ...prev }; delete n[idx]; return n; });
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); addUrl(); }
+  }
+
+  function markError(idx: number) {
+    setErrors(prev => ({ ...prev, [idx]: true }));
+  }
+
+  return (
+    <div className="space-y-3">
+      {/* Existing gallery thumbnails */}
+      {urls.length > 0 && (
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+          {urls.map((url, idx) => (
+            <div key={`${idx}-${url}`} className="group relative aspect-square overflow-hidden rounded-lg border border-white/10 bg-dark-card/60">
+              {errors[idx] ? (
+                <div className="flex h-full flex-col items-center justify-center gap-1 p-1">
+                  <span className="text-lg">🖼️</span>
+                  <span className="text-[9px] text-rose-400 text-center leading-tight">{locale === 'tr' ? 'Yüklenemedi' : 'Failed'}</span>
+                </div>
+              ) : (
+                <img
+                  src={url}
+                  alt={`Gallery ${idx + 1}`}
+                  className="h-full w-full object-cover"
+                  onError={() => markError(idx)}
+                />
+              )}
+              <button
+                type="button"
+                onClick={() => removeUrl(idx)}
+                className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-[10px] text-rose-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-rose-500/30"
+                aria-label={locale === 'tr' ? 'Görseli kaldır' : 'Remove image'}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add new URL input */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={newUrl}
+          onChange={(e) => setNewUrl(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={locale === 'tr' ? 'Görsel URL yapıştır...' : 'Paste image URL...'}
+          className="flex-1 rounded-lg border border-white/10 bg-dark-card/40 px-3 py-2 text-xs text-gray-200 placeholder-gray-600 outline-none transition-colors focus:border-accent-turquoise/40"
+        />
+        <button
+          type="button"
+          onClick={addUrl}
+          disabled={!newUrl.trim()}
+          className="rounded-lg border border-accent-turquoise/30 bg-accent-turquoise/10 px-3 py-2 text-xs font-medium text-accent-turquoise transition-all hover:bg-accent-turquoise/20 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          + {locale === 'tr' ? 'Ekle' : 'Add'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Field({ label, value, onChange, multiline, placeholder, required }: {
   label: string; value: string; onChange: (v: string) => void; multiline?: boolean; placeholder?: string; required?: boolean;
 }) {
