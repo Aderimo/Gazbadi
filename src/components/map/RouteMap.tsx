@@ -7,7 +7,7 @@ const RouteMapLeaflet = dynamic(() => import('./RouteMapLeaflet'), { ssr: false 
 
 export default function RouteMap(props: RouteMapProps) {
   return (
-    <div className="rounded-2xl overflow-hidden border border-white/10 shadow-lg">
+    <div className="relative z-0 rounded-2xl overflow-hidden border border-white/10 shadow-lg">
       <RouteMapLeaflet {...props} />
     </div>
   );

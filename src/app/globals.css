@@ -13,3 +13,8 @@
     @apply bg-dark-card/80 backdrop-blur-[12px] border border-white/10 rounded-2xl shadow-glass;
   }
 }
+
+/* Leaflet z-index fix — haritanın diğer elemanların üstüne çıkmasını engelle */
+.leaflet-container {
+  z-index: 0;
+}

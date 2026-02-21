@@ -1,0 +1,87 @@
+{
+  "id": "loc-009",
+  "slug": "amsterdam",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-07-01T10:00:00Z",
+  "updatedAt": "2024-07-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Amsterdam Seyahat Rehberi", "description": "Amsterdam gezilecek yerler, ulaşım ve vize bilgileri" },
+    "en": { "title": "Amsterdam Travel Guide", "description": "Amsterdam places to visit, transportation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Amsterdam",
+      "summary": "Kanallar şehri, özgürlük ve sanatın buluşma noktası",
+      "city": "Amsterdam",
+      "country": "Hollanda",
+      "introduction": "Amsterdam, 165'ten fazla kanalı, dar evleri ve bisiklet kültürüyle Avrupa'nın en karakteristik şehirlerinden biridir. Van Gogh Müzesi, Anne Frank Evi ve Rijksmuseum gibi dünya çapında müzelere ev sahipliği yapar. Jordaan mahallesi, Vondelpark ve De Pijp bölgesi şehrin ruhunu yansıtır.",
+      "transportation": "Schiphol Havalimanı'ndan tren ile 15 dakikada Amsterdam Centraal'a ulaşılır (€5.40). GVB kartı tramvay, otobüs ve metroda geçerli. Bisiklet kiralama günlük €10-15 — şehri keşfetmenin en iyi yolu.",
+      "accommodation": "Jordaan sakin ve pitoresk. De Pijp trendy kafeler ve Albert Cuyp pazarı. Centrum merkezi ama kalabalık. Orta segment 120-200€/gece. Houseboat (yüzen ev) deneyimi benzersiz.",
+      "museums": "Rijksmuseum (€22.50, Rembrandt'ın Gece Devriyesi), Van Gogh Müzesi (€20, online bilet şart), Anne Frank Evi (€16, haftalar öncesinden bilet alın), Stedelijk Museum (modern sanat), NEMO Bilim Müzesi.",
+      "historicalPlaces": "Dam Meydanı, Kraliyet Sarayı, Westerkerk, Begijnhof (gizli avlu), Bloemenmarkt (yüzen çiçek pazarı), Oude Kerk (1306).",
+      "restaurants": "Foodhallen (food court), The Pancake Bakery (Hollanda pankekleri), Winkel 43 (en iyi elmalı turta), Albert Cuyp Market (sokak yemekleri). Stroopwafel, bitterballen, haring (çiğ ringa) ve Gouda peyniri denenmeli.",
+      "citizenship": "Hollanda vatandaşlığı: 5 yıl kesintisiz ikamet, entegrasyon sınavı (Hollandaca A2), çifte vatandaşlık sınırlı kabul. Highly Skilled Migrant vizesi ile çalışma izni. Schengen vizesi 90 gün. Startup vizesi girişimciler için 1 yıl.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Müzeler ve Kanallar",
+          "activities": ["Rijksmuseum", "Van Gogh Müzesi", "Kanal Turu"],
+          "routePoints": [
+            { "name": "Rijksmuseum", "coordinates": { "lat": 52.3600, "lng": 4.8852 }, "description": "Hollanda'nın en büyük müzesi, 8000+ eser", "tips": "Sabah 9'da gidin, öğleden sonra çok kalabalık", "order": 1 },
+            { "name": "Van Gogh Müzesi", "coordinates": { "lat": 52.3584, "lng": 4.8811 }, "description": "200+ Van Gogh tablosu, dünyanın en büyük koleksiyonu", "tips": "Online bilet zorunlu, yerinde bilet yok", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 150, "currency": "EUR", "note": "Orta segment (gecelik)" },
+        { "category": "Yemek", "amount": 40, "currency": "EUR", "note": "Günlük" },
+        { "category": "Ulaşım", "amount": 8, "currency": "EUR", "note": "GVB günlük" },
+        { "category": "Müze", "amount": 45, "currency": "EUR", "note": "Rijksmuseum + Van Gogh" }
+      ],
+      "coordinates": { "lat": 52.3676, "lng": 4.9041 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?w=800&q=80",
+        "https://images.unsplash.com/photo-1576924542622-772281b13aa8?w=800&q=80",
+        "https://images.unsplash.com/photo-1605101100278-5d1deb2b6498?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Amsterdam",
+      "summary": "City of canals, where freedom meets art",
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "introduction": "Amsterdam is one of Europe's most characteristic cities with over 165 canals, narrow houses, and bicycle culture. Home to world-class museums like Van Gogh Museum, Anne Frank House, and Rijksmuseum. The Jordaan neighborhood, Vondelpark, and De Pijp area reflect the city's soul.",
+      "transportation": "From Schiphol Airport: train to Amsterdam Centraal in 15 minutes (€5.40). GVB card works on tram, bus, and metro. Bike rental €10-15/day — the best way to explore the city.",
+      "accommodation": "Jordaan quiet and picturesque. De Pijp trendy cafés and Albert Cuyp market. Centrum central but crowded. Mid-range €120-200/night. Houseboat experience is unique.",
+      "museums": "Rijksmuseum (€22.50, Rembrandt's Night Watch), Van Gogh Museum (€20, online ticket required), Anne Frank House (€16, book weeks ahead), Stedelijk Museum (modern art), NEMO Science Museum.",
+      "historicalPlaces": "Dam Square, Royal Palace, Westerkerk, Begijnhof (hidden courtyard), Bloemenmarkt (floating flower market), Oude Kerk (1306).",
+      "restaurants": "Foodhallen (food court), The Pancake Bakery (Dutch pancakes), Winkel 43 (best apple pie), Albert Cuyp Market (street food). Stroopwafel, bitterballen, haring (raw herring), and Gouda cheese are must-try.",
+      "citizenship": "Dutch citizenship: 5 years continuous residence, integration exam (Dutch A2), dual citizenship limited. Highly Skilled Migrant visa for work permit. Schengen visa 90 days. Startup visa for entrepreneurs 1 year.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Museums and Canals",
+          "activities": ["Rijksmuseum", "Van Gogh Museum", "Canal Cruise"],
+          "routePoints": [
+            { "name": "Rijksmuseum", "coordinates": { "lat": 52.3600, "lng": 4.8852 }, "description": "Netherlands' largest museum, 8000+ works", "tips": "Go at 9am, very crowded in the afternoon", "order": 1 },
+            { "name": "Van Gogh Museum", "coordinates": { "lat": 52.3584, "lng": 4.8811 }, "description": "200+ Van Gogh paintings, world's largest collection", "tips": "Online ticket mandatory, no tickets on site", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 150, "currency": "EUR", "note": "Mid-range (per night)" },
+        { "category": "Food", "amount": 40, "currency": "EUR", "note": "Daily" },
+        { "category": "Transportation", "amount": 8, "currency": "EUR", "note": "GVB daily" },
+        { "category": "Museum", "amount": 45, "currency": "EUR", "note": "Rijksmuseum + Van Gogh" }
+      ],
+      "coordinates": { "lat": 52.3676, "lng": 4.9041 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?w=800&q=80",
+        "https://images.unsplash.com/photo-1576924542622-772281b13aa8?w=800&q=80",
+        "https://images.unsplash.com/photo-1605101100278-5d1deb2b6498?w=800&q=80"
+      ]
+    }
+  }
+}

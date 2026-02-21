@@ -1,0 +1,87 @@
+{
+  "id": "loc-012",
+  "slug": "prague",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-08-15T10:00:00Z",
+  "updatedAt": "2024-08-20T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1541849546-216549ae216d?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Prag Seyahat Rehberi", "description": "Prag gezilecek yerler ve vize bilgileri" },
+    "en": { "title": "Prague Travel Guide", "description": "Prague places to visit and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Prag",
+      "summary": "Yüz kuleli şehir, Avrupa'nın gizli mücevheri",
+      "city": "Prag",
+      "country": "Çekya",
+      "introduction": "Prag, gotik katedralleri, barok sarayları ve ortaçağ meydanlarıyla Avrupa'nın en güzel şehirlerinden biridir. Vltava Nehri üzerindeki Charles Köprüsü, Prag Kalesi ve Eski Şehir Meydanı'ndaki astronomik saat şehrin simgeleridir. Avrupa'nın en uygun fiyatlı başkentlerinden biridir.",
+      "transportation": "Václav Havel Havalimanı'ndan Airport Express otobüsü ile 35 dk merkeze (60 CZK). Metro 3 hat (A, B, C), tramvay 30+ hat. Lítačka kartı 24 saat 120 CZK. Tarihi merkez yürüyerek keşfedilir.",
+      "accommodation": "Staré Město (Eski Şehir) merkezi. Malá Strana romantik ve sakin. Žižkov bütçe dostu ve yerel. Vinohrady trendy kafeler. Orta segment 60-120€/gece.",
+      "museums": "Ulusal Galeri, Kafka Müzesi, Ulusal Teknik Müze, DOX Çağdaş Sanat Merkezi, Çek Müziği Müzesi.",
+      "historicalPlaces": "Prag Kalesi (dünyanın en büyük antik kalesi), Charles Köprüsü (1357), Eski Şehir Meydanı Astronomik Saat, Aziz Vitus Katedrali, Yahudi Mahallesi (Josefov), Petřín Kulesi.",
+      "restaurants": "Lokál (modern Çek mutfağı), Café Louvre (1902'den beri), Nase Maso (kasap-restoran), Havelská Market. Trdelník (baca kek), svíčková, knedlíky ve Çek birası (dünyanın en iyisi) denenmeli.",
+      "citizenship": "Çek vatandaşlığı: 5 yıl kalıcı ikamet (10 yıl toplam), Çekçe B1, temiz sicil. Çifte vatandaşlık 2014'ten beri kabul. Çalışma vizesi için iş teklifi gerekli. Schengen vizesi 90 gün. Zivnostenský list (serbest meslek) ile ikamet mümkün.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Eski Şehir",
+          "activities": ["Eski Şehir Meydanı", "Charles Köprüsü", "Prag Kalesi"],
+          "routePoints": [
+            { "name": "Eski Şehir Meydanı", "coordinates": { "lat": 50.0875, "lng": 14.4213 }, "description": "Astronomik saat ve gotik kiliseler", "tips": "Her saat başı saatin gösterisini izleyin", "order": 1 },
+            { "name": "Charles Köprüsü", "coordinates": { "lat": 50.0865, "lng": 14.4114 }, "description": "1357'de inşa edilen ikonik taş köprü", "tips": "Gün doğumunda gidin, gündüz çok kalabalık", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 2500, "currency": "CZK", "note": "Orta segment (gecelik, ~€100)" },
+        { "category": "Yemek", "amount": 700, "currency": "CZK", "note": "Günlük (~€28)" },
+        { "category": "Ulaşım", "amount": 120, "currency": "CZK", "note": "Günlük bilet (~€5)" },
+        { "category": "Müze", "amount": 500, "currency": "CZK", "note": "Prag Kalesi (~€20)" }
+      ],
+      "coordinates": { "lat": 50.0755, "lng": 14.4378 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1592906209472-a36b1f3782ef?w=800&q=80",
+        "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=800&q=80",
+        "https://images.unsplash.com/photo-1562624475-96c2bc08fab9?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Prague",
+      "summary": "City of a hundred spires, Europe's hidden gem",
+      "city": "Prague",
+      "country": "Czechia",
+      "introduction": "Prague is one of Europe's most beautiful cities with gothic cathedrals, baroque palaces, and medieval squares. Charles Bridge over the Vltava River, Prague Castle, and the Astronomical Clock in Old Town Square are the city's symbols. One of Europe's most affordable capitals.",
+      "transportation": "From Václav Havel Airport: Airport Express bus 35 min to center (60 CZK). Metro 3 lines (A, B, C), tram 30+ lines. Lítačka card 24h 120 CZK. Historic center best explored on foot.",
+      "accommodation": "Staré Město (Old Town) central. Malá Strana romantic and quiet. Žižkov budget-friendly and local. Vinohrady trendy cafés. Mid-range €60-120/night.",
+      "museums": "National Gallery, Kafka Museum, National Technical Museum, DOX Contemporary Art Center, Czech Music Museum.",
+      "historicalPlaces": "Prague Castle (world's largest ancient castle), Charles Bridge (1357), Old Town Square Astronomical Clock, St. Vitus Cathedral, Jewish Quarter (Josefov), Petřín Tower.",
+      "restaurants": "Lokál (modern Czech cuisine), Café Louvre (since 1902), Nase Maso (butcher-restaurant), Havelská Market. Trdelník (chimney cake), svíčková, knedlíky, and Czech beer (world's best) are must-try.",
+      "citizenship": "Czech citizenship: 5 years permanent residence (10 years total), Czech B1, clean record. Dual citizenship accepted since 2014. Work visa requires job offer. Schengen visa 90 days. Zivnostenský list (freelance) for residence possible.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Old Town",
+          "activities": ["Old Town Square", "Charles Bridge", "Prague Castle"],
+          "routePoints": [
+            { "name": "Old Town Square", "coordinates": { "lat": 50.0875, "lng": 14.4213 }, "description": "Astronomical clock and gothic churches", "tips": "Watch the clock show every hour", "order": 1 },
+            { "name": "Charles Bridge", "coordinates": { "lat": 50.0865, "lng": 14.4114 }, "description": "Iconic stone bridge built in 1357", "tips": "Go at sunrise, very crowded during the day", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 2500, "currency": "CZK", "note": "Mid-range (per night, ~€100)" },
+        { "category": "Food", "amount": 700, "currency": "CZK", "note": "Daily (~€28)" },
+        { "category": "Transportation", "amount": 120, "currency": "CZK", "note": "Daily ticket (~€5)" },
+        { "category": "Museum", "amount": 500, "currency": "CZK", "note": "Prague Castle (~€20)" }
+      ],
+      "coordinates": { "lat": 50.0755, "lng": 14.4378 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1592906209472-a36b1f3782ef?w=800&q=80",
+        "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=800&q=80",
+        "https://images.unsplash.com/photo-1562624475-96c2bc08fab9?w=800&q=80"
+      ]
+    }
+  }
+}

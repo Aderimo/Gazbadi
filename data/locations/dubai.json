@@ -1,0 +1,87 @@
+{
+  "id": "loc-007",
+  "slug": "dubai",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-06-01T10:00:00Z",
+  "updatedAt": "2024-06-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Dubai Seyahat Rehberi", "description": "Dubai gezilecek yerler, ulaşım ve vize bilgileri" },
+    "en": { "title": "Dubai Travel Guide", "description": "Dubai places to visit, transportation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Dubai",
+      "summary": "Çölün ortasında yükselen lüks ve modernliğin başkenti",
+      "city": "Dubai",
+      "country": "BAE",
+      "introduction": "Dubai, Birleşik Arap Emirlikleri'nin en kalabalık şehridir. Burj Khalifa, Palm Jumeirah ve Dubai Mall gibi devasa yapılarıyla tanınır. Geleneksel altın ve baharat çarşılarından fütüristik gökdelenlere kadar zıtlıklar şehridir.",
+      "transportation": "Dubai Uluslararası Havalimanı (DXB) dünyanın en yoğun havalimanlarından biridir. Metro Red ve Green hatları şehrin ana noktalarını bağlar. Nol kartı metro, otobüs ve tramvayda geçerlidir. Taksi uygun fiyatlıdır.",
+      "accommodation": "Downtown Dubai Burj Khalifa ve Dubai Mall'a yakın. Dubai Marina plaj ve gece hayatı. Deira ve Bur Dubai bütçe dostu. Lüks oteller gecelik 500-2000 AED, orta segment 200-500 AED.",
+      "museums": "Dubai Müzesi (Al Fahidi Kalesi), Museum of the Future (geleceğin müzesi), Etihad Museum, Dubai Frame (150m yükseklikte çerçeve yapı).",
+      "historicalPlaces": "Al Fahidi Tarihi Bölgesi, Jumeirah Camii, Bastakiya Mahallesi, Dubai Creek (abra tekneleri ile geçiş 1 AED), Altın Çarşısı ve Baharat Çarşısı.",
+      "restaurants": "Al Mahara (sualtı restoran), Pierchic (deniz üstü), Ravi Restaurant (uygun Pakistan mutfağı), Al Mallah (shawarma), Global Village (dünya mutfakları). Brunch kültürü çok güçlü.",
+      "citizenship": "BAE vatandaşlığı: Normalde verilmez, ancak 2021'den itibaren yatırımcılar, bilim insanları ve sanatçılara özel vatandaşlık programı başlatıldı. Golden Visa: 10 yıllık oturma izni (2M AED gayrimenkul veya iş yatırımı). Turistik vize 30-90 gün (birçok ülke vizesiz).",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Modern Dubai",
+          "activities": ["Burj Khalifa", "Dubai Mall", "Dubai Fountain"],
+          "routePoints": [
+            { "name": "Burj Khalifa", "coordinates": { "lat": 25.1972, "lng": 55.2744 }, "description": "828m, dünyanın en yüksek binası", "tips": "At The Top bileti online alın, gün batımı seansı en iyi", "order": 1 },
+            { "name": "Dubai Mall", "coordinates": { "lat": 25.1985, "lng": 55.2796 }, "description": "1200+ mağaza, akvaryum ve buz pisti", "tips": "Akvaryum tüneli ücretsiz görülebilir", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 400, "currency": "AED", "note": "Orta segment (gecelik, ~$110)" },
+        { "category": "Yemek", "amount": 150, "currency": "AED", "note": "Günlük (~$40)" },
+        { "category": "Ulaşım", "amount": 30, "currency": "AED", "note": "Metro günlük (~$8)" },
+        { "category": "Aktivite", "amount": 200, "currency": "AED", "note": "Burj Khalifa + Dubai Frame (~$55)" }
+      ],
+      "coordinates": { "lat": 25.2048, "lng": 55.2708 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&q=80",
+        "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&q=80",
+        "https://images.unsplash.com/photo-1597659840241-37e2b9c2f55f?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Dubai",
+      "summary": "Capital of luxury and modernity rising from the desert",
+      "city": "Dubai",
+      "country": "UAE",
+      "introduction": "Dubai is the most populous city in the United Arab Emirates. Known for massive structures like Burj Khalifa, Palm Jumeirah, and Dubai Mall. It's a city of contrasts, from traditional gold and spice souks to futuristic skyscrapers.",
+      "transportation": "Dubai International Airport (DXB) is one of the world's busiest. Metro Red and Green lines connect main areas. Nol card works on metro, bus, and tram. Taxis are affordable.",
+      "accommodation": "Downtown Dubai near Burj Khalifa and Dubai Mall. Dubai Marina for beach and nightlife. Deira and Bur Dubai budget-friendly. Luxury hotels 500-2000 AED/night, mid-range 200-500 AED.",
+      "museums": "Dubai Museum (Al Fahidi Fort), Museum of the Future, Etihad Museum, Dubai Frame (150m tall frame structure).",
+      "historicalPlaces": "Al Fahidi Historic District, Jumeirah Mosque, Bastakiya Quarter, Dubai Creek (abra crossing 1 AED), Gold Souk and Spice Souk.",
+      "restaurants": "Al Mahara (underwater restaurant), Pierchic (over the sea), Ravi Restaurant (affordable Pakistani), Al Mallah (shawarma), Global Village (world cuisines). Brunch culture is very strong.",
+      "citizenship": "UAE citizenship: Generally not granted, but since 2021 a special citizenship program for investors, scientists, and artists. Golden Visa: 10-year residence (2M AED real estate or business investment). Tourist visa 30-90 days (many countries visa-free).",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Modern Dubai",
+          "activities": ["Burj Khalifa", "Dubai Mall", "Dubai Fountain"],
+          "routePoints": [
+            { "name": "Burj Khalifa", "coordinates": { "lat": 25.1972, "lng": 55.2744 }, "description": "828m, world's tallest building", "tips": "Buy At The Top ticket online, sunset session is best", "order": 1 },
+            { "name": "Dubai Mall", "coordinates": { "lat": 25.1985, "lng": 55.2796 }, "description": "1200+ stores, aquarium and ice rink", "tips": "Aquarium tunnel is free to view", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 400, "currency": "AED", "note": "Mid-range (per night, ~$110)" },
+        { "category": "Food", "amount": 150, "currency": "AED", "note": "Daily (~$40)" },
+        { "category": "Transportation", "amount": 30, "currency": "AED", "note": "Metro daily (~$8)" },
+        { "category": "Activities", "amount": 200, "currency": "AED", "note": "Burj Khalifa + Dubai Frame (~$55)" }
+      ],
+      "coordinates": { "lat": 25.2048, "lng": 55.2708 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&q=80",
+        "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&q=80",
+        "https://images.unsplash.com/photo-1597659840241-37e2b9c2f55f?w=800&q=80"
+      ]
+    }
+  }
+}

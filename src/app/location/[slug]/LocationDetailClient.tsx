@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getLocalizedContent } from '@/lib/i18n-content';
 import OptimizedImage from '@/components/ui/OptimizedImage';
@@ -12,7 +12,7 @@ interface LocationDetailClientProps {
 }
 
 export default function LocationDetailClient({ item }: LocationDetailClientProps) {
-  const { locale, t } = useLanguage();
+  const { locale } = useLanguage();
   const content = getLocalizedContent(
     item.content as { tr: LocationContent; en: LocationContent },
     locale
@@ -31,6 +31,13 @@ export default function LocationDetailClient({ item }: LocationDetailClientProps
       />
 
       <div className="mx-auto max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
+        {/* Weather Widget */}
+        {content.coordinates && (
+          <div className="pt-8">
+            <WeatherWidget lat={content.coordinates.lat} lng={content.coordinates.lng} city={content.city} locale={locale} />
+          </div>
+        )}
+
         {/* Info Sections */}
         <div className="space-y-6 pt-12">
           <InfoSection
@@ -401,6 +408,95 @@ function CommentsSection({ locale }: { locale: 'tr' | 'en' }) {
           {locale === 'tr' ? 'Henüz yorum yok. İlk yorumu siz yapın!' : 'No comments yet. Be the first to comment!'}
         </p>
       )}
+    </div>
+  );
+}
+
+/* ─── Weather Widget ─── */
+interface WeatherData {
+  temperature: number;
+  windspeed: number;
+  weathercode: number;
+}
+
+const weatherIcons: Record<number, string> = {
+  0: '☀️', 1: '🌤', 2: '⛅', 3: '☁️',
+  45: '🌫', 48: '🌫',
+  51: '🌦', 53: '🌦', 55: '🌧',
+  61: '🌧', 63: '🌧', 65: '🌧',
+  71: '🌨', 73: '🌨', 75: '❄️',
+  80: '🌦', 81: '🌧', 82: '⛈',
+  95: '⛈', 96: '⛈', 99: '⛈',
+};
+
+const weatherLabels: Record<string, Record<number, string>> = {
+  tr: {
+    0: 'Açık', 1: 'Az bulutlu', 2: 'Parçalı bulutlu', 3: 'Bulutlu',
+    45: 'Sisli', 48: 'Sisli', 51: 'Hafif yağmur', 53: 'Yağmurlu', 55: 'Yoğun yağmur',
+    61: 'Yağmurlu', 63: 'Yağmurlu', 65: 'Şiddetli yağmur',
+    71: 'Kar', 73: 'Kar', 75: 'Yoğun kar',
+    80: 'Sağanak', 81: 'Sağanak', 82: 'Şiddetli sağanak',
+    95: 'Fırtına', 96: 'Fırtına', 99: 'Fırtına',
+  },
+  en: {
+    0: 'Clear', 1: 'Mostly clear', 2: 'Partly cloudy', 3: 'Overcast',
+    45: 'Foggy', 48: 'Foggy', 51: 'Light drizzle', 53: 'Drizzle', 55: 'Heavy drizzle',
+    61: 'Rain', 63: 'Rain', 65: 'Heavy rain',
+    71: 'Snow', 73: 'Snow', 75: 'Heavy snow',
+    80: 'Showers', 81: 'Showers', 82: 'Heavy showers',
+    95: 'Thunderstorm', 96: 'Thunderstorm', 99: 'Thunderstorm',
+  },
+};
+
+function WeatherWidget({ lat, lng, city, locale }: { lat: number; lng: number; city: string; locale: 'tr' | 'en' }) {
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true`;
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.current_weather) {
+          setWeather({
+            temperature: data.current_weather.temperature,
+            windspeed: data.current_weather.windspeed,
+            weathercode: data.current_weather.weathercode,
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [lat, lng]);
+
+  if (loading) {
+    return (
+      <div className="glass-card p-4 animate-pulse">
+        <div className="h-12 bg-white/5 rounded-lg" />
+      </div>
+    );
+  }
+
+  if (!weather) return null;
+
+  const icon = weatherIcons[weather.weathercode] ?? '🌡';
+  const label = weatherLabels[locale]?.[weather.weathercode] ?? '';
+
+  return (
+    <div className="glass-card p-5 flex items-center gap-4">
+      <span className="text-4xl" role="img" aria-label={label}>{icon}</span>
+      <div>
+        <p className="text-2xl font-bold text-white">{weather.temperature}°C</p>
+        <p className="text-sm text-gray-400">{label}</p>
+      </div>
+      <div className="ml-auto text-right">
+        <p className="text-xs text-gray-500">{locale === 'tr' ? 'Rüzgar' : 'Wind'}</p>
+        <p className="text-sm text-gray-300">{weather.windspeed} km/h</p>
+      </div>
+      <div className="text-right">
+        <p className="text-xs text-gray-500">{city}</p>
+        <p className="text-xs text-gray-600">{locale === 'tr' ? 'Şu an' : 'Now'}</p>
+      </div>
     </div>
   );
 }

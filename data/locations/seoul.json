@@ -1,0 +1,87 @@
+{
+  "id": "loc-011",
+  "slug": "seoul",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-08-01T10:00:00Z",
+  "updatedAt": "2024-08-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Seul Seyahat Rehberi", "description": "Seul gezilecek yerler, ulaşım ve vize bilgileri" },
+    "en": { "title": "Seoul Travel Guide", "description": "Seoul places to visit, transportation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Seul",
+      "summary": "K-pop, teknoloji ve antik sarayların şehri",
+      "city": "Seul",
+      "country": "Güney Kore",
+      "introduction": "Seul, 10 milyonu aşan nüfusuyla Güney Kore'nin başkentidir. Antik Joseon sarayları ile Gangnam'ın modern gökdelenleri yan yana durur. K-pop kültürü, sokak yemekleri, jjimjilbang (hamam) deneyimi ve alışveriş cennetleriyle ziyaretçilerini büyüler.",
+      "transportation": "Incheon Havalimanı'ndan AREX treni ile 43 dk Seul İstasyonu'na (₩9,500). T-money kartı metro, otobüs ve takside geçerli. Metro 23 hat ile dünyanın en kapsamlı sistemlerinden. Taksi çok uygun fiyatlı.",
+      "accommodation": "Myeongdong alışveriş ve merkezi konum. Hongdae genç ve canlı gece hayatı. Insadong geleneksel kültür. Gangnam modern ve lüks. Orta segment 80,000-150,000₩/gece (~$60-110).",
+      "museums": "Ulusal Müze (ücretsiz, Asya'nın en büyüğü), Savaş Anıtı (ücretsiz), Leeum Samsung Sanat Müzesi, MMCA (Modern Sanat), Trick Eye Museum.",
+      "historicalPlaces": "Gyeongbokgung Sarayı (₩3,000, hanbok ile ücretsiz), Changdeokgung (UNESCO), Bukchon Hanok Köyü, N Seoul Tower, Jogyesa Tapınağı, Gwanghwamun Meydanı.",
+      "restaurants": "Gwangjang Market (bindaetteok, mayak gimbap), Myeongdong sokak yemekleri (tteokbokki, hotteok), Tosokchon (samgyetang), Korean BBQ her yerde. Kimchi, bibimbap, japchae ve soju denenmeli.",
+      "citizenship": "Güney Kore vatandaşlığı: 5 yıl yasal ikamet, Korece yeterlilik, gelir şartı. F-2 puanlı vize sistemi ile uzun süreli ikamet. E-7 çalışma vizesi sponsor gerektirir. K-ETA ile 90 gün vizesiz (birçok ülke). Yatırımcı vizesi: 500M₩ (~$370K) yatırım.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Tarihi Seul",
+          "activities": ["Gyeongbokgung", "Bukchon Hanok", "Insadong"],
+          "routePoints": [
+            { "name": "Gyeongbokgung", "coordinates": { "lat": 37.5796, "lng": 126.9770 }, "description": "Joseon Hanedanı'nın ana sarayı, 1395", "tips": "Hanbok kiralayın (₩15,000), giriş ücretsiz olur + harika fotoğraflar", "order": 1 },
+            { "name": "Bukchon Hanok", "coordinates": { "lat": 37.5826, "lng": 126.9831 }, "description": "600 yıllık geleneksel Kore evleri", "tips": "Sabah erken gidin, sessiz olun — insanlar yaşıyor", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 100000, "currency": "KRW", "note": "Orta segment (gecelik, ~$75)" },
+        { "category": "Yemek", "amount": 30000, "currency": "KRW", "note": "Günlük (~$22)" },
+        { "category": "Ulaşım", "amount": 5000, "currency": "KRW", "note": "Metro günlük (~$4)" },
+        { "category": "Müze", "amount": 3000, "currency": "KRW", "note": "Gyeongbokgung (~$2)" }
+      ],
+      "coordinates": { "lat": 37.5665, "lng": 126.9780 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&q=80",
+        "https://images.unsplash.com/photo-1546874177-9e664107314e?w=800&q=80",
+        "https://images.unsplash.com/photo-1601621915196-2621bfb0cd6e?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Seoul",
+      "summary": "City of K-pop, technology, and ancient palaces",
+      "city": "Seoul",
+      "country": "South Korea",
+      "introduction": "Seoul, with over 10 million people, is the capital of South Korea. Ancient Joseon palaces stand alongside Gangnam's modern skyscrapers. K-pop culture, street food, jjimjilbang (bathhouse) experience, and shopping paradises enchant visitors.",
+      "transportation": "From Incheon Airport: AREX train 43 min to Seoul Station (₩9,500). T-money card works on metro, bus, and taxi. Metro has 23 lines, one of the world's most comprehensive systems. Taxis very affordable.",
+      "accommodation": "Myeongdong for shopping and central location. Hongdae young and vibrant nightlife. Insadong traditional culture. Gangnam modern and luxury. Mid-range 80,000-150,000₩/night (~$60-110).",
+      "museums": "National Museum (free, Asia's largest), War Memorial (free), Leeum Samsung Art Museum, MMCA (Modern Art), Trick Eye Museum.",
+      "historicalPlaces": "Gyeongbokgung Palace (₩3,000, free with hanbok), Changdeokgung (UNESCO), Bukchon Hanok Village, N Seoul Tower, Jogyesa Temple, Gwanghwamun Square.",
+      "restaurants": "Gwangjang Market (bindaetteok, mayak gimbap), Myeongdong street food (tteokbokki, hotteok), Tosokchon (samgyetang), Korean BBQ everywhere. Kimchi, bibimbap, japchae, and soju are must-try.",
+      "citizenship": "South Korean citizenship: 5 years legal residence, Korean proficiency, income requirement. F-2 points-based visa for long-term residence. E-7 work visa requires sponsor. K-ETA 90 days visa-free (many countries). Investor visa: 500M₩ (~$370K) investment.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Historic Seoul",
+          "activities": ["Gyeongbokgung", "Bukchon Hanok", "Insadong"],
+          "routePoints": [
+            { "name": "Gyeongbokgung", "coordinates": { "lat": 37.5796, "lng": 126.9770 }, "description": "Main palace of Joseon Dynasty, 1395", "tips": "Rent hanbok (₩15,000), free entry + amazing photos", "order": 1 },
+            { "name": "Bukchon Hanok", "coordinates": { "lat": 37.5826, "lng": 126.9831 }, "description": "600-year-old traditional Korean houses", "tips": "Go early morning, be quiet — people live here", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 100000, "currency": "KRW", "note": "Mid-range (per night, ~$75)" },
+        { "category": "Food", "amount": 30000, "currency": "KRW", "note": "Daily (~$22)" },
+        { "category": "Transportation", "amount": 5000, "currency": "KRW", "note": "Metro daily (~$4)" },
+        { "category": "Museum", "amount": 3000, "currency": "KRW", "note": "Gyeongbokgung (~$2)" }
+      ],
+      "coordinates": { "lat": 37.5665, "lng": 126.9780 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&q=80",
+        "https://images.unsplash.com/photo-1546874177-9e664107314e?w=800&q=80",
+        "https://images.unsplash.com/photo-1601621915196-2621bfb0cd6e?w=800&q=80"
+      ]
+    }
+  }
+}
