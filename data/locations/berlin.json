@@ -1,0 +1,87 @@
+{
+  "id": "loc-010",
+  "slug": "berlin",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-07-15T10:00:00Z",
+  "updatedAt": "2024-07-20T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Berlin Seyahat Rehberi", "description": "Berlin gezilecek yerler, ulaşım ve vize bilgileri" },
+    "en": { "title": "Berlin Travel Guide", "description": "Berlin places to visit, transportation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Berlin",
+      "summary": "Tarihin ve modern sanatın kesiştiği özgür şehir",
+      "city": "Berlin",
+      "country": "Almanya",
+      "introduction": "Berlin, Soğuk Savaş'ın izlerini taşıyan, aynı zamanda Avrupa'nın en dinamik sanat ve gece hayatı sahnesine sahip şehirdir. Brandenburg Kapısı, Berlin Duvarı kalıntıları ve Müze Adası ile tarihi; Kreuzberg ve Friedrichshain ile alternatif kültürü yaşarsınız.",
+      "transportation": "Berlin Brandenburg Havalimanı'ndan (BER) FEX treni ile 30 dk merkeze. BVG kartı U-Bahn, S-Bahn, tramvay ve otobüste geçerli. AB günlük bilet €8.80. Bisiklet altyapısı mükemmel.",
+      "accommodation": "Mitte merkezi ve turistik. Kreuzberg multikulti ve canlı. Friedrichshain gece hayatı. Prenzlauer Berg aileler için ideal. Orta segment 80-150€/gece — Avrupa'nın en uygun başkentlerinden.",
+      "museums": "Müze Adası (UNESCO): Pergamon Müzesi, Neues Museum (Nefertiti büstü), Alte Nationalgalerie. DDR Müzesi, Yahudi Müzesi, Topography of Terror (ücretsiz). Museum Pass Berlin 3 gün €32.",
+      "historicalPlaces": "Brandenburg Kapısı, Reichstag (ücretsiz, online kayıt), Berlin Duvarı East Side Gallery (1.3 km açık hava galerisi, ücretsiz), Checkpoint Charlie, Holocaust Anıtı (ücretsiz), Charlottenburg Sarayı.",
+      "restaurants": "Markthalle Neun (street food perşembe), Mustafa's Gemüse Kebap (efsanevi döner, uzun kuyruk), Curry 36 (currywurst), KaDeWe gıda katı. Döner kebap, currywurst, pretzel ve Berliner (donut) denenmeli.",
+      "citizenship": "Alman vatandaşlığı: 5 yıl yasal ikamet (2024 reformu, eskiden 8 yıl), B1 Almanca, entegrasyon kursu, geçim kaynağı. Çifte vatandaşlık 2024'ten itibaren kabul ediliyor. Blue Card ile nitelikli çalışan vizesi. Schengen vizesi 90 gün.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Tarihi Berlin",
+          "activities": ["Brandenburg Kapısı", "Reichstag", "Holocaust Anıtı"],
+          "routePoints": [
+            { "name": "Brandenburg Kapısı", "coordinates": { "lat": 52.5163, "lng": 13.3777 }, "description": "Berlin'in simgesi, 1791'de inşa edildi", "tips": "Gece aydınlatması muhteşem, gün batımında gidin", "order": 1 },
+            { "name": "Reichstag", "coordinates": { "lat": 52.5186, "lng": 13.3761 }, "description": "Alman parlamentosu, cam kubbe ücretsiz", "tips": "Online kayıt zorunlu, en az 1 hafta öncesinden", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 100, "currency": "EUR", "note": "Orta segment (gecelik)" },
+        { "category": "Yemek", "amount": 30, "currency": "EUR", "note": "Günlük" },
+        { "category": "Ulaşım", "amount": 9, "currency": "EUR", "note": "BVG günlük AB" },
+        { "category": "Müze", "amount": 20, "currency": "EUR", "note": "Pergamon veya Neues Museum" }
+      ],
+      "coordinates": { "lat": 52.5200, "lng": 13.4050 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1587330979470-3595ac045ab0?w=800&q=80",
+        "https://images.unsplash.com/photo-1599946347371-68eb71b16afc?w=800&q=80",
+        "https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Berlin",
+      "summary": "Free city where history meets modern art",
+      "city": "Berlin",
+      "country": "Germany",
+      "introduction": "Berlin carries traces of the Cold War while having Europe's most dynamic art and nightlife scene. Experience history through Brandenburg Gate, Berlin Wall remnants, and Museum Island; alternative culture through Kreuzberg and Friedrichshain.",
+      "transportation": "From Berlin Brandenburg Airport (BER): FEX train 30 min to center. BVG card works on U-Bahn, S-Bahn, tram, and bus. AB daily ticket €8.80. Excellent cycling infrastructure.",
+      "accommodation": "Mitte central and touristic. Kreuzberg multicultural and lively. Friedrichshain for nightlife. Prenzlauer Berg ideal for families. Mid-range €80-150/night — one of Europe's most affordable capitals.",
+      "museums": "Museum Island (UNESCO): Pergamon Museum, Neues Museum (Nefertiti bust), Alte Nationalgalerie. DDR Museum, Jewish Museum, Topography of Terror (free). Museum Pass Berlin 3 days €32.",
+      "historicalPlaces": "Brandenburg Gate, Reichstag (free, online registration), Berlin Wall East Side Gallery (1.3 km open-air gallery, free), Checkpoint Charlie, Holocaust Memorial (free), Charlottenburg Palace.",
+      "restaurants": "Markthalle Neun (street food Thursday), Mustafa's Gemüse Kebap (legendary döner, long queue), Curry 36 (currywurst), KaDeWe food floor. Döner kebab, currywurst, pretzel, and Berliner (donut) are must-try.",
+      "citizenship": "German citizenship: 5 years legal residence (2024 reform, was 8 years), B1 German, integration course, livelihood proof. Dual citizenship accepted since 2024. Blue Card for skilled worker visa. Schengen visa 90 days.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Historic Berlin",
+          "activities": ["Brandenburg Gate", "Reichstag", "Holocaust Memorial"],
+          "routePoints": [
+            { "name": "Brandenburg Gate", "coordinates": { "lat": 52.5163, "lng": 13.3777 }, "description": "Symbol of Berlin, built in 1791", "tips": "Night illumination is stunning, go at sunset", "order": 1 },
+            { "name": "Reichstag", "coordinates": { "lat": 52.5186, "lng": 13.3761 }, "description": "German parliament, free glass dome", "tips": "Online registration required, at least 1 week ahead", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 100, "currency": "EUR", "note": "Mid-range (per night)" },
+        { "category": "Food", "amount": 30, "currency": "EUR", "note": "Daily" },
+        { "category": "Transportation", "amount": 9, "currency": "EUR", "note": "BVG daily AB" },
+        { "category": "Museum", "amount": 20, "currency": "EUR", "note": "Pergamon or Neues Museum" }
+      ],
+      "coordinates": { "lat": 52.5200, "lng": 13.4050 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1587330979470-3595ac045ab0?w=800&q=80",
+        "https://images.unsplash.com/photo-1599946347371-68eb71b16afc?w=800&q=80",
+        "https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?w=800&q=80"
+      ]
+    }
+  }
+}

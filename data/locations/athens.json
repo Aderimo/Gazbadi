@@ -1,0 +1,87 @@
+{
+  "id": "loc-013",
+  "slug": "athens",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-09-01T10:00:00Z",
+  "updatedAt": "2024-09-05T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Atina Seyahat Rehberi", "description": "Atina gezilecek yerler ve vize bilgileri" },
+    "en": { "title": "Athens Travel Guide", "description": "Athens places to visit and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Atina",
+      "summary": "Demokrasinin beşiği, 3400 yıllık medeniyet",
+      "city": "Atina",
+      "country": "Yunanistan",
+      "introduction": "Atina, Batı medeniyetinin doğduğu şehirdir. Akropolis tepesindeki Parthenon, antik Agora ve Plaka mahallesi binlerce yıllık tarihi yaşatır. Modern Atina ise canlı kafeler, sokak sanatı ve Akdeniz mutfağıyla ziyaretçilerini ağırlar.",
+      "transportation": "Eleftherios Venizelos Havalimanı'ndan metro ile 40 dk Syntagma'ya (€9). Metro 3 hat, otobüs ve tramvay. Athena kartı 5 gün €9 (havalimanı hariç). Tarihi merkez yürüyerek keşfedilir.",
+      "accommodation": "Plaka Akropolis'e yakın, turistik. Monastiraki canlı ve merkezi. Psyrri gece hayatı. Koukaki sakin ve yerel. Orta segment 70-130€/gece.",
+      "museums": "Akropolis Müzesi (€15), Ulusal Arkeoloji Müzesi (€12), Benaki Müzesi, Çağdaş Sanat Müzesi, Antik Agora Müzesi.",
+      "historicalPlaces": "Akropolis + Parthenon (€20), Antik Agora (€10), Zeus Tapınağı, Hadrian Kapısı, Panathenaic Stadyumu (ilk modern olimpiyat), Syntagma Meydanı nöbet değişimi.",
+      "restaurants": "Plaka'da Thanasis (kebap), Monastiraki'de O Kostas (souvlaki), Psyrri'de Avli (meze), Varvakios Agora (merkez hali). Souvlaki, moussaka, tzatziki, baklava ve Yunan salatası denenmeli.",
+      "citizenship": "Yunan vatandaşlığı: 7 yıl yasal ikamet, Yunanca yeterlilik, entegrasyon sınavı. AB vatandaşları 3 yıl. Golden Visa: €250,000 gayrimenkul (bazı bölgelerde €500,000). Schengen vizesi 90 gün. Dijital göçebe vizesi mevcut.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Antik Atina",
+          "activities": ["Akropolis", "Plaka", "Antik Agora"],
+          "routePoints": [
+            { "name": "Akropolis", "coordinates": { "lat": 37.9715, "lng": 23.7267 }, "description": "Parthenon ve antik tapınaklar, MÖ 5. yüzyıl", "tips": "Sabah 8'de gidin, öğleden sonra hem kalabalık hem sıcak", "order": 1 },
+            { "name": "Plaka", "coordinates": { "lat": 37.9725, "lng": 23.7310 }, "description": "Akropolis eteklerinde tarihi mahalle", "tips": "Anafiotika sokakları Santorini hissi verir", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 90, "currency": "EUR", "note": "Orta segment (gecelik)" },
+        { "category": "Yemek", "amount": 30, "currency": "EUR", "note": "Günlük" },
+        { "category": "Ulaşım", "amount": 2, "currency": "EUR", "note": "Athena kartı günlük" },
+        { "category": "Müze", "amount": 35, "currency": "EUR", "note": "Akropolis + Müze" }
+      ],
+      "coordinates": { "lat": 37.9838, "lng": 23.7275 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?w=800&q=80",
+        "https://images.unsplash.com/photo-1555993539-1732b0258235?w=800&q=80",
+        "https://images.unsplash.com/photo-1608063615781-e2ef8c73d114?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Athens",
+      "summary": "Cradle of democracy, 3400 years of civilization",
+      "city": "Athens",
+      "country": "Greece",
+      "introduction": "Athens is the city where Western civilization was born. The Parthenon atop the Acropolis, the ancient Agora, and the Plaka neighborhood keep thousands of years of history alive. Modern Athens welcomes visitors with lively cafés, street art, and Mediterranean cuisine.",
+      "transportation": "From Eleftherios Venizelos Airport: metro 40 min to Syntagma (€9). Metro 3 lines, bus and tram. Athena card 5 days €9 (excluding airport). Historic center best explored on foot.",
+      "accommodation": "Plaka near Acropolis, touristic. Monastiraki lively and central. Psyrri for nightlife. Koukaki quiet and local. Mid-range €70-130/night.",
+      "museums": "Acropolis Museum (€15), National Archaeological Museum (€12), Benaki Museum, Contemporary Art Museum, Ancient Agora Museum.",
+      "historicalPlaces": "Acropolis + Parthenon (€20), Ancient Agora (€10), Temple of Zeus, Hadrian's Arch, Panathenaic Stadium (first modern Olympics), Syntagma Square guard change.",
+      "restaurants": "Thanasis in Plaka (kebab), O Kostas in Monastiraki (souvlaki), Avli in Psyrri (meze), Varvakios Agora (central market). Souvlaki, moussaka, tzatziki, baklava, and Greek salad are must-try.",
+      "citizenship": "Greek citizenship: 7 years legal residence, Greek proficiency, integration exam. EU citizens 3 years. Golden Visa: €250,000 real estate (€500,000 in some areas). Schengen visa 90 days. Digital nomad visa available.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Ancient Athens",
+          "activities": ["Acropolis", "Plaka", "Ancient Agora"],
+          "routePoints": [
+            { "name": "Acropolis", "coordinates": { "lat": 37.9715, "lng": 23.7267 }, "description": "Parthenon and ancient temples, 5th century BC", "tips": "Go at 8am, afternoon is both crowded and hot", "order": 1 },
+            { "name": "Plaka", "coordinates": { "lat": 37.9725, "lng": 23.7310 }, "description": "Historic neighborhood at the foot of Acropolis", "tips": "Anafiotika streets give Santorini vibes", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 90, "currency": "EUR", "note": "Mid-range (per night)" },
+        { "category": "Food", "amount": 30, "currency": "EUR", "note": "Daily" },
+        { "category": "Transportation", "amount": 2, "currency": "EUR", "note": "Athena card daily" },
+        { "category": "Museum", "amount": 35, "currency": "EUR", "note": "Acropolis + Museum" }
+      ],
+      "coordinates": { "lat": 37.9838, "lng": 23.7275 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?w=800&q=80",
+        "https://images.unsplash.com/photo-1555993539-1732b0258235?w=800&q=80",
+        "https://images.unsplash.com/photo-1608063615781-e2ef8c73d114?w=800&q=80"
+      ]
+    }
+  }
+}

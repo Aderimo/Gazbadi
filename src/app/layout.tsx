@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "Dünyayı Keşfet, Anılarını Paylaş — Seyahat öneri platformu",
   keywords: ["seyahat", "travel", "gezi", "rehber", "guide", "destinasyon"],
   icons: {
-    icon: "/favicon.svg",
+    icon: `${process.env.NEXT_PUBLIC_REPO_NAME ? `/${process.env.NEXT_PUBLIC_REPO_NAME}` : ''}/favicon.svg`,
   },
   openGraph: {
     type: "website",

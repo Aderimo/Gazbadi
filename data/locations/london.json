@@ -1,0 +1,87 @@
+{
+  "id": "loc-008",
+  "slug": "london",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-06-10T10:00:00Z",
+  "updatedAt": "2024-06-15T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&q=80",
+  "seo": {
+    "tr": { "title": "Londra Seyahat Rehberi", "description": "Londra gezilecek yerler, ulaşım ve vize bilgileri" },
+    "en": { "title": "London Travel Guide", "description": "London places to visit, transportation and visa info" }
+  },
+  "content": {
+    "tr": {
+      "title": "Londra",
+      "summary": "Kraliyet şehri, kültür ve tarihin kalbi",
+      "city": "Londra",
+      "country": "İngiltere",
+      "introduction": "Londra, 9 milyonu aşan nüfusuyla Avrupa'nın en büyük şehridir. Big Ben, Buckingham Sarayı ve Tower Bridge gibi ikonik yapılarıyla tanınır. West End tiyatroları, dünya standartlarında müzeler ve kozmopolit mutfağıyla her ziyaretçiye hitap eder.",
+      "transportation": "Heathrow'dan Piccadilly Line ile 60 dk merkeze (£5.50). Tube (metro) 11 hat ile şehrin her yerine ulaşım. Oyster Card veya contactless ödeme ile günlük tavan fiyat uygulanır. Kırmızı çift katlı otobüsler ikonik.",
+      "accommodation": "Westminster ve South Bank merkezi konum. Shoreditch trendy ve sanat dolu. Camden Town alternatif kültür. King's Cross ulaşım merkezi. Orta segment 100-200£/gece.",
+      "museums": "British Museum (ücretsiz), Natural History Museum (ücretsiz), Tate Modern (ücretsiz), Victoria & Albert Museum, National Gallery (ücretsiz). Londra'nın büyük müzelerinin çoğu ücretsiz.",
+      "historicalPlaces": "Tower of London (£33), Westminster Abbey (£27), Buckingham Sarayı (yaz ayları £30), St. Paul's Katedrali, Houses of Parliament, Greenwich Gözlemevi.",
+      "restaurants": "Borough Market (street food cenneti), Dishoom (Hint mutfağı), Flat Iron (uygun steak), Brick Lane (curry mile). Fish & chips, Sunday roast, afternoon tea denenmeli.",
+      "citizenship": "İngiliz vatandaşlığı: 5 yıl yasal ikamet (ILR sonrası 1 yıl), B1 İngilizce, Life in the UK testi. Tier 2 çalışma vizesi sponsor gerektirir. Öğrenci vizesi ile 2 yıl Graduate Route. Yatırımcı vizesi kaldırıldı (2022). Turistik vize 6 ay (birçok ülke vizesiz).",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Klasik Londra",
+          "activities": ["Big Ben", "Westminster Abbey", "Buckingham Sarayı"],
+          "routePoints": [
+            { "name": "Big Ben", "coordinates": { "lat": 51.5007, "lng": -0.1246 }, "description": "Elizabeth Kulesi, 1859'dan beri Londra'nın simgesi", "tips": "Westminster Bridge'den en iyi fotoğraf", "order": 1 },
+            { "name": "Buckingham Sarayı", "coordinates": { "lat": 51.5014, "lng": -0.1419 }, "description": "Kraliyet ailesi resmi ikametgahı", "tips": "Nöbet değişimi 11:00'de, 30 dk öncesinden gidin", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 150, "currency": "GBP", "note": "Orta segment (gecelik, ~€175)" },
+        { "category": "Yemek", "amount": 40, "currency": "GBP", "note": "Günlük (~€47)" },
+        { "category": "Ulaşım", "amount": 15, "currency": "GBP", "note": "Oyster günlük tavan (~€17)" },
+        { "category": "Müze", "amount": 0, "currency": "GBP", "note": "Büyük müzeler ücretsiz" }
+      ],
+      "coordinates": { "lat": 51.5074, "lng": -0.1278 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1529180979161-06b8b6d6f2be?w=800&q=80",
+        "https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=800&q=80",
+        "https://images.unsplash.com/photo-1520986606214-8b456906c813?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "London",
+      "summary": "Royal city, heart of culture and history",
+      "city": "London",
+      "country": "England",
+      "introduction": "London, with over 9 million people, is Europe's largest city. Known for iconic landmarks like Big Ben, Buckingham Palace, and Tower Bridge. West End theatres, world-class museums, and cosmopolitan cuisine appeal to every visitor.",
+      "transportation": "From Heathrow: Piccadilly Line 60 min to center (£5.50). Tube has 11 lines covering the entire city. Oyster Card or contactless payment with daily cap. Iconic red double-decker buses.",
+      "accommodation": "Westminster and South Bank for central location. Shoreditch trendy and artsy. Camden Town for alternative culture. King's Cross transport hub. Mid-range £100-200/night.",
+      "museums": "British Museum (free), Natural History Museum (free), Tate Modern (free), Victoria & Albert Museum, National Gallery (free). Most major London museums are free.",
+      "historicalPlaces": "Tower of London (£33), Westminster Abbey (£27), Buckingham Palace (summer £30), St. Paul's Cathedral, Houses of Parliament, Greenwich Observatory.",
+      "restaurants": "Borough Market (street food paradise), Dishoom (Indian cuisine), Flat Iron (affordable steak), Brick Lane (curry mile). Fish & chips, Sunday roast, afternoon tea are must-try.",
+      "citizenship": "British citizenship: 5 years legal residence (1 year after ILR), B1 English, Life in the UK test. Tier 2 work visa requires sponsor. Student visa with 2-year Graduate Route. Investor visa discontinued (2022). Tourist visa 6 months (many countries visa-free).",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Classic London",
+          "activities": ["Big Ben", "Westminster Abbey", "Buckingham Palace"],
+          "routePoints": [
+            { "name": "Big Ben", "coordinates": { "lat": 51.5007, "lng": -0.1246 }, "description": "Elizabeth Tower, London's symbol since 1859", "tips": "Best photo from Westminster Bridge", "order": 1 },
+            { "name": "Buckingham Palace", "coordinates": { "lat": 51.5014, "lng": -0.1419 }, "description": "Official residence of the Royal Family", "tips": "Changing of the Guard at 11:00, arrive 30 min early", "order": 2 }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 150, "currency": "GBP", "note": "Mid-range (per night, ~€175)" },
+        { "category": "Food", "amount": 40, "currency": "GBP", "note": "Daily (~€47)" },
+        { "category": "Transportation", "amount": 15, "currency": "GBP", "note": "Oyster daily cap (~€17)" },
+        { "category": "Museum", "amount": 0, "currency": "GBP", "note": "Major museums free" }
+      ],
+      "coordinates": { "lat": 51.5074, "lng": -0.1278 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1529180979161-06b8b6d6f2be?w=800&q=80",
+        "https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=800&q=80",
+        "https://images.unsplash.com/photo-1520986606214-8b456906c813?w=800&q=80"
+      ]
+    }
+  }
+}
