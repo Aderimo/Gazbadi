@@ -12,22 +12,20 @@ import {
   getTrash, restoreItem, permanentDelete, emptyTrash,
   type TrashedItem,
 } from '@/lib/admin-store';
-import type { ContentItem } from '@/types';
+import type { ContentItem, LocationContent } from '@/types';
 
 interface Props { items: ContentItem[] }
-
 type Tab = 'content' | 'trash' | 'create' | 'edit';
 type ContentType = ContentItem['type'];
+type SortKey = 'date' | 'name' | 'type';
 
 const TYPES: ContentType[] = ['location', 'blog', 'recommendation', 'friend-experience'];
-
 const TYPE_INFO: Record<ContentType, { tr: string; en: string; icon: string; desc_tr: string; desc_en: string }> = {
   location: { tr: 'Lokasyon', en: 'Location', icon: '📍', desc_tr: 'Şehir/ülke seyahat rehberi', desc_en: 'City/country travel guide' },
   blog: { tr: 'Blog', en: 'Blog', icon: '✍️', desc_tr: 'Kişisel anı ve hikaye', desc_en: 'Personal story and memory' },
   recommendation: { tr: 'Öneri', en: 'Recommendation', icon: '⭐', desc_tr: 'Kişisel seyahat önerisi', desc_en: 'Personal travel recommendation' },
   'friend-experience': { tr: 'Arkadaş Deneyimi', en: 'Friend Experience', icon: '👥', desc_tr: 'Arkadaş seyahat deneyimi', desc_en: 'Friend travel experience' },
 };
-
 const STATUS_STYLES: Record<ContentItem['status'], string> = {
   published: 'bg-emerald-500/15 text-emerald-400',
   draft: 'bg-amber-500/15 text-amber-400',
@@ -47,6 +45,9 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<ContentType | 'all'>('all');
   const [filterStatus, setFilterStatus] = useState<ContentItem['status'] | 'all'>('all');
+  const [sortKey, setSortKey] = useState<SortKey>('date');
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkMode, setBulkMode] = useState(false);
 
   useEffect(() => {
     setAllItems(getStoredItems(serverItems));
@@ -60,14 +61,8 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
 
   const stats = useMemo(() => {
     const byType: Record<string, number> = {};
-    TYPES.forEach((t) => { byType[t] = allItems.filter((i) => i.type === t).length; });
-    return {
-      total: allItems.length,
-      published: allItems.filter((i) => i.status === 'published').length,
-      draft: allItems.filter((i) => i.status === 'draft').length,
-      trashCount: trash.length,
-      byType,
-    };
+    TYPES.forEach((tp) => { byType[tp] = allItems.filter((i) => i.type === tp).length; });
+    return { total: allItems.length, published: allItems.filter((i) => i.status === 'published').length, draft: allItems.filter((i) => i.status === 'draft').length, trashCount: trash.length, byType };
   }, [allItems, trash]);
 
   const filteredItems = useMemo(() => {
@@ -81,60 +76,60 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
         return loc.title?.toLowerCase().includes(q) || i.slug.toLowerCase().includes(q) || i.type.toLowerCase().includes(q);
       });
     }
+    // Sort
+    result = [...result].sort((a, b) => {
+      if (sortKey === 'name') {
+        const aT = getLocalizedContent(a.content, locale).title || '';
+        const bT = getLocalizedContent(b.content, locale).title || '';
+        return aT.localeCompare(bT);
+      }
+      if (sortKey === 'type') return a.type.localeCompare(b.type);
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
     return result;
-  }, [allItems, filterType, filterStatus, searchQuery, locale]);
+  }, [allItems, filterType, filterStatus, searchQuery, locale, sortKey]);
 
-  function handleDelete(id: string) {
-    const updated = removeItem(allItems, id);
+  // Bulk operations
+  function handleBulkDelete() {
+    let updated = allItems;
+    selectedIds.forEach((id) => { updated = removeItem(updated, id); });
     setAllItems(updated);
     setTrash(getTrash());
-    setConfirmDelete(null);
+    setSelectedIds(new Set());
+    showToast(locale === 'tr' ? `${selectedIds.size} içerik silindi` : `${selectedIds.size} items deleted`);
+  }
+  function handleBulkStatus(status: ContentItem['status']) {
+    let updated = allItems;
+    selectedIds.forEach((id) => { updated = editItem(updated, id, { status }); });
+    setAllItems(updated);
+    setSelectedIds(new Set());
+    showToast(locale === 'tr' ? 'Durumlar güncellendi' : 'Status updated');
+  }
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  }
+  function selectAll() {
+    if (selectedIds.size === filteredItems.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(filteredItems.map((i) => i.id)));
+  }
+
+  function handleDelete(id: string) {
+    setAllItems(removeItem(allItems, id)); setTrash(getTrash()); setConfirmDelete(null);
     showToast(locale === 'tr' ? 'Çöp kutusuna taşındı' : 'Moved to trash');
   }
-
   function handleQuickStatus(id: string, status: ContentItem['status']) {
-    const updated = editItem(allItems, id, { status });
-    setAllItems(updated);
+    setAllItems(editItem(allItems, id, { status }));
     showToast(locale === 'tr' ? 'Durum güncellendi' : 'Status updated');
   }
-
   function handleRestore(id: string) {
-    const result = restoreItem(allItems, id);
-    setAllItems(result.items);
-    setTrash(result.trash);
+    const r = restoreItem(allItems, id); setAllItems(r.items); setTrash(r.trash);
     showToast(locale === 'tr' ? 'Geri alındı' : 'Restored');
   }
-
-  function handlePermanentDelete(id: string) {
-    const updated = permanentDelete(id);
-    setTrash(updated);
-    showToast(locale === 'tr' ? 'Kalıcı olarak silindi' : 'Permanently deleted');
-  }
-
-  function handleEmptyTrash() {
-    setTrash(emptyTrash());
-    showToast(locale === 'tr' ? 'Çöp kutusu boşaltıldı' : 'Trash emptied');
-  }
-
-  function handleSaveNew(item: ContentItem) {
-    const updated = addItem(allItems, item);
-    setAllItems(updated);
-    setTab('content');
-    showToast(locale === 'tr' ? 'İçerik oluşturuldu' : 'Content created');
-  }
-
-  function handleSaveEdit(id: string, updates: Partial<ContentItem>) {
-    const updated = editItem(allItems, id, updates);
-    setAllItems(updated);
-    setEditingId(null);
-    setTab('content');
-    showToast(locale === 'tr' ? 'İçerik güncellendi' : 'Content updated');
-  }
-
-  function handleLogout() {
-    logout();
-    router.push('/');
-  }
+  function handlePermanentDelete(id: string) { setTrash(permanentDelete(id)); showToast(locale === 'tr' ? 'Kalıcı silindi' : 'Permanently deleted'); }
+  function handleEmptyTrash() { setTrash(emptyTrash()); showToast(locale === 'tr' ? 'Çöp boşaltıldı' : 'Trash emptied'); }
+  function handleSaveNew(item: ContentItem) { setAllItems(addItem(allItems, item)); setTab('content'); showToast(locale === 'tr' ? 'İçerik oluşturuldu' : 'Content created'); }
+  function handleSaveEdit(id: string, updates: Partial<ContentItem>) { setAllItems(editItem(allItems, id, updates)); setEditingId(null); setTab('content'); showToast(locale === 'tr' ? 'İçerik güncellendi' : 'Content updated'); }
+  function handleLogout() { logout(); router.push('/'); }
 
   const editingItem = editingId ? allItems.find((i) => i.id === editingId) : null;
 
@@ -142,41 +137,27 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
     <AuthGuard>
       <div className="min-h-[calc(100vh-4rem)] px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          {/* Toast */}
-          {toast && (
-            <div className="fixed top-20 right-4 z-50 rounded-lg border border-accent-turquoise/30 bg-dark-card px-4 py-2.5 text-sm text-accent-turquoise shadow-lg backdrop-blur-sm animate-fade-in">
-              {toast}
-            </div>
-          )}
+          {toast && <div className="fixed top-20 right-4 z-50 rounded-lg border border-accent-turquoise/30 bg-dark-card px-4 py-2.5 text-sm text-accent-turquoise shadow-lg backdrop-blur-sm">{toast}</div>}
 
           {/* Header */}
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-100 tracking-tight">
-                {locale === 'tr' ? '🛠 Yönetim Paneli' : '🛠 Admin Panel'}
-              </h1>
-              <p className="mt-1 text-xs text-gray-500">
-                {locale === 'tr' ? 'İçeriklerini yönet, düzenle ve yayınla.' : 'Manage, edit and publish your content.'}
-              </p>
+              <h1 className="text-2xl font-bold text-gray-100 tracking-tight">{locale === 'tr' ? '🛠 Yönetim Paneli' : '🛠 Admin Panel'}</h1>
+              <p className="mt-1 text-xs text-gray-500">{locale === 'tr' ? 'İçeriklerini yönet, düzenle ve yayınla.' : 'Manage, edit and publish your content.'}</p>
             </div>
-            <button onClick={handleLogout} className="rounded-lg border border-white/10 px-4 py-2 text-xs text-gray-400 hover:text-rose-400 hover:border-rose-500/30 transition-all">
-              {locale === 'tr' ? '🚪 Çıkış' : '🚪 Logout'}
-            </button>
+            <button onClick={handleLogout} className="rounded-lg border border-white/10 px-4 py-2 text-xs text-gray-400 hover:text-rose-400 hover:border-rose-500/30 transition-all">{locale === 'tr' ? '🚪 Çıkış' : '🚪 Logout'}</button>
           </div>
 
-          {/* Stats Grid */}
+          {/* Stats */}
           <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { label: locale === 'tr' ? 'Toplam İçerik' : 'Total Content', val: stats.total, icon: '📊', color: 'border-l-accent-turquoise' },
+              { label: locale === 'tr' ? 'Toplam' : 'Total', val: stats.total, icon: '📊', color: 'border-l-accent-turquoise' },
               { label: locale === 'tr' ? 'Yayında' : 'Published', val: stats.published, icon: '🟢', color: 'border-l-emerald-500' },
               { label: locale === 'tr' ? 'Taslak' : 'Draft', val: stats.draft, icon: '📝', color: 'border-l-amber-500' },
-              { label: locale === 'tr' ? 'Çöp Kutusu' : 'Trash', val: stats.trashCount, icon: '🗑️', color: 'border-l-rose-500' },
+              { label: locale === 'tr' ? 'Çöp' : 'Trash', val: stats.trashCount, icon: '🗑️', color: 'border-l-rose-500' },
             ].map((s) => (
               <div key={s.label} className={`rounded-xl border border-white/5 border-l-2 ${s.color} bg-dark-card/50 px-4 py-4`}>
-                <div className="flex items-center justify-between">
-                  <p className="text-2xl font-bold text-gray-100">{s.val}</p>
-                  <span className="text-lg">{s.icon}</span>
-                </div>
+                <div className="flex items-center justify-between"><p className="text-2xl font-bold text-gray-100">{s.val}</p><span className="text-lg">{s.icon}</span></div>
                 <p className="mt-1 text-[11px] text-gray-500">{s.label}</p>
               </div>
             ))}
@@ -184,93 +165,87 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
 
           {/* Type Breakdown */}
           <div className="mb-8 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {TYPES.map((type) => {
-              const info = TYPE_INFO[type];
-              return (
-                <div key={type} className="flex items-center gap-2.5 rounded-lg border border-white/5 bg-dark-card/30 px-3 py-2.5">
-                  <span className="text-base">{info.icon}</span>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-200">{stats.byType[type] || 0}</p>
-                    <p className="text-[10px] text-gray-500">{locale === 'tr' ? info.tr : info.en}</p>
-                  </div>
-                </div>
-              );
-            })}
+            {TYPES.map((type) => { const info = TYPE_INFO[type]; return (
+              <div key={type} className="flex items-center gap-2.5 rounded-lg border border-white/5 bg-dark-card/30 px-3 py-2.5">
+                <span className="text-base">{info.icon}</span>
+                <div><p className="text-sm font-semibold text-gray-200">{stats.byType[type] || 0}</p><p className="text-[10px] text-gray-500">{locale === 'tr' ? info.tr : info.en}</p></div>
+              </div>
+            ); })}
           </div>
 
           {/* Tabs */}
           <div className="mb-6 flex gap-1 rounded-xl border border-white/5 bg-dark-card/30 p-1">
             {(['content', 'create', 'trash'] as Tab[]).map((tabItem) => (
-              <button
-                key={tabItem}
-                onClick={() => { setTab(tabItem); setEditingId(null); }}
-                className={`flex-1 rounded-lg px-3 py-2.5 text-xs font-medium transition-all ${tab === tabItem ? 'bg-accent-turquoise/15 text-accent-turquoise shadow-sm' : 'text-gray-400 hover:text-gray-200 hover:bg-white/[0.03]'}`}
-              >
-                {tabItem === 'content' ? (locale === 'tr' ? '📋 İçerikler' : '📋 Content') :
-                 tabItem === 'create' ? (locale === 'tr' ? '➕ Yeni Oluştur' : '➕ Create New') :
-                 `🗑️ ${locale === 'tr' ? 'Çöp' : 'Trash'} (${stats.trashCount})`}
+              <button key={tabItem} onClick={() => { setTab(tabItem); setEditingId(null); setBulkMode(false); setSelectedIds(new Set()); }}
+                className={`flex-1 rounded-lg px-3 py-2.5 text-xs font-medium transition-all ${tab === tabItem ? 'bg-accent-turquoise/15 text-accent-turquoise shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}>
+                {tabItem === 'content' ? (locale === 'tr' ? '📋 İçerikler' : '📋 Content') : tabItem === 'create' ? (locale === 'tr' ? '➕ Yeni Oluştur' : '➕ Create New') : `🗑️ ${locale === 'tr' ? 'Çöp' : 'Trash'} (${stats.trashCount})`}
               </button>
             ))}
           </div>
 
-          {/* Content Tab with Search & Filters */}
+          {/* Content Tab */}
           {tab === 'content' && !editingId && (
             <>
-              {/* Search & Filter Bar */}
               <div className="mb-4 space-y-3">
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">🔍</span>
-                  <input
-                    type="search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={locale === 'tr' ? 'İçerik ara (başlık, slug, tür)...' : 'Search content (title, slug, type)...'}
-                    className="w-full rounded-xl border border-white/10 bg-dark-card/60 pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none focus:border-accent-turquoise/40 transition-colors"
-                  />
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">🔍</span>
+                    <input type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder={locale === 'tr' ? 'İçerik ara...' : 'Search content...'}
+                      className="w-full rounded-xl border border-white/10 bg-dark-card/60 pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none focus:border-accent-turquoise/40 transition-colors" />
+                  </div>
+                  {/* Sort */}
+                  <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)}
+                    className="rounded-xl border border-white/10 bg-dark-card/60 px-3 py-2 text-xs text-gray-300 outline-none focus:border-accent-turquoise/40">
+                    <option value="date">{locale === 'tr' ? '📅 Tarih' : '📅 Date'}</option>
+                    <option value="name">{locale === 'tr' ? '🔤 İsim' : '🔤 Name'}</option>
+                    <option value="type">{locale === 'tr' ? '📁 Tür' : '📁 Type'}</option>
+                  </select>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {/* Type Filter */}
-                  <button onClick={() => setFilterType('all')} className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${filterType === 'all' ? 'bg-accent-turquoise/20 text-accent-turquoise' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
-                    {locale === 'tr' ? 'Tüm Türler' : 'All Types'}
-                  </button>
-                  {TYPES.map((type) => {
-                    const info = TYPE_INFO[type];
-                    return (
-                      <button key={type} onClick={() => setFilterType(filterType === type ? 'all' : type)} className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${filterType === type ? 'bg-accent-turquoise/20 text-accent-turquoise' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
-                        {info.icon} {locale === 'tr' ? info.tr : info.en}
-                      </button>
-                    );
-                  })}
+                  <button onClick={() => setFilterType('all')} className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${filterType === 'all' ? 'bg-accent-turquoise/20 text-accent-turquoise' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>{locale === 'tr' ? 'Tüm Türler' : 'All Types'}</button>
+                  {TYPES.map((type) => { const info = TYPE_INFO[type]; return (
+                    <button key={type} onClick={() => setFilterType(filterType === type ? 'all' : type)} className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${filterType === type ? 'bg-accent-turquoise/20 text-accent-turquoise' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>{info.icon} {locale === 'tr' ? info.tr : info.en}</button>
+                  ); })}
                   <span className="mx-1 border-l border-white/10" />
-                  {/* Status Filter */}
                   {(['all', 'published', 'draft', 'unpublished'] as const).map((s) => (
                     <button key={s} onClick={() => setFilterStatus(filterStatus === s ? 'all' : s)} className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${filterStatus === s ? 'bg-accent-turquoise/20 text-accent-turquoise' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
-                      {s === 'all' ? (locale === 'tr' ? 'Tüm Durumlar' : 'All Status') : s === 'published' ? (locale === 'tr' ? '🟢 Yayında' : '🟢 Published') : s === 'draft' ? (locale === 'tr' ? '📝 Taslak' : '📝 Draft') : (locale === 'tr' ? '⏸ Kaldırıldı' : '⏸ Unpublished')}
+                      {s === 'all' ? (locale === 'tr' ? 'Tümü' : 'All') : s === 'published' ? '🟢' : s === 'draft' ? '📝' : '⏸'}
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] text-gray-500">
-                  {locale === 'tr' ? `${filteredItems.length} / ${allItems.length} içerik gösteriliyor` : `Showing ${filteredItems.length} / ${allItems.length} items`}
-                </p>
+                {/* Bulk Mode Bar */}
+                <div className="flex items-center gap-3">
+                  <button onClick={() => { setBulkMode(!bulkMode); setSelectedIds(new Set()); }} className={`rounded-lg px-3 py-1.5 text-[11px] font-medium transition-colors ${bulkMode ? 'bg-accent-indigo/20 text-accent-indigo' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
+                    {bulkMode ? (locale === 'tr' ? '✕ Toplu Modu Kapat' : '✕ Exit Bulk') : (locale === 'tr' ? '☑ Toplu İşlem' : '☑ Bulk Actions')}
+                  </button>
+                  {bulkMode && (
+                    <>
+                      <button onClick={selectAll} className="text-[11px] text-gray-500 hover:text-gray-300">{selectedIds.size === filteredItems.length ? (locale === 'tr' ? 'Seçimi Kaldır' : 'Deselect All') : (locale === 'tr' ? 'Tümünü Seç' : 'Select All')}</button>
+                      {selectedIds.size > 0 && (
+                        <>
+                          <span className="text-[10px] text-gray-600">|</span>
+                          <button onClick={() => handleBulkStatus('published')} className="rounded-md bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 text-[11px] text-emerald-400 hover:bg-emerald-500/20">🟢 {locale === 'tr' ? 'Yayınla' : 'Publish'} ({selectedIds.size})</button>
+                          <button onClick={() => handleBulkStatus('draft')} className="rounded-md bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 text-[11px] text-amber-400 hover:bg-amber-500/20">📝 {locale === 'tr' ? 'Taslak' : 'Draft'} ({selectedIds.size})</button>
+                          <button onClick={handleBulkDelete} className="rounded-md bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 text-[11px] text-rose-400 hover:bg-rose-500/20">🗑️ {locale === 'tr' ? 'Sil' : 'Delete'} ({selectedIds.size})</button>
+                        </>
+                      )}
+                    </>
+                  )}
+                  <span className="ml-auto text-[11px] text-gray-500">{filteredItems.length} / {allItems.length}</span>
+                </div>
               </div>
-              <ContentList items={filteredItems} locale={locale} onEdit={(id) => { setEditingId(id); setTab('edit'); }} onDelete={(id) => setConfirmDelete(id)} onQuickStatus={handleQuickStatus} />
+              <ContentList items={filteredItems} locale={locale} onEdit={(id) => { setEditingId(id); setTab('edit'); }} onDelete={(id) => setConfirmDelete(id)} onQuickStatus={handleQuickStatus} bulkMode={bulkMode} selectedIds={selectedIds} onToggleSelect={toggleSelect} />
             </>
           )}
           {tab === 'edit' && editingItem && <EditForm item={editingItem} locale={locale} onSave={(u) => handleSaveEdit(editingItem.id, u)} onCancel={() => { setEditingId(null); setTab('content'); }} />}
           {tab === 'create' && <CreateForm locale={locale} createType={createType} setCreateType={setCreateType} existingSlugs={allItems.map(i => i.slug)} onSave={handleSaveNew} onCancel={() => setTab('content')} />}
           {tab === 'trash' && <TrashList trash={trash} locale={locale} onRestore={handleRestore} onPermanentDelete={handlePermanentDelete} onEmptyTrash={handleEmptyTrash} />}
 
-          {/* Delete Confirm Modal */}
           {confirmDelete && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setConfirmDelete(null)}>
               <div className="mx-4 w-full max-w-sm rounded-xl border border-white/10 bg-dark-card p-6" onClick={(e) => e.stopPropagation()}>
-                <div className="mb-4 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-500/15 text-lg">⚠️</span>
-                  <div>
-                    <p className="text-sm font-medium text-gray-200">{locale === 'tr' ? 'İçeriği Sil' : 'Delete Content'}</p>
-                    <p className="text-xs text-gray-500">{locale === 'tr' ? 'Çöp kutusuna taşınacak.' : 'Will be moved to trash.'}</p>
-                  </div>
-                </div>
+                <p className="mb-4 text-sm text-gray-200">{locale === 'tr' ? 'Bu içeriği silmek istediğinize emin misiniz?' : 'Are you sure you want to delete this?'}</p>
                 <div className="flex gap-2 justify-end">
                   <button onClick={() => setConfirmDelete(null)} className="rounded-lg border border-white/10 px-4 py-2 text-xs text-gray-400 hover:text-white transition-colors">{locale === 'tr' ? 'İptal' : 'Cancel'}</button>
                   <button onClick={() => handleDelete(confirmDelete)} className="rounded-lg bg-rose-500/20 border border-rose-500/30 px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/30 transition-colors">{locale === 'tr' ? 'Sil' : 'Delete'}</button>
@@ -284,32 +259,27 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
   );
 }
 
-/* --- Content List --- */
-function ContentList({ items, locale, onEdit, onDelete, onQuickStatus }: {
+/* --- Content List with Bulk Select --- */
+function ContentList({ items, locale, onEdit, onDelete, onQuickStatus, bulkMode, selectedIds, onToggleSelect }: {
   items: ContentItem[]; locale: 'tr' | 'en'; onEdit: (id: string) => void; onDelete: (id: string) => void;
   onQuickStatus: (id: string, status: ContentItem['status']) => void;
+  bulkMode: boolean; selectedIds: Set<string>; onToggleSelect: (id: string) => void;
 }) {
-  if (items.length === 0) {
-    return (
-      <div className="rounded-xl border border-dashed border-white/10 bg-dark-card/30 p-16 text-center">
-        <p className="text-lg text-gray-600">📭</p>
-        <p className="mt-2 text-sm text-gray-500">{locale === 'tr' ? 'İçerik bulunamadı.' : 'No content found.'}</p>
-      </div>
-    );
-  }
+  if (items.length === 0) return <div className="rounded-xl border border-dashed border-white/10 bg-dark-card/30 p-16 text-center"><p className="text-lg text-gray-600">📭</p><p className="mt-2 text-sm text-gray-500">{locale === 'tr' ? 'İçerik bulunamadı.' : 'No content found.'}</p></div>;
   return (
     <div className="space-y-2">
       {items.map((item) => {
         const loc = getLocalizedContent(item.content, locale);
         const info = TYPE_INFO[item.type];
+        const isSelected = selectedIds.has(item.id);
         return (
-          <div key={item.id} className="group flex items-center gap-3 rounded-xl border border-white/5 bg-dark-card/40 px-4 py-3.5 transition-all hover:bg-white/[0.04] hover:border-white/10">
-            {/* Cover Image Thumbnail */}
-            {item.coverImage && (
-              <div className="hidden sm:block h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg border border-white/5">
-                <img src={item.coverImage} alt="" className="h-full w-full object-cover" />
-              </div>
+          <div key={item.id} className={`group flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-all hover:bg-white/[0.04] ${isSelected ? 'border-accent-turquoise/30 bg-accent-turquoise/5' : 'border-white/5 bg-dark-card/40'}`}>
+            {bulkMode && (
+              <button onClick={() => onToggleSelect(item.id)} className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border transition-colors ${isSelected ? 'border-accent-turquoise bg-accent-turquoise text-dark' : 'border-white/20 hover:border-white/40'}`}>
+                {isSelected && <span className="text-[10px]">✓</span>}
+              </button>
             )}
+            {item.coverImage && <div className="hidden sm:block h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg border border-white/5"><img src={item.coverImage} alt="" className="h-full w-full object-cover" /></div>}
             <span className="text-lg flex-shrink-0">{info.icon}</span>
             <div className="flex-1 min-w-0">
               <p className="truncate text-sm font-medium text-gray-200">{loc.title}</p>
@@ -321,22 +291,13 @@ function ContentList({ items, locale, onEdit, onDelete, onQuickStatus }: {
                 <span className="text-[10px] text-gray-500">{new Date(item.updatedAt).toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-US')}</span>
               </div>
             </div>
-            {/* Quick Status Toggle */}
             <div className="hidden sm:flex items-center gap-1">
               {(['published', 'draft', 'unpublished'] as const).map((s) => (
-                <button
-                  key={s}
-                  onClick={() => onQuickStatus(item.id, s)}
-                  title={s}
-                  className={`rounded-md px-2 py-0.5 text-[10px] font-medium transition-all ${item.status === s ? STATUS_STYLES[s] : 'text-gray-600 hover:text-gray-400'}`}
-                >
+                <button key={s} onClick={() => onQuickStatus(item.id, s)} title={s} className={`rounded-md px-2 py-0.5 text-[10px] font-medium transition-all ${item.status === s ? STATUS_STYLES[s] : 'text-gray-600 hover:text-gray-400'}`}>
                   {s === 'published' ? '🟢' : s === 'draft' ? '📝' : '⏸'}
                 </button>
               ))}
             </div>
-            <span className={`rounded-md px-2 py-0.5 text-[10px] font-medium sm:hidden ${STATUS_STYLES[item.status]}`}>
-              {item.status === 'published' ? (locale === 'tr' ? 'Yayında' : 'Live') : item.status === 'draft' ? (locale === 'tr' ? 'Taslak' : 'Draft') : '⏸'}
-            </span>
             <div className="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
               <button onClick={() => onEdit(item.id)} className="rounded-lg border border-accent-indigo/30 bg-accent-indigo/10 px-3 py-1.5 text-[11px] text-accent-indigo hover:bg-accent-indigo/20 transition-colors">{locale === 'tr' ? 'Düzenle' : 'Edit'}</button>
               <button onClick={() => onDelete(item.id)} className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-[11px] text-rose-400 hover:bg-rose-500/20 transition-colors">{locale === 'tr' ? 'Sil' : 'Del'}</button>
@@ -350,36 +311,22 @@ function ContentList({ items, locale, onEdit, onDelete, onQuickStatus }: {
 
 /* --- Trash List --- */
 function TrashList({ trash, locale, onRestore, onPermanentDelete, onEmptyTrash }: { trash: TrashedItem[]; locale: 'tr' | 'en'; onRestore: (id: string) => void; onPermanentDelete: (id: string) => void; onEmptyTrash: () => void }) {
-  if (trash.length === 0) {
-    return (
-      <div className="rounded-xl border border-dashed border-white/10 bg-dark-card/30 p-16 text-center">
-        <p className="text-lg text-gray-600">🗑️</p>
-        <p className="mt-2 text-sm text-gray-500">{locale === 'tr' ? 'Çöp kutusu boş.' : 'Trash is empty.'}</p>
-      </div>
-    );
-  }
+  if (trash.length === 0) return <div className="rounded-xl border border-dashed border-white/10 bg-dark-card/30 p-16 text-center"><p className="text-lg text-gray-600">🗑️</p><p className="mt-2 text-sm text-gray-500">{locale === 'tr' ? 'Çöp kutusu boş.' : 'Trash is empty.'}</p></div>;
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-[11px] text-gray-500">{locale === 'tr' ? 'Son 10 silinen içerik. En eski otomatik silinir.' : 'Last 10 deleted items. Oldest auto-removed.'}</p>
+        <p className="text-[11px] text-gray-500">{locale === 'tr' ? 'Son 10 silinen içerik.' : 'Last 10 deleted items.'}</p>
         <button onClick={onEmptyTrash} className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-[11px] text-rose-400 hover:bg-rose-500/20 transition-colors">{locale === 'tr' ? 'Tümünü Sil' : 'Empty All'}</button>
       </div>
       <div className="space-y-2">
-        {trash.map((item) => {
-          const loc = getLocalizedContent(item.content, locale);
-          const info = TYPE_INFO[item.type];
-          return (
-            <div key={item.id} className="flex items-center gap-3 rounded-xl border border-white/5 bg-dark-card/30 px-4 py-3 opacity-60 hover:opacity-90 transition-opacity">
-              <span className="text-lg">{info.icon}</span>
-              <div className="flex-1 min-w-0">
-                <p className="truncate text-sm text-gray-300">{loc.title}</p>
-                <p className="text-[10px] text-gray-500">{locale === 'tr' ? 'Silinme:' : 'Deleted:'} {new Date(item.deletedAt).toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-US')}</p>
-              </div>
-              <button onClick={() => onRestore(item.id)} className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-[11px] text-emerald-400 hover:bg-emerald-500/20 transition-colors">{locale === 'tr' ? '↩ Geri Al' : '↩ Restore'}</button>
-              <button onClick={() => onPermanentDelete(item.id)} className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-[11px] text-rose-400 hover:bg-rose-500/20 transition-colors">{locale === 'tr' ? '✕ Kalıcı Sil' : '✕ Delete'}</button>
-            </div>
-          );
-        })}
+        {trash.map((item) => { const loc = getLocalizedContent(item.content, locale); const info = TYPE_INFO[item.type]; return (
+          <div key={item.id} className="flex items-center gap-3 rounded-xl border border-white/5 bg-dark-card/30 px-4 py-3 opacity-60 hover:opacity-90 transition-opacity">
+            <span className="text-lg">{info.icon}</span>
+            <div className="flex-1 min-w-0"><p className="truncate text-sm text-gray-300">{loc.title}</p><p className="text-[10px] text-gray-500">{new Date(item.deletedAt).toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-US')}</p></div>
+            <button onClick={() => onRestore(item.id)} className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-[11px] text-emerald-400 hover:bg-emerald-500/20 transition-colors">{locale === 'tr' ? '↩ Geri Al' : '↩ Restore'}</button>
+            <button onClick={() => onPermanentDelete(item.id)} className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-[11px] text-rose-400 hover:bg-rose-500/20 transition-colors">{locale === 'tr' ? '✕ Sil' : '✕ Delete'}</button>
+          </div>
+        ); })}
       </div>
     </div>
   );
@@ -396,95 +343,117 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
   const [summaryEn, setSummaryEn] = useState('');
   const [coverImage, setCoverImage] = useState('');
   const [status, setStatus] = useState<ContentItem['status']>('draft');
-  const [previewImage, setPreviewImage] = useState(false);
+  // Location-specific
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [citizenship, setCitizenship] = useState('');
+  const [galleryUrls, setGalleryUrls] = useState('');
+  const [budgetItems, setBudgetItems] = useState([{ category: '', amount: '', currency: 'EUR', note: '' }]);
+
+  function addBudgetRow() { setBudgetItems([...budgetItems, { category: '', amount: '', currency: 'EUR', note: '' }]); }
+  function updateBudget(idx: number, field: string, val: string) {
+    const updated = [...budgetItems]; (updated[idx] as Record<string, string>)[field] = val; setBudgetItems(updated);
+  }
+  function removeBudgetRow(idx: number) { setBudgetItems(budgetItems.filter((_, i) => i !== idx)); }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!titleTr.trim()) return;
-
     let slug = generateSlug(titleTr);
     while (existingSlugs.includes(slug)) slug = `${slug}-${Date.now() % 1000}`;
-
     const now = new Date().toISOString();
+    const gallery = galleryUrls.split('\n').map(u => u.trim()).filter(Boolean);
+    const budget = budgetItems.filter(b => b.category && b.amount).map(b => ({ category: b.category, amount: Number(b.amount), currency: b.currency, note: b.note }));
+
+    const baseContent = { title: titleTr, summary: summaryTr };
+    const baseContentEn = { title: titleEn || titleTr, summary: summaryEn || summaryTr };
+
+    const locationExtra = createType === 'location' ? {
+      city, country, citizenship, gallery,
+      estimatedBudget: budget,
+      introduction: '', transportation: '', accommodation: '', museums: '', historicalPlaces: '', restaurants: '',
+      dailyRoutePlan: [], coordinates: { lat: 0, lng: 0 },
+    } : {};
+
     const newItem: ContentItem = {
-      id: `${createType.slice(0, 3)}-${Date.now()}`,
-      slug,
-      type: createType,
-      status,
-      createdAt: now,
-      updatedAt: now,
+      id: `${createType.slice(0, 3)}-${Date.now()}`, slug, type: createType, status, createdAt: now, updatedAt: now,
       coverImage: coverImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80',
-      seo: {
-        tr: { title: titleTr, description: summaryTr },
-        en: { title: titleEn || titleTr, description: summaryEn || summaryTr },
-      },
-      content: {
-        tr: { title: titleTr, summary: summaryTr },
-        en: { title: titleEn || titleTr, summary: summaryEn || summaryTr },
-      },
+      seo: { tr: { title: titleTr, description: summaryTr }, en: { title: titleEn || titleTr, description: summaryEn || summaryTr } },
+      content: { tr: { ...baseContent, ...locationExtra }, en: { ...baseContentEn, ...locationExtra } },
     };
     onSave(newItem);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
-        <label className="mb-3 block text-xs font-medium text-gray-400">{locale === 'tr' ? 'İçerik Türü Seç' : 'Select Content Type'}</label>
+        <label className="mb-3 block text-xs font-medium text-gray-400">{locale === 'tr' ? 'İçerik Türü' : 'Content Type'}</label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {TYPES.map((type) => {
-            const info = TYPE_INFO[type];
-            return (
-              <button key={type} type="button" onClick={() => setCreateType(type)}
-                className={`rounded-xl border p-4 text-left transition-all ${createType === type ? 'border-accent-turquoise/50 bg-accent-turquoise/10 shadow-sm' : 'border-white/5 bg-dark-card/40 hover:border-white/10'}`}>
-                <span className="text-xl">{info.icon}</span>
-                <p className="mt-2 text-xs font-medium text-gray-200">{locale === 'tr' ? info.tr : info.en}</p>
-                <p className="mt-0.5 text-[10px] text-gray-500">{locale === 'tr' ? info.desc_tr : info.desc_en}</p>
-              </button>
-            );
-          })}
+          {TYPES.map((type) => { const info = TYPE_INFO[type]; return (
+            <button key={type} type="button" onClick={() => setCreateType(type)}
+              className={`rounded-xl border p-3 text-left transition-all ${createType === type ? 'border-accent-turquoise/50 bg-accent-turquoise/10' : 'border-white/5 bg-dark-card/40 hover:border-white/10'}`}>
+              <span className="text-xl">{info.icon}</span>
+              <p className="mt-1 text-xs font-medium text-gray-200">{locale === 'tr' ? info.tr : info.en}</p>
+            </button>
+          ); })}
         </div>
       </div>
 
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-4">
-        <p className="text-xs font-medium text-gray-400">{locale === 'tr' ? '📝 İçerik Bilgileri' : '📝 Content Details'}</p>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <p className="text-xs font-medium text-gray-400">📝 {locale === 'tr' ? 'Temel Bilgiler' : 'Basic Info'}</p>
+        <div className="grid gap-3 sm:grid-cols-2">
           <Field label={`${locale === 'tr' ? 'Başlık' : 'Title'} (TR) *`} value={titleTr} onChange={setTitleTr} required />
-          <Field label={`${locale === 'tr' ? 'Başlık' : 'Title'} (EN)`} value={titleEn} onChange={setTitleEn} placeholder={locale === 'tr' ? 'Boş bırakılırsa TR kullanılır' : 'Falls back to TR if empty'} />
+          <Field label={`${locale === 'tr' ? 'Başlık' : 'Title'} (EN)`} value={titleEn} onChange={setTitleEn} />
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (TR)`} value={summaryTr} onChange={setSummaryTr} multiline />
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (EN)`} value={summaryEn} onChange={setSummaryEn} multiline />
         </div>
+        <Field label={locale === 'tr' ? 'Kapak Görseli URL' : 'Cover Image URL'} value={coverImage} onChange={setCoverImage} placeholder="https://images.unsplash.com/..." />
       </div>
 
-      <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
-        <p className="text-xs font-medium text-gray-400">{locale === 'tr' ? '🖼 Kapak Görseli' : '🖼 Cover Image'}</p>
-        <Field label="URL" value={coverImage} onChange={(v) => { setCoverImage(v); setPreviewImage(false); }} placeholder="https://images.unsplash.com/..." />
-        {coverImage && (
-          <div>
-            <button type="button" onClick={() => setPreviewImage(!previewImage)} className="text-[11px] text-accent-turquoise hover:underline">
-              {previewImage ? (locale === 'tr' ? 'Önizlemeyi Gizle' : 'Hide Preview') : (locale === 'tr' ? 'Önizle' : 'Preview')}
-            </button>
-            {previewImage && (
-              <div className="mt-2 h-40 w-full overflow-hidden rounded-lg border border-white/10">
-                <img src={coverImage} alt="Preview" className="h-full w-full object-cover" />
-              </div>
-            )}
+      {/* Location-specific fields */}
+      {createType === 'location' && (
+        <>
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-4">
+            <p className="text-xs font-medium text-gray-400">📍 {locale === 'tr' ? 'Lokasyon Bilgileri' : 'Location Details'}</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Field label={locale === 'tr' ? 'Şehir' : 'City'} value={city} onChange={setCity} />
+              <Field label={locale === 'tr' ? 'Ülke' : 'Country'} value={country} onChange={setCountry} />
+              <Field label={locale === 'tr' ? 'Vatandaşlık/Vize' : 'Citizenship/Visa'} value={citizenship} onChange={setCitizenship} />
+            </div>
           </div>
-        )}
-      </div>
+
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
+            <p className="text-xs font-medium text-gray-400">💰 {locale === 'tr' ? 'Tahmini Bütçe' : 'Estimated Budget'}</p>
+            {budgetItems.map((b, i) => (
+              <div key={i} className="flex gap-2 items-end">
+                <div className="flex-1"><Field label={locale === 'tr' ? 'Kategori' : 'Category'} value={b.category} onChange={(v) => updateBudget(i, 'category', v)} placeholder={locale === 'tr' ? 'Konaklama, Yemek...' : 'Accommodation, Food...'} /></div>
+                <div className="w-24"><Field label={locale === 'tr' ? 'Tutar' : 'Amount'} value={b.amount} onChange={(v) => updateBudget(i, 'amount', v)} placeholder="50" /></div>
+                <div className="w-20"><Field label={locale === 'tr' ? 'Para' : 'Curr.'} value={b.currency} onChange={(v) => updateBudget(i, 'currency', v)} /></div>
+                {budgetItems.length > 1 && <button type="button" onClick={() => removeBudgetRow(i)} className="mb-0.5 text-rose-400 hover:text-rose-300 text-sm">✕</button>}
+              </div>
+            ))}
+            <button type="button" onClick={addBudgetRow} className="text-[11px] text-accent-turquoise hover:underline">+ {locale === 'tr' ? 'Satır Ekle' : 'Add Row'}</button>
+          </div>
+
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
+            <p className="text-xs font-medium text-gray-400">🖼 {locale === 'tr' ? 'Galeri URL\'leri' : 'Gallery URLs'}</p>
+            <Field label={locale === 'tr' ? 'Her satıra bir URL' : 'One URL per line'} value={galleryUrls} onChange={setGalleryUrls} multiline placeholder="https://images.unsplash.com/..." />
+          </div>
+        </>
+      )}
 
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
-        <label className="mb-2 block text-xs font-medium text-gray-400">{locale === 'tr' ? 'Yayın Durumu' : 'Publish Status'}</label>
+        <label className="mb-2 block text-xs font-medium text-gray-400">{locale === 'tr' ? 'Durum' : 'Status'}</label>
         <div className="flex gap-2">
           {(['draft', 'published'] as const).map((s) => (
-            <button key={s} type="button" onClick={() => setStatus(s)}
-              className={`rounded-lg px-4 py-2 text-xs font-medium transition-all ${status === s ? STATUS_STYLES[s] + ' shadow-sm' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
+            <button key={s} type="button" onClick={() => setStatus(s)} className={`rounded-lg px-4 py-2 text-xs font-medium transition-all ${status === s ? STATUS_STYLES[s] : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
               {s === 'draft' ? (locale === 'tr' ? '📝 Taslak' : '📝 Draft') : (locale === 'tr' ? '🟢 Yayınla' : '🟢 Publish')}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="flex gap-2 justify-end pt-2">
+      <div className="flex gap-2 justify-end">
         <button type="button" onClick={onCancel} className="rounded-lg border border-white/10 px-5 py-2.5 text-xs text-gray-400 hover:text-white transition-colors">{locale === 'tr' ? 'İptal' : 'Cancel'}</button>
         <button type="submit" className="rounded-lg bg-accent-turquoise/20 border border-accent-turquoise/30 px-5 py-2.5 text-xs font-medium text-accent-turquoise hover:bg-accent-turquoise/30 transition-all">{locale === 'tr' ? '✓ Oluştur' : '✓ Create'}</button>
       </div>
@@ -492,10 +461,11 @@ function CreateForm({ locale, createType, setCreateType, existingSlugs, onSave, 
   );
 }
 
-/* --- Edit Form --- */
+/* --- Edit Form with Location Fields --- */
 function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; locale: 'tr' | 'en'; onSave: (updates: Partial<ContentItem>) => void; onCancel: () => void }) {
   const trContent = item.content?.tr || { title: '', summary: '' };
   const enContent = item.content?.en || { title: '', summary: '' };
+  const trLoc = trContent as LocationContent;
 
   const [titleTr, setTitleTr] = useState(trContent.title || '');
   const [titleEn, setTitleEn] = useState(enContent.title || '');
@@ -503,19 +473,36 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
   const [summaryEn, setSummaryEn] = useState(enContent.summary || '');
   const [coverImage, setCoverImage] = useState(item.coverImage || '');
   const [status, setStatus] = useState(item.status);
+  // Location fields
+  const [city, setCity] = useState(trLoc.city || '');
+  const [country, setCountry] = useState(trLoc.country || '');
+  const [citizenship, setCitizenship] = useState(trLoc.citizenship || '');
+  const [galleryUrls, setGalleryUrls] = useState((trLoc.gallery || []).join('\n'));
+  const [budgetItems, setBudgetItems] = useState(
+    (trLoc.estimatedBudget || []).length > 0
+      ? trLoc.estimatedBudget.map(b => ({ category: b.category, amount: String(b.amount), currency: b.currency, note: b.note }))
+      : [{ category: '', amount: '', currency: 'EUR', note: '' }]
+  );
+
+  function addBudgetRow() { setBudgetItems([...budgetItems, { category: '', amount: '', currency: 'EUR', note: '' }]); }
+  function updateBudget(idx: number, field: string, val: string) {
+    const updated = [...budgetItems]; (updated[idx] as Record<string, string>)[field] = val; setBudgetItems(updated);
+  }
+  function removeBudgetRow(idx: number) { setBudgetItems(budgetItems.filter((_, i) => i !== idx)); }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const gallery = galleryUrls.split('\n').map(u => u.trim()).filter(Boolean);
+    const budget = budgetItems.filter(b => b.category && b.amount).map(b => ({ category: b.category, amount: Number(b.amount), currency: b.currency, note: b.note }));
+
+    const locationUpdates = item.type === 'location' ? { city, country, citizenship, gallery, estimatedBudget: budget } : {};
+
     onSave({
-      status,
-      coverImage,
-      seo: {
-        tr: { title: titleTr, description: summaryTr },
-        en: { title: titleEn, description: summaryEn },
-      },
+      status, coverImage,
+      seo: { tr: { title: titleTr, description: summaryTr }, en: { title: titleEn, description: summaryEn } },
       content: {
-        tr: { ...trContent, title: titleTr, summary: summaryTr },
-        en: { ...enContent, title: titleEn, summary: summaryEn },
+        tr: { ...trContent, title: titleTr, summary: summaryTr, ...locationUpdates },
+        en: { ...enContent, title: titleEn, summary: summaryEn, ...locationUpdates },
       },
     });
   }
@@ -523,46 +510,67 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
   const info = TYPE_INFO[item.type];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="flex items-center gap-3 rounded-xl border border-white/5 bg-dark-card/30 px-4 py-3">
         <span className="text-xl">{info.icon}</span>
-        <div>
-          <p className="text-sm font-medium text-gray-200">{locale === 'tr' ? 'Düzenleniyor' : 'Editing'}</p>
-          <p className="text-[11px] text-gray-500">{locale === 'tr' ? info.tr : info.en} · {item.slug}</p>
-        </div>
-        {item.coverImage && (
-          <div className="ml-auto h-10 w-16 overflow-hidden rounded-lg border border-white/10">
-            <img src={item.coverImage} alt="" className="h-full w-full object-cover" />
-          </div>
-        )}
+        <div><p className="text-sm font-medium text-gray-200">{locale === 'tr' ? 'Düzenleniyor' : 'Editing'}</p><p className="text-[11px] text-gray-500">{item.slug}</p></div>
+        {item.coverImage && <div className="ml-auto h-10 w-16 overflow-hidden rounded-lg border border-white/10"><img src={item.coverImage} alt="" className="h-full w-full object-cover" /></div>}
       </div>
 
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-4">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           <Field label={`${locale === 'tr' ? 'Başlık' : 'Title'} (TR) *`} value={titleTr} onChange={setTitleTr} required />
           <Field label={`${locale === 'tr' ? 'Başlık' : 'Title'} (EN)`} value={titleEn} onChange={setTitleEn} />
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (TR)`} value={summaryTr} onChange={setSummaryTr} multiline />
           <Field label={`${locale === 'tr' ? 'Özet' : 'Summary'} (EN)`} value={summaryEn} onChange={setSummaryEn} multiline />
         </div>
+        <Field label={locale === 'tr' ? 'Kapak Görseli URL' : 'Cover Image URL'} value={coverImage} onChange={setCoverImage} />
       </div>
 
-      <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
-        <Field label={`${locale === 'tr' ? 'Kapak Görseli URL' : 'Cover Image URL'}`} value={coverImage} onChange={setCoverImage} />
-      </div>
+      {/* Location-specific edit fields */}
+      {item.type === 'location' && (
+        <>
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-4">
+            <p className="text-xs font-medium text-gray-400">📍 {locale === 'tr' ? 'Lokasyon Bilgileri' : 'Location Details'}</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Field label={locale === 'tr' ? 'Şehir' : 'City'} value={city} onChange={setCity} />
+              <Field label={locale === 'tr' ? 'Ülke' : 'Country'} value={country} onChange={setCountry} />
+              <Field label={locale === 'tr' ? 'Vatandaşlık/Vize' : 'Citizenship/Visa'} value={citizenship} onChange={setCitizenship} />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
+            <p className="text-xs font-medium text-gray-400">💰 {locale === 'tr' ? 'Tahmini Bütçe' : 'Estimated Budget'}</p>
+            {budgetItems.map((b, i) => (
+              <div key={i} className="flex gap-2 items-end">
+                <div className="flex-1"><Field label={locale === 'tr' ? 'Kategori' : 'Category'} value={b.category} onChange={(v) => updateBudget(i, 'category', v)} /></div>
+                <div className="w-24"><Field label={locale === 'tr' ? 'Tutar' : 'Amount'} value={b.amount} onChange={(v) => updateBudget(i, 'amount', v)} /></div>
+                <div className="w-20"><Field label={locale === 'tr' ? 'Para' : 'Curr.'} value={b.currency} onChange={(v) => updateBudget(i, 'currency', v)} /></div>
+                {budgetItems.length > 1 && <button type="button" onClick={() => removeBudgetRow(i)} className="mb-0.5 text-rose-400 hover:text-rose-300 text-sm">✕</button>}
+              </div>
+            ))}
+            <button type="button" onClick={addBudgetRow} className="text-[11px] text-accent-turquoise hover:underline">+ {locale === 'tr' ? 'Satır Ekle' : 'Add Row'}</button>
+          </div>
+
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5 space-y-3">
+            <p className="text-xs font-medium text-gray-400">🖼 {locale === 'tr' ? 'Galeri URL\'leri' : 'Gallery URLs'}</p>
+            <Field label={locale === 'tr' ? 'Her satıra bir URL' : 'One URL per line'} value={galleryUrls} onChange={setGalleryUrls} multiline />
+          </div>
+        </>
+      )}
 
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
         <label className="mb-2 block text-xs font-medium text-gray-400">{locale === 'tr' ? 'Durum' : 'Status'}</label>
         <div className="flex gap-2">
           {(['draft', 'published', 'unpublished'] as const).map((s) => (
-            <button key={s} type="button" onClick={() => setStatus(s)}
-              className={`rounded-lg px-4 py-2 text-xs font-medium transition-all ${status === s ? STATUS_STYLES[s] + ' shadow-sm' : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
-              {s === 'draft' ? (locale === 'tr' ? '📝 Taslak' : '📝 Draft') : s === 'published' ? (locale === 'tr' ? '🟢 Yayında' : '🟢 Published') : (locale === 'tr' ? '⏸ Kaldır' : '⏸ Unpublish')}
+            <button key={s} type="button" onClick={() => setStatus(s)} className={`rounded-lg px-4 py-2 text-xs font-medium transition-all ${status === s ? STATUS_STYLES[s] : 'border border-white/10 text-gray-500 hover:text-gray-300'}`}>
+              {s === 'draft' ? '📝' : s === 'published' ? '🟢' : '⏸'} {s === 'draft' ? (locale === 'tr' ? 'Taslak' : 'Draft') : s === 'published' ? (locale === 'tr' ? 'Yayında' : 'Published') : (locale === 'tr' ? 'Kaldır' : 'Unpublish')}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="flex gap-2 justify-end pt-2">
+      <div className="flex gap-2 justify-end">
         <button type="button" onClick={onCancel} className="rounded-lg border border-white/10 px-5 py-2.5 text-xs text-gray-400 hover:text-white transition-colors">{locale === 'tr' ? 'İptal' : 'Cancel'}</button>
         <button type="submit" className="rounded-lg bg-accent-turquoise/20 border border-accent-turquoise/30 px-5 py-2.5 text-xs font-medium text-accent-turquoise hover:bg-accent-turquoise/30 transition-all">{locale === 'tr' ? '✓ Kaydet' : '✓ Save'}</button>
       </div>
@@ -578,11 +586,8 @@ function Field({ label, value, onChange, multiline, placeholder, required }: {
   return (
     <div>
       <label className="mb-1.5 block text-[11px] font-medium text-gray-400">{label}</label>
-      {multiline ? (
-        <textarea value={value} onChange={(e) => onChange(e.target.value)} className={`${cls} min-h-[80px] resize-y`} placeholder={placeholder} required={required} />
-      ) : (
-        <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className={cls} placeholder={placeholder} required={required} />
-      )}
+      {multiline ? <textarea value={value} onChange={(e) => onChange(e.target.value)} className={`${cls} min-h-[80px] resize-y`} placeholder={placeholder} required={required} />
+        : <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className={cls} placeholder={placeholder} required={required} />}
     </div>
   );
 }
