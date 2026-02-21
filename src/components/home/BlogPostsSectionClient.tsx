@@ -1,0 +1,46 @@
+'use client';
+
+import Link from 'next/link';
+import { useLanguage } from '@/components/providers/LanguageProvider';
+import ContentCard from '@/components/ui/ContentCard';
+import type { ContentItem } from '@/types';
+
+interface BlogPostsSectionClientProps {
+  items: ContentItem[];
+}
+
+export default function BlogPostsSectionClient({ items }: BlogPostsSectionClientProps) {
+  const { locale, t } = useLanguage();
+
+  return (
+    <section className="px-6 py-16 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl">
+        {/* Section Header */}
+        <div className="mb-10 flex items-end justify-between">
+          <h2 className="text-2xl font-bold text-gray-100 sm:text-3xl">
+            {t('sections.blogPosts')}
+          </h2>
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-accent-turquoise transition-colors hover:text-accent-turquoise/80"
+          >
+            {t('sections.viewAll')} →
+          </Link>
+        </div>
+
+        {/* Card Grid */}
+        {items.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((item) => (
+              <ContentCard key={item.id} item={item} locale={locale} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500">
+            {locale === 'tr' ? 'Henüz blog yazısı eklenmedi.' : 'No blog posts yet.'}
+          </p>
+        )}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,273 @@
+# Implementation Plan: Travel Atlas
+
+## Overview
+
+Next.js 14 (App Router, Static Export) + TypeScript + Tailwind CSS kullanarak çok dilli seyahat öneri platformu. Koyu tema tasarım sistemi, Leaflet harita entegrasyonu, JSON tabanlı içerik yönetimi ve admin paneli ile GitHub Pages üzerinde barındırılacak.
+
+## Tasks
+
+- [x] 1. Proje altyapısı ve temel konfigürasyon
+  - [x] 1.1 Next.js 14 projesi oluştur (App Router, TypeScript, Tailwind CSS, `output: 'export'`)
+    - `next.config.js` ile static export ayarı
+    - Tailwind config'de koyu tema renkleri (#0f172a, #111827, #1e293b, turquoise, indigo, amber)
+    - Inter fontu Google Fonts entegrasyonu
+    - _Requirements: 8.1, 8.2, 8.3, 8.5, 9.1_
+  - [x] 1.2 TypeScript tip tanımlamalarını oluştur (`types/index.ts`)
+    - ContentItem, LocationContent, BlogContent, FriendExperienceContent, RoutePoint, RoutePlanDay, BudgetItem, MapMarker, MapRoute, AuthState, Translations arayüzleri
+    - _Requirements: 14.1_
+  - [x] 1.3 i18n altyapısını kur
+    - `data/i18n/tr.json` ve `data/i18n/en.json` dosyaları
+    - LanguageProvider context bileşeni (locale, setLocale, t fonksiyonu)
+    - localStorage'da dil tercihi saklama
+    - _Requirements: 3.1, 3.2, 3.5, 3.6_
+  - [ ]* 1.4 i18n property testleri yaz
+    - **Property 4: Çeviri Fonksiyonu Tamlığı**
+    - **Property 5: İçerik Çevirisi ve Fallback**
+    - **Property 6: Dil Tercihi Round-Trip**
+    - **Validates: Requirements 3.2, 3.3, 3.4, 3.5**
+  - [x] 1.5 Örnek JSON veri dosyaları oluştur
+    - `data/locations/istanbul.json` (routePoints dahil)
+    - `data/blog/sample-post.json`
+    - `data/recommendations/sample.json`
+    - `data/friend-experiences/sample.json`
+    - _Requirements: 14.1, 14.2_
+
+- [x] 2. Veri katmanı ve yardımcı fonksiyonlar
+  - [x] 2.1 İçerik veri erişim fonksiyonları (`lib/data.ts`)
+    - JSON dosyalarını okuma, Content_Item serialize/deserialize
+    - Yayınlanmış içerik filtreleme (`getPublishedItems`)
+    - Tarihe göre sıralama (`getNewlyAdded`)
+    - Slug ile içerik getirme (`getItemBySlug`)
+    - _Requirements: 1.5, 5.7, 5.8, 14.2, 14.3_
+  - [ ]* 2.2 Veri katmanı property testleri yaz
+    - **Property 1: Yeni Eklenenler Sıralaması**
+    - **Property 12: Yalnızca Yayınlanmış İçerik Görünürlüğü**
+    - **Property 18: Content_Item JSON Round-Trip**
+    - **Validates: Requirements 1.5, 5.7, 5.8, 14.3, 14.4**
+  - [x] 2.3 Slug üretim fonksiyonu (`lib/slug.ts`)
+    - Türkçe karakter desteği ile URL-safe slug üretimi
+    - Mevcut slug'larla çakışma kontrolü
+    - _Requirements: 5.1_
+  - [ ]* 2.4 Slug property testleri yaz
+    - **Property 9: Benzersiz Slug Üretimi**
+    - **Validates: Requirements 5.1**
+  - [x] 2.5 URL pattern üretim fonksiyonu (`lib/url.ts`)
+    - Content_Item type'ına göre doğru URL pattern üretimi
+    - _Requirements: 13.2_
+  - [ ]* 2.6 URL pattern property testi yaz
+    - **Property 17: URL Pattern Doğruluğu**
+    - **Validates: Requirements 13.2**
+  - [x] 2.7 İçerik çeviri yardımcı fonksiyonu (`lib/i18n-content.ts`)
+    - Locale'e göre içerik döndürme, eksikse Türkçe fallback
+    - _Requirements: 3.3, 3.4_
+
+- [x] 3. Checkpoint - Veri katmanı testlerinin geçtiğinden emin ol
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 4. Tasarım sistemi ve ortak bileşenler
+  - [x] 4.1 Glassmorphism Card_Component bileşeni (`components/ui/ContentCard.tsx`)
+    - Koyu tema kart (#1e293b), backdrop blur, yarı saydam border
+    - Soft box shadow, hover animasyonu
+    - Responsive boyutlar (default, featured, compact varyantları)
+    - _Requirements: 8.2, 8.4, 8.6_
+  - [x] 4.2 Navbar bileşeni (`components/layout/Navbar.tsx`)
+    - Home, Explore, My Recommendations, Friend Experiences, Blog linkleri
+    - Language_Switcher (TR 🇹🇷 / EN 🇬🇧)
+    - Mobil hamburger menü
+    - _Requirements: 13.1, 3.2_
+  - [x] 4.3 Footer bileşeni (`components/layout/Footer.tsx`)
+    - İletişim bilgileri, sosyal medya linkleri, Language_Switcher
+    - Her sayfada görünür (RootLayout'ta)
+    - _Requirements: 1.8_
+  - [x] 4.4 RootLayout (`app/layout.tsx`)
+    - LanguageProvider, Navbar, Footer sarmalama
+    - Inter fontu, koyu tema global stiller
+    - SEO varsayılan meta tagları
+    - _Requirements: 8.5, 8.7, 10.5_
+
+- [x] 5. Ana sayfa bölümleri
+  - [x] 5.1 HeroSection bileşeni (`components/home/HeroSection.tsx`)
+    - Tam genişlik arka plan görseli, slogan overlay
+    - Gradient overlay, parallax efekti
+    - _Requirements: 1.1_
+  - [x] 5.2 ExploreSection bileşeni (`components/home/ExploreSection.tsx`)
+    - Dünya geneli seyahat önerileri Card_Component grid
+    - _Requirements: 1.2_
+  - [x] 5.3 MyRecommendations bileşeni (`components/home/MyRecommendations.tsx`)
+    - Admin'in kişisel deneyimleri, yüklenen fotoğraflar
+    - _Requirements: 1.3_
+  - [x] 5.4 PopularRoutes bileşeni (`components/home/PopularRoutes.tsx`)
+    - Öne çıkan/en çok görüntülenen lokasyonlar
+    - _Requirements: 1.4_
+  - [x] 5.5 NewlyAdded bileşeni (`components/home/NewlyAdded.tsx`)
+    - En son yayınlanan içerikler, tarih sıralı
+    - _Requirements: 1.5_
+  - [x] 5.6 BlogPostsSection bileşeni (`components/home/BlogPostsSection.tsx`)
+    - Son blog yazıları Card_Component listesi
+    - _Requirements: 1.7_
+  - [x] 5.7 FriendExperiencesSection bileşeni (`components/home/FriendExperiencesSection.tsx`)
+    - Arkadaş deneyimleri Card_Component listesi
+    - _Requirements: 11.1_
+  - [x] 5.8 Ana sayfa birleştirme (`app/page.tsx`)
+    - Tüm bölümleri sıralı render, lazy-load görseller
+    - _Requirements: 1.1-1.8, 10.3_
+
+- [x] 6. Harita bileşenleri
+  - [x] 6.1 DiscoverOnMap bileşeni (`components/home/DiscoverOnMap.tsx`)
+    - Leaflet harita, OpenStreetMap tile
+    - Yayınlanmış lokasyonlar için kırmızı marker'lar
+    - Aynı rotadaki lokasyonlar arası Route_Line (polyline)
+    - Marker popup: başlık + detay sayfası linki
+    - _Requirements: 1.6, 7.1, 7.2, 12.4_
+  - [x] 6.2 RouteMap bileşeni (`components/map/RouteMap.tsx`)
+    - Lokasyon detay sayfası için rota haritası
+    - Kırmızı marker'lar her rota noktası için
+    - Noktalar arası sıralı polyline çizgisi
+    - Marker popup: yer adı, açıklama, tips
+    - _Requirements: 2.5, 7.3, 12.1, 12.2, 12.3_
+  - [ ]* 6.3 Harita property testleri yaz
+    - **Property 13: Harita Marker Eşleşmesi**
+    - **Property 21: Rota Noktaları Sıralı Çizgi Oluşturma**
+    - **Property 22: Rota Marker Popup İçeriği**
+    - **Validates: Requirements 7.1, 12.2, 12.3**
+
+- [x] 7. Lokasyon detay sayfası
+  - [x] 7.1 LocationDetailPage (`app/location/[slug]/page.tsx`)
+    - Cover image, şehir/ülke adı
+    - Bilgi bölümleri: giriş, ulaşım, konaklama, müzeler, tarihi yerler, restoranlar
+    - Günlük rota planı, bütçe tahmini
+    - RouteMap bileşeni entegrasyonu
+    - Fotoğraf galerisi, yorum bölümü
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7_
+  - [ ]* 7.2 Lokasyon sayfası property testleri yaz
+    - **Property 2: Lokasyon Sayfası İçerik Bütünlüğü**
+    - **Property 3: Galeri Görsel Bütünlüğü**
+    - **Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.6**
+
+- [x] 8. Arkadaş deneyimleri sayfaları
+  - [x] 8.1 FriendExperiencesPage (`app/friend-experiences/page.tsx`)
+    - Tüm arkadaş deneyimleri Card_Component grid
+    - _Requirements: 11.5_
+  - [x] 8.2 FriendExperienceDetailPage (`app/friend-experiences/[slug]/page.tsx`)
+    - Arkadaş adı, kişisel anlatım, fotoğraf galerisi
+    - Lokasyon yorumları, ziyaret edilen yerlere linkler
+    - _Requirements: 11.2, 11.4_
+  - [ ]* 8.3 Arkadaş deneyimi property testleri yaz
+    - **Property 19: Arkadaş Deneyimi İçerik Bütünlüğü**
+    - **Property 20: Arkadaş Deneyimi Lokasyon Linkleri**
+    - **Validates: Requirements 11.2, 11.4**
+
+- [x] 9. Blog ve diğer sayfalar
+  - [x] 9.1 ExplorePage (`app/explore/page.tsx`)
+    - Tüm lokasyonlar grid görünümü
+    - _Requirements: 13.3_
+  - [x] 9.2 MyRecommendationsPage (`app/my-recommendations/page.tsx`)
+    - Admin'in kişisel önerileri listesi
+    - _Requirements: 13.3_
+  - [x] 9.3 BlogPage (`app/blog/page.tsx`)
+    - Blog yazıları listesi
+    - _Requirements: 13.3_
+  - [x] 9.4 BlogDetailPage (`app/blog/[slug]/page.tsx`)
+    - Blog yazısı detay, Markdown render
+    - _Requirements: 13.3_
+
+- [x] 10. Checkpoint - Tüm public sayfaların çalıştığından emin ol
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 11. Admin kimlik doğrulama
+  - [x] 11.1 AuthService (`lib/auth.ts`)
+    - authenticate(username, password) fonksiyonu
+    - localStorage token yönetimi
+    - Genel hata mesajı (alan bilgisi sızdırmadan)
+    - logout fonksiyonu
+    - _Requirements: 4.2, 4.3, 4.5_
+  - [x] 11.2 LoginPage (`app/login/page.tsx`)
+    - Kullanıcı adı + şifre formu
+    - Hata mesajı gösterimi
+    - Başarılı girişte /admin'e yönlendirme
+    - _Requirements: 4.1, 4.2_
+  - [x] 11.3 Admin route guard (`components/admin/AuthGuard.tsx`)
+    - Kimlik doğrulaması kontrolü
+    - Yetkisiz erişimde /login'e yönlendirme
+    - _Requirements: 4.4_
+  - [ ]* 11.4 Auth property testleri yaz
+    - **Property 7: Genel Kimlik Doğrulama Hatası**
+    - **Property 8: Admin Route Koruma**
+    - **Validates: Requirements 4.3, 4.4**
+
+- [x] 12. Admin paneli
+  - [x] 12.1 AdminDashboard (`app/admin/page.tsx`)
+    - İçerik listesi, durum göstergeleri (draft/published/unpublished)
+    - Yeni içerik oluşturma butonları
+    - _Requirements: 5.6_
+  - [x] 12.2 ContentEditor (`components/admin/ContentEditor.tsx`)
+    - TR/EN çeviri alanları, SEO_Fields
+    - Durum seçimi (Draft/Published/Unpublished)
+    - Slug otomatik üretimi ve korunması
+    - _Requirements: 5.1, 5.2, 5.4, 5.5, 5.6_
+  - [x] 12.3 ImageManager (`components/admin/ImageManager.tsx`)
+    - Görsel yükleme
+    - Unsplash/Pexels API arama ve seçim
+    - _Requirements: 6.1, 6.2, 6.3_
+  - [x] 12.4 MapCoordinatePicker (`components/admin/MapCoordinatePicker.tsx`)
+    - Harita üzerinde tıklayarak koordinat seçme
+    - _Requirements: 7.4_
+  - [x] 12.5 RoutePointEditor (`components/admin/RoutePointEditor.tsx`)
+    - Rota noktası ekleme, sıralama, silme
+    - Harita üzerinde nokta seçme
+    - Her nokta için ad, açıklama, tips alanları
+    - _Requirements: 12.5_
+  - [x] 12.6 FriendExperienceEditor (`components/admin/FriendExperienceEditor.tsx`)
+    - Arkadaş adı, anlatım, lokasyon yorumları, fotoğraf galerisi
+    - Ziyaret edilen lokasyonları seçme
+    - _Requirements: 11.3_
+  - [x] 12.7 CRUD işlemleri (`lib/content-manager.ts`)
+    - Oluşturma, güncelleme, silme fonksiyonları
+    - Slug korunması (düzenlemede)
+    - _Requirements: 5.1, 5.2, 5.3_
+  - [ ]* 12.8 CRUD property testleri yaz
+    - **Property 10: Düzenlemede Slug Korunması**
+    - **Property 11: Silme İşlemi Tutarlılığı**
+    - **Validates: Requirements 5.2, 5.3**
+
+- [x] 13. SEO ve performans optimizasyonu
+  - [x] 13.1 SEO meta tag üretimi (`lib/seo.ts`)
+    - Sayfa bazlı title, description, Open Graph tagları
+    - Locale'e göre SEO_Fields kullanımı
+    - Structured data (JSON-LD)
+    - _Requirements: 9.4, 10.4_
+  - [x] 13.2 Görsel optimizasyonu
+    - Next.js Image bileşeni ile responsive boyutlar
+    - Lazy-load (loading="lazy") fold altı görseller için
+    - _Requirements: 6.4, 10.3_
+  - [x] 13.3 Statik sayfa üretimi konfigürasyonu
+    - `generateStaticParams` ile tüm yayınlanmış içerikler için statik sayfa
+    - _Requirements: 9.2_
+  - [ ]* 13.4 SEO property testleri yaz
+    - **Property 14: SEO Meta Tag Bütünlüğü**
+    - **Property 15: Statik Sayfa Üretimi**
+    - **Property 16: Lazy-Load Uygulaması**
+    - **Validates: Requirements 9.2, 9.4, 10.3, 10.4**
+
+- [x] 14. Responsive tasarım ve son düzenlemeler
+  - [x] 14.1 Responsive breakpoint'ler
+    - Mobil, tablet, desktop uyumlu layout
+    - Tüm bileşenlerde responsive kontrol
+    - _Requirements: 10.2_
+  - [x] 14.2 Semantic HTML5 ve erişilebilirlik
+    - Heading hiyerarşisi, landmark bölgeleri
+    - ARIA etiketleri
+    - _Requirements: 10.5_
+
+- [x] 15. Final checkpoint - Tüm testlerin geçtiğinden ve build'in başarılı olduğundan emin ol
+  - Ensure all tests pass, ask the user if questions arise.
+  - `next build` ile static export doğrulaması
+  - _Requirements: 9.1, 9.3_
+
+## Notes
+
+- `*` ile işaretli görevler opsiyoneldir ve hızlı MVP için atlanabilir
+- Her görev belirli gereksinimlere referans verir (izlenebilirlik)
+- Checkpoint'ler artımlı doğrulama sağlar
+- Property testleri evrensel doğruluk özelliklerini doğrular
+- Unit testler belirli örnekleri ve edge case'leri doğrular

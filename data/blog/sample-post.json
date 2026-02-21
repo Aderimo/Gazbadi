@@ -1,0 +1,33 @@
+{
+  "id": "blog-001",
+  "slug": "seyahat-ipuclari",
+  "type": "blog",
+  "status": "published",
+  "createdAt": "2024-02-10T09:00:00Z",
+  "updatedAt": "2024-02-12T16:45:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80",
+  "seo": {
+    "tr": {
+      "title": "İlk Seyahatiniz İçin 10 Altın İpucu",
+      "description": "Yurt dışı seyahatinizi planlarken bilmeniz gereken en önemli ipuçları ve öneriler"
+    },
+    "en": {
+      "title": "10 Golden Tips for Your First Trip",
+      "description": "The most important tips and recommendations for planning your international trip"
+    }
+  },
+  "content": {
+    "tr": {
+      "title": "İlk Seyahatiniz İçin 10 Altın İpucu",
+      "summary": "Yurt dışına ilk kez çıkacaklar için pratik seyahat önerileri",
+      "body": "## Seyahate Hazırlık\n\nİlk yurt dışı seyahatiniz heyecan verici olduğu kadar stresli de olabilir. İşte size yardımcı olacak 10 altın ipucu:\n\n### 1. Pasaportunuzu Kontrol Edin\nSeyahat tarihinizden en az 6 ay geçerli olmalıdır.\n\n### 2. Seyahat Sigortası Yaptırın\nBeklenmedik durumlar için mutlaka seyahat sigortası alın.\n\n### 3. Yerel Para Birimi Hakkında Araştırma Yapın\nGideceğiniz ülkenin para birimini ve döviz kurunu önceden öğrenin.\n\n### 4. Hafif Bavul Yapın\nSadece ihtiyacınız olanları alın. Dönüşte hediyelik eşyalar için yer bırakın.\n\n### 5. Önemli Belgelerin Kopyasını Alın\nPasaport, sigorta ve otel rezervasyonlarının dijital kopyalarını saklayın.",
+      "tags": ["seyahat-ipuclari", "ilk-seyahat", "rehber", "planlama"]
+    },
+    "en": {
+      "title": "10 Golden Tips for Your First Trip",
+      "summary": "Practical travel recommendations for first-time international travelers",
+      "body": "## Travel Preparation\n\nYour first international trip can be as stressful as it is exciting. Here are 10 golden tips to help you:\n\n### 1. Check Your Passport\nIt should be valid for at least 6 months from your travel date.\n\n### 2. Get Travel Insurance\nAlways get travel insurance for unexpected situations.\n\n### 3. Research the Local Currency\nLearn about the currency and exchange rates of your destination country in advance.\n\n### 4. Pack Light\nOnly take what you need. Leave room for souvenirs on the way back.\n\n### 5. Keep Copies of Important Documents\nStore digital copies of your passport, insurance, and hotel reservations.",
+      "tags": ["travel-tips", "first-trip", "guide", "planning"]
+    }
+  }
+}

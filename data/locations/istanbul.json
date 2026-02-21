@@ -1,0 +1,131 @@
+{
+  "id": "loc-001",
+  "slug": "istanbul",
+  "type": "location",
+  "status": "published",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-20T14:30:00Z",
+  "coverImage": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1200&q=80",
+  "seo": {
+    "tr": {
+      "title": "İstanbul Seyahat Rehberi",
+      "description": "İstanbul'da gezilecek yerler, ulaşım ve konaklama önerileri"
+    },
+    "en": {
+      "title": "Istanbul Travel Guide",
+      "description": "Places to visit, transportation and accommodation tips in Istanbul"
+    }
+  },
+  "content": {
+    "tr": {
+      "title": "İstanbul",
+      "summary": "Doğu ile Batı'nın buluştuğu eşsiz şehir",
+      "city": "İstanbul",
+      "country": "Türkiye",
+      "introduction": "İstanbul, iki kıtayı birleştiren dünyanın en büyüleyici şehirlerinden biridir. Bizans ve Osmanlı İmparatorluklarının başkenti olan bu kadim şehir, tarihi yarımadası, boğaz manzaraları ve zengin mutfağıyla ziyaretçilerini büyüler. Sultanahmet'in tarihi dokusu, Beyoğlu'nun canlı gece hayatı ve Kadıköy'ün modern atmosferi bir arada yaşanır.",
+      "transportation": "İstanbul'a Havalimanı veya Sabiha Gökçen Havalimanı üzerinden ulaşabilirsiniz. Şehir içi ulaşımda İstanbulkart ile metro, tramvay, vapur ve otobüs kullanabilirsiniz. Tarihi yarımada için tramvay T1 hattı idealdir. Avrupa-Asya arası geçişlerde Marmaray ve vapurlar en pratik seçeneklerdir.",
+      "accommodation": "Sultanahmet bölgesi tarihi mekanlar için idealdir. Beyoğlu/Taksim gece hayatı ve alışveriş için uygundur. Kadıköy Asya yakasında daha sakin ve uygun fiyatlı konaklama sunar. Orta segment oteller gecelik 500-1500 TL arasında değişir.",
+      "museums": "Ayasofya Müzesi, Topkapı Sarayı Müzesi, İstanbul Arkeoloji Müzeleri, Kariye Müzesi ve İstanbul Modern Sanat Müzesi şehrin en önemli müzeleridir. Müze Kart ile birçok müzeye indirimli giriş yapabilirsiniz.",
+      "historicalPlaces": "Sultanahmet Camii (Mavi Cami), Yerebatan Sarnıcı, Galata Kulesi, Dolmabahçe Sarayı, Süleymaniye Camii ve Kapalıçarşı mutlaka görülmesi gereken tarihi mekanlardır.",
+      "restaurants": "Tarihi yarımadada Sultanahmet Köftecisi, Karaköy'de Karaköy Lokantası, Beyoğlu'nda Çiçek Pasajı ve Kadıköy'de Çiya Sofrası öne çıkan restoranlardır. Sokak lezzetleri olarak balık ekmek, simit, kestane ve midye dolma deneyimlenmeli.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Tarihi Yarımada",
+          "activities": ["Ayasofya", "Sultanahmet Camii", "Topkapı Sarayı"],
+          "routePoints": [
+            {
+              "name": "Ayasofya",
+              "coordinates": { "lat": 41.0086, "lng": 28.9802 },
+              "description": "Bizans döneminden kalma muhteşem bazilika",
+              "tips": "Sabah erken gidin, kalabalık olur",
+              "order": 1
+            },
+            {
+              "name": "Sultanahmet Camii",
+              "coordinates": { "lat": 41.0054, "lng": 28.9768 },
+              "description": "Mavi Cami olarak da bilinir",
+              "tips": "Namaz saatlerinde kapalıdır",
+              "order": 2
+            },
+            {
+              "name": "Topkapı Sarayı",
+              "coordinates": { "lat": 41.0115, "lng": 28.9833 },
+              "description": "Osmanlı padişahlarının yaşadığı saray",
+              "tips": "Harem bölümü ayrı bilet",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Konaklama", "amount": 500, "currency": "TRY", "note": "Orta segment otel (gecelik)" },
+        { "category": "Yemek", "amount": 300, "currency": "TRY", "note": "Günlük ortalama" },
+        { "category": "Ulaşım", "amount": 100, "currency": "TRY", "note": "İstanbulkart günlük" },
+        { "category": "Müze Girişleri", "amount": 600, "currency": "TRY", "note": "Ayasofya + Topkapı + Harem" }
+      ],
+      "coordinates": { "lat": 41.0082, "lng": 28.9784 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&q=80",
+        "https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800&q=80",
+        "https://images.unsplash.com/photo-1549918864-48ac978761a4?w=800&q=80",
+        "https://images.unsplash.com/photo-1604941590361-0be0a2a3e304?w=800&q=80"
+      ]
+    },
+    "en": {
+      "title": "Istanbul",
+      "summary": "The unique city where East meets West",
+      "city": "Istanbul",
+      "country": "Turkey",
+      "introduction": "Istanbul is one of the world's most fascinating cities, bridging two continents. As the former capital of the Byzantine and Ottoman Empires, this ancient city enchants visitors with its historic peninsula, Bosphorus views, and rich cuisine. The historic texture of Sultanahmet, the vibrant nightlife of Beyoğlu, and the modern atmosphere of Kadıköy coexist harmoniously.",
+      "transportation": "You can reach Istanbul via Istanbul Airport or Sabiha Gökçen Airport. For city transportation, use Istanbulkart for metro, tram, ferry, and bus services. The T1 tram line is ideal for the historic peninsula. Marmaray and ferries are the most practical options for Europe-Asia crossings.",
+      "accommodation": "The Sultanahmet area is ideal for historical sites. Beyoğlu/Taksim is suitable for nightlife and shopping. Kadıköy on the Asian side offers quieter and more affordable accommodation. Mid-range hotels range from 500-1500 TRY per night.",
+      "museums": "Hagia Sophia Museum, Topkapi Palace Museum, Istanbul Archaeological Museums, Chora Museum, and Istanbul Modern Art Museum are the city's most important museums. You can get discounted entry to many museums with the Museum Pass.",
+      "historicalPlaces": "Blue Mosque, Basilica Cistern, Galata Tower, Dolmabahçe Palace, Süleymaniye Mosque, and the Grand Bazaar are must-see historical sites.",
+      "restaurants": "Sultanahmet Köftecisi in the historic peninsula, Karaköy Lokantası in Karaköy, Çiçek Pasajı in Beyoğlu, and Çiya Sofrası in Kadıköy are standout restaurants. Street food like fish sandwich, simit, roasted chestnuts, and stuffed mussels are must-try experiences.",
+      "dailyRoutePlan": [
+        {
+          "day": 1,
+          "title": "Historical Peninsula",
+          "activities": ["Hagia Sophia", "Blue Mosque", "Topkapi Palace"],
+          "routePoints": [
+            {
+              "name": "Hagia Sophia",
+              "coordinates": { "lat": 41.0086, "lng": 28.9802 },
+              "description": "Magnificent basilica from the Byzantine era",
+              "tips": "Go early in the morning to avoid crowds",
+              "order": 1
+            },
+            {
+              "name": "Blue Mosque",
+              "coordinates": { "lat": 41.0054, "lng": 28.9768 },
+              "description": "Also known as Sultan Ahmed Mosque",
+              "tips": "Closed during prayer times",
+              "order": 2
+            },
+            {
+              "name": "Topkapi Palace",
+              "coordinates": { "lat": 41.0115, "lng": 28.9833 },
+              "description": "Palace of Ottoman sultans",
+              "tips": "Harem section requires separate ticket",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "estimatedBudget": [
+        { "category": "Accommodation", "amount": 500, "currency": "TRY", "note": "Mid-range hotel (per night)" },
+        { "category": "Food", "amount": 300, "currency": "TRY", "note": "Daily average" },
+        { "category": "Transportation", "amount": 100, "currency": "TRY", "note": "Istanbulkart daily" },
+        { "category": "Museum Entries", "amount": 600, "currency": "TRY", "note": "Hagia Sophia + Topkapi + Harem" }
+      ],
+      "coordinates": { "lat": 41.0082, "lng": 28.9784 },
+      "gallery": [
+        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&q=80",
+        "https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800&q=80",
+        "https://images.unsplash.com/photo-1549918864-48ac978761a4?w=800&q=80",
+        "https://images.unsplash.com/photo-1604941590361-0be0a2a3e304?w=800&q=80"
+      ]
+    }
+  }
+}
