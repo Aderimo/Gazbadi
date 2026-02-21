@@ -13,11 +13,11 @@ export default function HomePage() {
       <HeroSection />
 
       <div className="bg-dark">
-        <ExploreSection />
+        <DiscoverOnMap />
       </div>
 
       <div className="bg-dark-secondary">
-        <MyRecommendations />
+        <ExploreSection />
       </div>
 
       <div className="bg-dark">
@@ -25,11 +25,11 @@ export default function HomePage() {
       </div>
 
       <div className="bg-dark-secondary">
-        <NewlyAdded />
+        <MyRecommendations />
       </div>
 
       <div className="bg-dark">
-        <DiscoverOnMap />
+        <NewlyAdded />
       </div>
 
       <div className="bg-dark-secondary">

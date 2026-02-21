@@ -2,7 +2,7 @@
 
 Çok dilli seyahat öneri platformu. Koyu tema, Leaflet harita entegrasyonu, JSON tabanlı CMS ve admin paneli.
 
-**[Canlı Demo →](#)** *(GitHub Pages deploy sonrası güncellenecek)*
+**[Canlı Demo →](https://aderimo.github.io/Gazbadi/)**
 
 ## Özellikler
 
