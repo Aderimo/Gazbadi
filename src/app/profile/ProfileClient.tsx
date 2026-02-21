@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import { getProfile, saveProfile, getAvatars, clearProfile, type UserProfile } from '@/lib/user-profile';
+import { getProfile, saveProfile, getAvatars, clearProfile, getUserRatings, type UserProfile } from '@/lib/user-profile';
 import { getCommentsByAuthor } from '@/lib/comments-store';
 import { getFavorites } from '@/lib/favorites';
 import type { Comment } from '@/types';
@@ -17,6 +17,8 @@ export default function ProfileClient() {
   const [nickname, setNickname] = useState('');
   const [avatar, setAvatar] = useState('🧑‍💻');
   const [newPlace, setNewPlace] = useState('');
+  const [myRatings, setMyRatings] = useState<Record<string, number>>({});
+  const [shareMsg, setShareMsg] = useState('');
   const basePath = process.env.NEXT_PUBLIC_REPO_NAME ? `/${process.env.NEXT_PUBLIC_REPO_NAME}` : '';
 
   useEffect(() => {
@@ -26,6 +28,7 @@ export default function ProfileClient() {
       setNickname(p.nickname);
       setAvatar(p.avatar);
       setComments(getCommentsByAuthor(p.nickname));
+      setMyRatings(getUserRatings());
     }
     setFavorites(getFavorites());
   }, []);
@@ -109,6 +112,12 @@ export default function ProfileClient() {
             <p className="text-xs text-gray-500">{locale === 'tr' ? 'Üye:' : 'Member since:'} {new Date(profile.createdAt).toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-US')}</p>
           </div>
           <div className="flex gap-2">
+            <button onClick={() => {
+              const url = `${window.location.origin}${basePath}/profile?user=${encodeURIComponent(profile.nickname)}`;
+              navigator.clipboard.writeText(url).then(() => { setShareMsg('✓'); setTimeout(() => setShareMsg(''), 2000); });
+            }} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300 hover:bg-white/10 transition-colors">
+              {shareMsg || '🔗'}
+            </button>
             <button onClick={() => setEditing(!editing)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300 hover:bg-white/10 transition-colors">
               {editing ? (locale === 'tr' ? 'İptal' : 'Cancel') : '✏️'}
             </button>
@@ -179,6 +188,27 @@ export default function ProfileClient() {
                     <span>{new Date(c.createdAt).toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-US')}</span>
                     <span className="flex items-center gap-1">👍 {c.likes} 👎 {c.dislikes}</span>
                   </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* My Ratings */}
+        <div className="rounded-2xl border border-white/5 bg-dark-card/30 p-6">
+          <p className="mb-4 text-xs font-medium text-gray-400">⭐ {locale === 'tr' ? 'Puanlarım' : 'My Ratings'} ({Object.keys(myRatings).length})</p>
+          {Object.keys(myRatings).length === 0 ? (
+            <p className="text-sm text-gray-600">{locale === 'tr' ? 'Henüz puan verilmedi' : 'No ratings yet'}</p>
+          ) : (
+            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+              {Object.entries(myRatings).map(([slug, rating]) => (
+                <div key={slug} className="flex items-center justify-between rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2">
+                  <Link href={`${basePath}/location/${slug}`} className="text-sm text-accent-turquoise/70 hover:text-accent-turquoise truncate flex-1">
+                    {slug}
+                  </Link>
+                  <span className="ml-3 text-xs text-amber-400 whitespace-nowrap">
+                    {'★'.repeat(rating)}{'☆'.repeat(5 - rating)}
+                  </span>
                 </div>
               ))}
             </div>

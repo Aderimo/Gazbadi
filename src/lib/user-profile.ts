@@ -99,6 +99,19 @@ export function setRating(slug: string, rating: number): { avg: number; count: n
   return { avg, count: ratings[slug].length };
 }
 
+export function getUserRatings(): Record<string, number> {
+  if (typeof window === 'undefined') return {};
+  const result: Record<string, number> = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('ta_myrating_')) {
+      const val = Number(localStorage.getItem(key) || '0');
+      if (val > 0) result[key.replace('ta_myrating_', '')] = val;
+    }
+  }
+  return result;
+}
+
 export function getSlugRating(slug: string): { avg: number; count: number } {
   const ratings = getRatings();
   const arr = ratings[slug] || [];

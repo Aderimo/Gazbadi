@@ -755,6 +755,39 @@ function AnalyticsDashboard({ items, locale }: { items: ContentItem[]; locale: '
           </div>
         </div>
       )}
+
+      {/* Comment trend chart */}
+      {(() => {
+        const weekData: { label: string; count: number }[] = [];
+        const now = new Date();
+        for (let i = 3; i >= 0; i--) {
+          const weekStart = new Date(now);
+          weekStart.setDate(weekStart.getDate() - (i * 7 + weekStart.getDay()));
+          const weekEnd = new Date(weekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          const count = comments.filter(c => {
+            const d = new Date(c.createdAt);
+            return d >= weekStart && d <= weekEnd;
+          }).length;
+          const label = `${weekStart.getDate()}/${weekStart.getMonth() + 1}`;
+          weekData.push({ label, count });
+        }
+        const maxWeek = Math.max(...weekData.map(w => w.count), 1);
+        return (
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
+            <p className="mb-4 text-xs font-medium text-gray-400">📊 {locale === 'tr' ? 'Haftalık Yorum Trendi' : 'Weekly Comment Trend'}</p>
+            <div className="flex items-end gap-3 h-28">
+              {weekData.map((w, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                  <span className="text-[10px] font-medium text-gray-400">{w.count}</span>
+                  <div className="w-full rounded-t-md bg-accent-indigo/30 transition-all" style={{ height: `${(w.count / maxWeek) * 100}%`, minHeight: w.count > 0 ? '4px' : '2px' }} />
+                  <span className="text-[9px] text-gray-600">{w.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
