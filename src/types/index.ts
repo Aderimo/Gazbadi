@@ -41,6 +41,7 @@ export interface LocationContent extends ContentBody {
   estimatedBudget: BudgetItem[];
   coordinates: { lat: number; lng: number };
   gallery: string[];
+  citizenship?: string;
 }
 
 // Blog içerik gövdesi
