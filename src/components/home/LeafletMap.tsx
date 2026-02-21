@@ -15,6 +15,8 @@ const redIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+const basePath = process.env.NEXT_PUBLIC_REPO_NAME ? `/${process.env.NEXT_PUBLIC_REPO_NAME}` : '';
+
 interface LeafletMapProps {
   markers: MapMarker[];
   routes: MapRoute[];
@@ -44,7 +46,7 @@ export default function LeafletMap({ markers, routes }: LeafletMapProps) {
               <strong>{marker.title}</strong>
               <br />
               <a
-                href={`/location/${marker.slug}`}
+                href={`${basePath}/location/${marker.slug}/`}
                 className="text-blue-400 underline"
               >
                 Detay →
