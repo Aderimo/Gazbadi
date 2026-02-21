@@ -298,7 +298,25 @@ function BudgetTable({
 
 /* ─── Photo Gallery ─── */
 function PhotoGallery({ images, city }: { images: string[]; city: string }) {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (selectedIndex === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedIndex(null);
+      if (e.key === 'ArrowRight') setSelectedIndex((prev) => prev !== null ? (prev + 1) % images.length : null);
+      if (e.key === 'ArrowLeft') setSelectedIndex((prev) => prev !== null ? (prev - 1 + images.length) % images.length : null);
+    };
+    document.addEventListener('keydown', handleKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = '';
+    };
+  }, [selectedIndex, images.length]);
+
+  const goNext = (e: React.MouseEvent) => { e.stopPropagation(); setSelectedIndex((prev) => prev !== null ? (prev + 1) % images.length : null); };
+  const goPrev = (e: React.MouseEvent) => { e.stopPropagation(); setSelectedIndex((prev) => prev !== null ? (prev - 1 + images.length) % images.length : null); };
 
   return (
     <>
@@ -307,7 +325,7 @@ function PhotoGallery({ images, city }: { images: string[]; city: string }) {
           <button
             key={i}
             type="button"
-            onClick={() => setSelected(src)}
+            onClick={() => setSelectedIndex(i)}
             className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/5 transition-transform hover:scale-[1.02]"
           >
             <OptimizedImage
@@ -317,36 +335,87 @@ function PhotoGallery({ images, city }: { images: string[]; city: string }) {
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+              <span className="text-white/0 group-hover:text-white/80 text-sm transition-colors">🔍</span>
+            </div>
           </button>
         ))}
       </div>
 
       {/* Lightbox */}
-      {selected && (
+      {selectedIndex !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-          onClick={() => setSelected(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+          onClick={() => setSelectedIndex(null)}
           role="dialog"
           aria-modal="true"
           aria-label="Photo lightbox"
         >
+          {/* Close */}
           <button
             type="button"
-            onClick={() => setSelected(null)}
-            className="absolute right-6 top-6 text-3xl text-white/70 hover:text-white transition-colors"
+            onClick={() => setSelectedIndex(null)}
+            className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xl text-white/70 hover:bg-white/20 hover:text-white transition-all"
             aria-label="Close"
           >
             ✕
           </button>
-          <div className="relative max-h-[85vh] max-w-4xl w-full aspect-[4/3]">
+
+          {/* Counter */}
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-1.5 text-xs text-white/70 backdrop-blur-sm">
+            {selectedIndex + 1} / {images.length}
+          </div>
+
+          {/* Prev */}
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={goPrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-2xl text-white/70 hover:bg-white/20 hover:text-white transition-all"
+              aria-label="Previous photo"
+            >
+              ‹
+            </button>
+          )}
+
+          {/* Image */}
+          <div className="relative max-h-[85vh] max-w-5xl w-full px-16" onClick={(e) => e.stopPropagation()}>
             <OptimizedImage
-              src={selected}
-              alt={city}
+              src={images[selectedIndex]}
+              alt={`${city} - ${selectedIndex + 1}`}
               lazy={false}
-              className="h-full w-full object-contain rounded-lg"
+              className="h-full w-full max-h-[85vh] object-contain rounded-lg"
               sizes="90vw"
             />
           </div>
+
+          {/* Next */}
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={goNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-2xl text-white/70 hover:bg-white/20 hover:text-white transition-all"
+              aria-label="Next photo"
+            >
+              ›
+            </button>
+          )}
+
+          {/* Thumbnail Strip */}
+          {images.length > 1 && (
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 rounded-xl bg-black/50 p-2 backdrop-blur-sm">
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); setSelectedIndex(i); }}
+                  className={`h-12 w-16 overflow-hidden rounded-lg border-2 transition-all ${i === selectedIndex ? 'border-accent-turquoise opacity-100' : 'border-transparent opacity-50 hover:opacity-80'}`}
+                >
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>
