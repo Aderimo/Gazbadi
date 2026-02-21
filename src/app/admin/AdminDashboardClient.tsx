@@ -14,7 +14,7 @@ import {
 } from '@/lib/admin-store';
 import type { ContentItem, LocationContent, Comment } from '@/types';
 import { getComments, updateCommentStatus, deleteComment as deleteCommentStore } from '@/lib/comments-store';
-import { getViews } from '@/lib/user-profile';
+import { getViews, getDailyViews } from '@/lib/user-profile';
 
 interface Props { items: ContentItem[] }
 type Tab = 'content' | 'trash' | 'create' | 'edit' | 'comments' | 'analytics';
@@ -635,10 +635,23 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
 function AnalyticsDashboard({ items, locale }: { items: ContentItem[]; locale: 'tr' | 'en' }) {
   const [views, setViews] = useState<Record<string, number>>({});
   const [comments, setComments] = useState<Comment[]>([]);
+  const [dailyData, setDailyData] = useState<{ date: string; total: number }[]>([]);
 
   useEffect(() => {
     setViews(getViews());
     setComments(getComments());
+    // Build last 7 days trend
+    const daily = getDailyViews();
+    const days: { date: string; total: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const dayViews = daily[key] || {};
+      const total = Object.values(dayViews).reduce((s: number, v: number) => s + v, 0);
+      days.push({ date: key, total });
+    }
+    setDailyData(days);
   }, []);
 
   const topViewed = items
@@ -675,6 +688,25 @@ function AnalyticsDashboard({ items, locale }: { items: ContentItem[]; locale: '
           </div>
         ))}
       </div>
+
+      {/* Daily trend chart */}
+      {(() => {
+        const maxDay = Math.max(...dailyData.map(d => d.total), 1);
+        return (
+          <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
+            <p className="mb-4 text-xs font-medium text-gray-400">📈 {locale === 'tr' ? 'Son 7 Gün Görüntülenme' : 'Last 7 Days Views'}</p>
+            <div className="flex items-end gap-2 h-32">
+              {dailyData.map(d => (
+                <div key={d.date} className="flex-1 flex flex-col items-center gap-1">
+                  <span className="text-[10px] font-medium text-gray-400">{d.total}</span>
+                  <div className="w-full rounded-t-md bg-accent-turquoise/30 transition-all" style={{ height: `${(d.total / maxDay) * 100}%`, minHeight: d.total > 0 ? '4px' : '2px' }} />
+                  <span className="text-[9px] text-gray-600">{d.date.slice(5)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Top viewed */}
       <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">

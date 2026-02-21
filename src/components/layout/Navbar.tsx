@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { getProfile } from '@/lib/user-profile';
 
 const NAV_LINKS = [
   { key: 'nav.home', href: '/' },
@@ -15,6 +16,12 @@ const NAV_LINKS = [
 export default function Navbar() {
   const { locale, setLocale, t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    const p = getProfile();
+    if (p) setUserAvatar(p.avatar);
+  }, []);
 
   return (
     <nav
@@ -43,6 +50,13 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          {/* Profile link */}
+          <Link href="/profile"
+            className="hidden md:inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+            aria-label="Profile">
+            {userAvatar ? <span className="text-base">{userAvatar}</span> : <span className="text-base">👤</span>}
+          </Link>
+
           {/* Admin Panel Button */}
           <Link
             href="/login"
@@ -118,6 +132,15 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href="/profile"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+              >
+                {userAvatar || '👤'} {locale === 'tr' ? 'Profil' : 'Profile'}
+              </Link>
+            </li>
             <li>
               <Link
                 href="/login"
