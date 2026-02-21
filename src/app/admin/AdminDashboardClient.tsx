@@ -14,9 +14,10 @@ import {
 } from '@/lib/admin-store';
 import type { ContentItem, LocationContent, Comment } from '@/types';
 import { getComments, updateCommentStatus, deleteComment as deleteCommentStore } from '@/lib/comments-store';
+import { getViews } from '@/lib/user-profile';
 
 interface Props { items: ContentItem[] }
-type Tab = 'content' | 'trash' | 'create' | 'edit' | 'comments';
+type Tab = 'content' | 'trash' | 'create' | 'edit' | 'comments' | 'analytics';
 type ContentType = ContentItem['type'];
 type SortKey = 'date' | 'name' | 'type';
 
@@ -176,10 +177,10 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
 
           {/* Tabs */}
           <div className="mb-6 flex gap-1 rounded-xl border border-white/5 bg-dark-card/30 p-1">
-            {(['content', 'create', 'comments', 'trash'] as Tab[]).map((tabItem) => (
+            {(['content', 'create', 'comments', 'analytics', 'trash'] as Tab[]).map((tabItem) => (
               <button key={tabItem} onClick={() => { setTab(tabItem); setEditingId(null); setBulkMode(false); setSelectedIds(new Set()); }}
                 className={`flex-1 rounded-lg px-3 py-2.5 text-xs font-medium transition-all ${tab === tabItem ? 'bg-accent-turquoise/15 text-accent-turquoise shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}>
-                {tabItem === 'content' ? (locale === 'tr' ? '📋 İçerikler' : '📋 Content') : tabItem === 'create' ? (locale === 'tr' ? '➕ Yeni Oluştur' : '➕ Create New') : tabItem === 'comments' ? (locale === 'tr' ? '💬 Yorumlar' : '💬 Comments') : `🗑️ ${locale === 'tr' ? 'Çöp' : 'Trash'} (${stats.trashCount})`}
+                {tabItem === 'content' ? (locale === 'tr' ? '📋 İçerikler' : '📋 Content') : tabItem === 'create' ? (locale === 'tr' ? '➕ Yeni' : '➕ New') : tabItem === 'comments' ? (locale === 'tr' ? '💬 Yorumlar' : '💬 Comments') : tabItem === 'analytics' ? (locale === 'tr' ? '📊 Analitik' : '📊 Analytics') : `🗑️ ${locale === 'tr' ? 'Çöp' : 'Trash'} (${stats.trashCount})`}
               </button>
             ))}
           </div>
@@ -243,6 +244,7 @@ export default function AdminDashboardClient({ items: serverItems }: Props) {
           {tab === 'create' && <CreateForm locale={locale} createType={createType} setCreateType={setCreateType} existingSlugs={allItems.map(i => i.slug)} onSave={handleSaveNew} onCancel={() => setTab('content')} />}
           {tab === 'trash' && <TrashList trash={trash} locale={locale} onRestore={handleRestore} onPermanentDelete={handlePermanentDelete} onEmptyTrash={handleEmptyTrash} />}
           {tab === 'comments' && <CommentModeration locale={locale} onToast={showToast} />}
+          {tab === 'analytics' && <AnalyticsDashboard items={allItems} locale={locale} />}
 
           {confirmDelete && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setConfirmDelete(null)}>
@@ -630,6 +632,101 @@ function EditForm({ item, locale, onSave, onCancel }: { item: ContentItem; local
 }
 
 /* --- Reusable Field --- */
+function AnalyticsDashboard({ items, locale }: { items: ContentItem[]; locale: 'tr' | 'en' }) {
+  const [views, setViews] = useState<Record<string, number>>({});
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  useEffect(() => {
+    setViews(getViews());
+    setComments(getComments());
+  }, []);
+
+  const topViewed = items
+    .map(item => ({ ...item, views: views[item.slug] || 0 }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 10);
+
+  const totalViews = Object.values(views).reduce((s, v) => s + v, 0);
+  const totalComments = comments.length;
+  const pendingComments = comments.filter(c => c.status === 'pending').length;
+  const flaggedComments = comments.filter(c => c.status === 'flagged').length;
+
+  const commentsBySlug: Record<string, number> = {};
+  comments.forEach(c => { commentsBySlug[c.contentSlug] = (commentsBySlug[c.contentSlug] || 0) + 1; });
+  const topCommented = items
+    .map(item => ({ ...item, commentCount: commentsBySlug[item.slug] || 0 }))
+    .filter(i => i.commentCount > 0)
+    .sort((a, b) => b.commentCount - a.commentCount)
+    .slice(0, 5);
+
+  return (
+    <div className="space-y-6">
+      {/* Summary stats */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {[
+          { label: locale === 'tr' ? 'Toplam Görüntülenme' : 'Total Views', val: totalViews, icon: '👁', color: 'border-l-accent-turquoise' },
+          { label: locale === 'tr' ? 'Toplam Yorum' : 'Total Comments', val: totalComments, icon: '💬', color: 'border-l-accent-indigo' },
+          { label: locale === 'tr' ? 'Bekleyen Yorum' : 'Pending Comments', val: pendingComments, icon: '⏳', color: 'border-l-amber-500' },
+          { label: locale === 'tr' ? 'Şikayet Edilen' : 'Flagged', val: flaggedComments, icon: '🚩', color: 'border-l-rose-500' },
+        ].map(s => (
+          <div key={s.label} className={`rounded-xl border border-white/5 border-l-2 ${s.color} bg-dark-card/50 px-4 py-4`}>
+            <div className="flex items-center justify-between"><p className="text-2xl font-bold text-gray-100">{s.val}</p><span className="text-lg">{s.icon}</span></div>
+            <p className="mt-1 text-[11px] text-gray-500">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Top viewed */}
+      <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
+        <p className="mb-4 text-xs font-medium text-gray-400">🏆 {locale === 'tr' ? 'En Çok Görüntülenen' : 'Most Viewed'}</p>
+        {topViewed.length === 0 ? (
+          <p className="text-sm text-gray-600">{locale === 'tr' ? 'Henüz görüntülenme verisi yok' : 'No view data yet'}</p>
+        ) : (
+          <div className="space-y-2">
+            {topViewed.map((item, idx) => {
+              const loc = getLocalizedContent(item.content, locale);
+              const maxViews = topViewed[0]?.views || 1;
+              return (
+                <div key={item.id} className="flex items-center gap-3">
+                  <span className="w-5 text-right text-[11px] font-bold text-gray-500">{idx + 1}</span>
+                  <span className="text-sm">{TYPE_INFO[item.type].icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="truncate text-sm text-gray-200">{loc.title}</p>
+                    <div className="mt-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full bg-accent-turquoise/40 transition-all" style={{ width: `${(item.views / maxViews) * 100}%` }} />
+                    </div>
+                  </div>
+                  <span className="text-xs font-medium text-gray-400">{item.views}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Top commented */}
+      {topCommented.length > 0 && (
+        <div className="rounded-xl border border-white/5 bg-dark-card/30 p-5">
+          <p className="mb-4 text-xs font-medium text-gray-400">💬 {locale === 'tr' ? 'En Çok Yorum Alan' : 'Most Commented'}</p>
+          <div className="space-y-2">
+            {topCommented.map((item, idx) => {
+              const loc = getLocalizedContent(item.content, locale);
+              return (
+                <div key={item.id} className="flex items-center gap-3">
+                  <span className="w-5 text-right text-[11px] font-bold text-gray-500">{idx + 1}</span>
+                  <span className="text-sm">{TYPE_INFO[item.type].icon}</span>
+                  <p className="flex-1 truncate text-sm text-gray-200">{loc.title}</p>
+                  <span className="rounded-full bg-accent-indigo/15 px-2 py-0.5 text-[10px] font-medium text-accent-indigo">{item.commentCount} 💬</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CommentModeration({ locale, onToast }: { locale: 'tr' | 'en'; onToast: (msg: string) => void }) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'flagged'>('all');

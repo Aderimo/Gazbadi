@@ -17,7 +17,7 @@ function saveAll(comments: Comment[]): void {
 export function getComments(): Comment[] { return getAll(); }
 
 export function getCommentsBySlug(slug: string): Comment[] {
-  return getAll().filter(c => c.contentSlug === slug && c.status !== 'flagged');
+  return getAll().filter(c => c.contentSlug === slug);
 }
 
 export function addComment(slug: string, contentType: Comment['contentType'], author: string, text: string): Comment {
