@@ -3,6 +3,7 @@
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getLocalizedContent } from '@/lib/i18n-content';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import CommentSection from '@/components/ui/CommentSection';
 import type { ContentItem, BlogContent } from '@/types';
 
 interface BlogDetailClientProps {
@@ -55,6 +56,9 @@ export default function BlogDetailClient({ item }: BlogDetailClientProps) {
             </div>
           </section>
         )}
+
+        {/* Comments */}
+        <CommentSection slug={item.slug} contentType="blog" locale={locale} />
       </div>
     </article>
   );

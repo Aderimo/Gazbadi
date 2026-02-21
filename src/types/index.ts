@@ -163,3 +163,20 @@ export interface FriendExperienceEditorProps {
   experience?: ContentItem;
   onSave: (data: ContentItem) => void;
 }
+
+// ============================================
+// Yorum Sistemi
+// ============================================
+
+export type CommentStatus = 'pending' | 'approved' | 'flagged';
+
+export interface Comment {
+  id: string;
+  contentSlug: string;
+  contentType: ContentItem['type'];
+  author: string;
+  text: string;
+  status: CommentStatus;
+  reports: number;
+  createdAt: string;
+}

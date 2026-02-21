@@ -5,6 +5,7 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getLocalizedContent } from '@/lib/i18n-content';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import RouteMap from '@/components/map/RouteMap';
+import CommentSection from '@/components/ui/CommentSection';
 import type { ContentItem, LocationContent, RoutePlanDay, BudgetItem } from '@/types';
 
 interface LocationDetailClientProps {
@@ -122,10 +123,7 @@ export default function LocationDetailClient({ item }: LocationDetailClientProps
         )}
 
         {/* Comments */}
-        <section className="mt-16">
-          <SectionHeading text={locale === 'tr' ? 'Yorumlar' : 'Comments'} />
-          <CommentsSection locale={locale} />
-        </section>
+        <CommentSection slug={item.slug} contentType="location" locale={locale} />
       </div>
     </article>
   );
@@ -419,65 +417,6 @@ function PhotoGallery({ images, city }: { images: string[]; city: string }) {
         </div>
       )}
     </>
-  );
-}
-
-/* ─── Comments Section (Placeholder) ─── */
-function CommentsSection({ locale }: { locale: 'tr' | 'en' }) {
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState<{ text: string; date: string }[]>([]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!comment.trim()) return;
-    setComments((prev) => [
-      { text: comment.trim(), date: new Date().toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-US') },
-      ...prev,
-    ]);
-    setComment('');
-  };
-
-  return (
-    <div className="mt-6 space-y-6">
-      <form onSubmit={handleSubmit} className="glass-card p-6">
-        <label htmlFor="comment-input" className="sr-only">
-          {locale === 'tr' ? 'Yorumunuz' : 'Your comment'}
-        </label>
-        <textarea
-          id="comment-input"
-          rows={3}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder={locale === 'tr' ? 'Yorumunuzu yazın...' : 'Write your comment...'}
-          className="w-full resize-none rounded-xl border border-white/10 bg-dark/60 px-4 py-3 text-sm text-gray-200 placeholder-gray-500 outline-none transition-colors focus:border-accent-turquoise/50"
-        />
-        <div className="mt-3 flex justify-end">
-          <button
-            type="submit"
-            className="rounded-lg bg-accent-turquoise/20 px-5 py-2 text-sm font-medium text-accent-turquoise transition-colors hover:bg-accent-turquoise/30"
-          >
-            {locale === 'tr' ? 'Gönder' : 'Submit'}
-          </button>
-        </div>
-      </form>
-
-      {comments.length > 0 && (
-        <div className="space-y-3">
-          {comments.map((c, i) => (
-            <div key={i} className="glass-card px-6 py-4">
-              <p className="text-sm text-gray-300">{c.text}</p>
-              <p className="mt-2 text-xs text-gray-500">{c.date}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {comments.length === 0 && (
-        <p className="text-center text-sm text-gray-500">
-          {locale === 'tr' ? 'Henüz yorum yok. İlk yorumu siz yapın!' : 'No comments yet. Be the first to comment!'}
-        </p>
-      )}
-    </div>
   );
 }
 
