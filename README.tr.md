@@ -66,3 +66,11 @@ npm run dev
 ## Lisans
 
 [MIT](LICENSE)
+
+---
+
+<div align="center">
+
+Made by [Aderimo](https://gitgit.me/aderimo)
+
+</div>
