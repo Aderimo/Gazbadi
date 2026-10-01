@@ -66,3 +66,11 @@ Log in at `/login`; you are redirected to `/admin` afterwards.
 ## License
 
 [MIT](LICENSE)
+
+---
+
+<div align="center">
+
+Made by [Aderimo](https://gitgit.me/aderimo)
+
+</div>
