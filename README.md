@@ -37,6 +37,8 @@ a static site with no server to maintain.
 ## Setup
 
 ```bash
+git clone https://github.com/Aderimo/Gazbadi.git
+cd Gazbadi
 npm install
 npm run dev
 ```
