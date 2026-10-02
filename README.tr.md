@@ -37,6 +37,8 @@ deneyimleri — bakım gerektiren bir sunucu olmadan statik site olarak yayında
 ## Kurulum
 
 ```bash
+git clone https://github.com/Aderimo/Gazbadi.git
+cd Gazbadi
 npm install
 npm run dev
 ```
